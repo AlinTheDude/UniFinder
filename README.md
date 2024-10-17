@@ -77,26 +77,18 @@ Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca 
 
 
 
-1. Criteri di Ricerca
-Esempio di richiesta per cercare università in base a criteri specifici
-
-Richiesta:
+1. Criteri di Ricerca 
+Esempio di richiesta per cercare università in base a criteri specifici.
 
 {
   "location": "Milano",
-  
   "country": "Italia",
-  
   "tuition_fee_range": {
-  
     "min": 5000,
-    
     "max": 15000
   },
   "scholarships": true,
-  
   "programs": ["Ingegneria", "Economia"],
-  
   "reputation": "alto"
 }
 
@@ -104,36 +96,27 @@ Risposta:
 
 {
   "status": "success",
-  
   "message": "Università trovate.",
-  
   "data": [
     {
       "university_id": 1,
-      
       "name": "Università degli Studi di Milano",
-      
-      "tuition_fee": 12000
-      
+      "tuition_fee": 12000,
       "scholarship_opportunities": true,
-      
       "ranking": 150
     },
     {
       "university_id": 2,
-      
       "name": "Politecnico di Milano",
-      
       "tuition_fee": 13000,
-      
       "scholarship_opportunities": true,
-      
       "ranking": 50
     }
   ]
 }
 
-2. Salvataggio Università Preferite
+
+4. Salvataggio Università Preferite
 Esempio di richiesta per salvare un'università nei preferiti dell'utente.
 
 Richiesta:
