@@ -117,13 +117,16 @@ Risposta:
 
 2. Salvataggio Università Preferite
 Esempio di richiesta per salvare un'università nei preferiti dell'utente.
+
 Richiesta:
+
 {
   "user_id": 78910,
   "university_id": 1
 }
 
 Risposta:
+
 {
   "status": "success",
   "message": "Università salvata tra i preferiti."
