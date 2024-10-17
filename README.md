@@ -78,6 +78,8 @@ Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca 
 
 
 1. Criteri di Ricerca
+ ---------------------------------------------------------------------------------------------------------------------------------------
+
 Esempio di richiesta per cercare università in base a criteri specifici
 
 Richiesta:
