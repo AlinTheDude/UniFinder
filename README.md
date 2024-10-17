@@ -1,6 +1,7 @@
 UniFinder è un'applicazione che permette agli studenti di trovare l'università perfetta in base a preferenze personalizzate come località, costi, borse di studio e altro ancora. Questo documento descrive l'endpoint per l'autenticazione degli utenti, che consente agli studenti di accedere alla piattaforma.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Requisiti Funzionali (Functional Requirements)
 
-Requisiti Funzionali (Functional Requirements)
 I requisiti funzionali definiscono cosa il sistema deve fare.
 
 Registrazione degli utenti: Il sistema deve consentire agli utenti di creare un account fornendo email, nome, password, ecc.
@@ -28,8 +29,9 @@ Cambiare lingua dell'interfaccia: Gli utenti devono poter cambiare la lingua del
 Logout: Il sistema deve permettere agli utenti di disconnettersi.
 
 Gestione amministrativa: Gli amministratori devono poter gestire i dati delle università, aggiungere nuove università, modificare informazioni esistenti e gestire le recensioni degli utenti.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Requisiti Non Funzionali (Non-Functional Requirements)
 
-Requisiti Non Funzionali (Non-Functional Requirements)
 I requisiti non funzionali descrivono le caratteristiche di qualità che il sistema deve rispettare.
 
 Usabilità: L’interfaccia deve essere semplice da usare per gli utenti non tecnici, con una navigazione chiara e intuitiva.
@@ -53,8 +55,9 @@ Multilingua: Il sito deve supportare più lingue, con un sistema per la traduzio
 Accessibilità: Il sito deve rispettare le linee guida per l'accessibilità, garantendo l'uso per persone con disabilità.
 
 Affidabilità: Il sistema deve essere operativo almeno il 99,9% del tempo, con downtime minimo per la manutenzione.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Requisiti di Dominio (Domain Requirements)
 
-Requisiti di Dominio (Domain Requirements)
 I requisiti di dominio riguardano i vincoli specifici del dominio di applicazione.
 
 Gestione dati delle università: Le informazioni su ogni università devono essere aggiornate regolarmente e devono includere dettagli come rette, borse di studio, programmi offerti, ecc.
