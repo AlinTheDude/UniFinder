@@ -140,7 +140,6 @@ Risposta:
 
 Use Case Diagram:
 
-![image](https://github.com/user-attachments/assets/e6062ce7-80b0-4c02-8645-cac910644863)
-
+![image](https://github.com/user-attachments/assets/3776a3af-d922-4c7a-b633-4f68551eeeec)
 
 
