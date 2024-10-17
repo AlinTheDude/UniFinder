@@ -119,4 +119,6 @@ Risposta:
 
 Use Case Diagram:
 
+![UseCaseDiagram](https://github.com/user-attachments/assets/4b72b21e-294b-4b1f-afdc-9ad098066937)
+
 
