@@ -81,6 +81,7 @@ Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca 
 Esempio di richiesta per cercare università in base a criteri specifici
 
 Richiesta:
+
 {
   "location": "Milano",
   "country": "Italia",
@@ -94,6 +95,7 @@ Richiesta:
 }
 
 Risposta:
+
 {
   "status": "success",
   "message": "Università trovate.",
