@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFinder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#registrazione">Registrazione</a></li>
+        <li><a href="#login">Login</a></li>
+        <li><a href="#ricerca">Ricerca Università</a></li>
+    </ul>
+</nav>
+
+<h1>Benvenuto su UniFinder</h1>
+
+<!-- Registrazione -->
+<section id="registrazione">
+    <h2>Registrazione</h2>
+    <form id="registrationForm">
+        <input type="text" id="regName" placeholder="Nome" required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <input type="text" id="regPreferenze" placeholder="Preferenze (es. Paese, Corso)">
+        <button type="submit">Registrati</button>
+    </form>
+</section>
+
+<!-- Login -->
+<section id="login">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+</section>
+
+<!-- Ricerca Università -->
+<section id="ricerca">
+    <h2>Ricerca Università</h2>
+    <form id="searchForm">
+        <input type="text" id="paese" placeholder="Paese">
+        <input type="number" id="tasseMassime" placeholder="Tasse massime">
+        <input type="text" id="borseDiStudio" placeholder="Borse di studio (Sì/No)">
+        <input type="text" id="offertaFormativa" placeholder="Offerta formativa">
+        <input type="number" id="reputazioneMinima" placeholder="Reputazione minima (1-5)">
+        <button type="submit">Cerca</button>
+    </form>
+
+    <div id="result"></div>
+</section>
+
+<footer>
+    <p>&copy; 2024 5ic. Tutti i diritti riservati.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
