@@ -3,47 +3,60 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f9;
+    background-color: rgba(244, 244, 249, 0.8); /* Leggero sfondo bianco */
 }
 
-h1, h2 {
-    color: #2c3e50;
+/* Colori principali */
+:root {
+    --verde: #2ecc71; /* Verde erba */
+    --azzurro: #3498db; /* Blu cielo */
+    --bianco: rgba(255, 255, 255, 0.9); /* Bianco semi-trasparente */
+    --scuro: #2c3e50; /* Colore scuro */
 }
 
-nav {
-    background-color: #3498db;
-    padding: 10px;
+/* Header */
+header nav {
+    background-color: rgba(52, 152, 219, 0.8); /* Aggiunta trasparenza per uno sfondo più elegante */
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Ombra per profondità */
 }
 
-nav ul {
-    list-style-type: none;
+header nav ul {
+    list-style: none;
     padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
 }
 
-nav ul li {
+header nav ul li {
     display: inline;
+    margin: 0 20px; /* Spazio aumentato per i link */
 }
 
-nav ul li a {
+header nav ul li a {
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    font-size: 18px; /* Aumentato per una migliore leggibilità */
+    transition: color 0.3s, transform 0.3s; /* Aggiunta transizione */
 }
 
-nav ul li a:hover {
-    background-color: #2980b9;
-    border-radius: 5px;
+header nav ul li a:hover {
+    color: #ecf0f1; /* Colore più chiaro al passaggio del mouse */
+    transform: scale(1.1); /* Effetto di ingrandimento al passaggio del mouse */
 }
 
+/* Sezione */
+section {
+    margin: 20px;
+    padding: 20px;
+    background: var(--bianco); /* Bianco semi-trasparente */
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form */
 form {
     margin-bottom: 30px;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
 
 input {
@@ -55,7 +68,7 @@ input {
 }
 
 button {
-    background-color: #3498db;
+    background-color: var(--azzurro); /* Colore blu cielo */
     color: white;
     padding: 10px 15px;
     border: none;
@@ -65,31 +78,44 @@ button {
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #2980b9; /* Colore blu scuro al passaggio del mouse */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: var(--scuro); /* Colore scuro */
+    color: white;
 }
 
 #result {
     margin-top: 20px;
 }
 
-section {
-    margin-bottom: 50px;
-}
-
+/* Risultati */
 #result p {
-    background-color: #ecf0f1;
+    background-color: #ecf0f1; /* Colore chiaro per i risultati */
     padding: 10px;
-    border-left: 5px solid #3498db;
+    border-left: 5px solid var(--azzurro); /* Linea blu a sinistra */
     margin-bottom: 10px;
     border-radius: 3px;
 }
 
-footer {
-    background-color: #3498db;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+/* Modifiche per il tema verde */
+h1, h2 {
+    color: var(--scuro); /* Colore scuro per i titoli */
+}
+
+section h2 {
+    color: var(--verde); /* Verde per i titoli delle sezioni */
+}
+
+button {
+    background-color: var(--verde); /* Colore verde per i pulsanti */
+}
+
+button:hover {
+    background-color: #27ae60; /* Verde scuro al passaggio del mouse */
 }

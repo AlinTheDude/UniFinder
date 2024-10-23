@@ -3,8 +3,6 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3001; // Cambia la porta qui
 
-
-
 let db = new sqlite3.Database('./database.db', (err) => {
     if (err) {
         return console.error(err.message);

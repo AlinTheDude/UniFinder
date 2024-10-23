@@ -1,9 +1,13 @@
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    
     const name = document.getElementById('regName').value;
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
     const preferenze = document.getElementById('regPreferenze').value;
+
+    // Debug: verifica i valori raccolti dal form
+    console.log("Dati del form di registrazione:", { name, email, password, preferenze });
 
     fetch('http://localhost:3001/registrazione', {
         method: 'POST',
@@ -22,6 +26,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
+
+    // Debug: verifica i dati raccolti dal form di login
+    console.log("Dati del form di login:", { email, password });
 
     fetch('http://localhost:3001/login', {
         method: 'POST',
@@ -47,6 +54,9 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     const borseDiStudio = document.getElementById('borseDiStudio').value;
     const offertaFormativa = document.getElementById('offertaFormativa').value;
     const reputazioneMinima = document.getElementById('reputazioneMinima').value;
+
+    // Debug: verifica i dati raccolti dal form di ricerca università
+    console.log("Dati del form di ricerca università:", { paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima });
 
     fetch('http://localhost:3001/ricerca-universita', {
         method: 'POST',
