@@ -63,27 +63,31 @@ app.post('/registrazione', (req, res) => {
 });
 
 // Endpoint di login
+// ... (il resto del codice rimane invariato)
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-
+    
     db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
-            return res.status(500).json({ message: 'Errore durante il login.' });
+            console.error('Errore durante il login:', err.message);
+            return res.status(500).json({ error: err.message });
         }
         
         if (!row) {
-            return res.status(401).json({ message: 'Email non trovata.' });
+            return res.status(401).json({ message: 'Credenziali non valide' });
         }
 
-        // Verifica la password
         if (row.password !== password) {
-            return res.status(401).json({ message: 'Password errata.' });
+            return res.status(401).json({ message: 'Password errata' });
         }
 
-        // Login riuscito
-        res.status(200).json({ message: 'Login riuscito', user: row });
+        res.json({ message: 'Login riuscito', user: row });
     });
 });
+
+// ... (il resto del codice rimane invariato)
+
 
 // Endpoint per la ricerca università
 app.post('/ricerca-universita', (req, res) => {

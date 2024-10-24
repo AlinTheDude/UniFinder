@@ -27,15 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Questo dovrebbe prevenire il comportamento di default del form
+            e.preventDefault();
             
-            console.log('Form submitted'); // Questo aiuterà a verificare se il listener è attivo
-            
+            console.log('Form submitted');
+
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
             try {
-                const response = await fetch('/login', {
+                // Assicuriamoci di usare l'URL corretto per il server
+                const response = await fetch('http://65.108.146.104:3001/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -79,6 +80,7 @@ function showFeedback(message, type) {
         feedbackDiv.style.display = 'none';
     }, 5000); // Nasconde il feedback dopo 5 secondi
 }
+
 
 
 
