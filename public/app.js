@@ -23,54 +23,54 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 // Funzione per gestire il login
-document.addEventListener('DOMContentLoaded', function () {
-    // Riferimento al form di login
-    const loginForm = document.getElementById('loginForm');
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-    // Controlla se il form esiste nel DOM
-    if (loginForm) {
-        console.log('Login form trovato. Aggiungo event listener.');
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-        // Aggiungo event listener per l'invio del form
-        loginForm.addEventListener('submit', async function (e) {
-            e.preventDefault();  // Prevenire il comportamento di default del form
-
-            // Prendi i valori email e password dai campi di input
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            try {
-                // Effettua la richiesta di login
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })  // Invia i dati al server
-                });
-
-                // Trasforma la risposta in JSON
-                const data = await response.json();
-
-                // Se il login è riuscito
-                if (response.ok) {
-                    alert('Login effettuato con successo!');
-                    console.log('Login riuscito:', data);
-                } else {
-                    // Mostra un messaggio di errore in caso di credenziali errate
-                    const loginError = document.getElementById('loginError');
-                    loginError.textContent = data.message || 'Credenziali non valide.';
-                    loginError.style.display = 'block';  // Mostra l'errore
-                    console.log('Errore di login:', data);
-                }
-            } catch (error) {
-                // Gestione degli errori della fetch (ad es. problemi di connessione)
-                console.error('Errore di rete:', error);
-                alert('Si è verificato un errore. Riprova più tardi.');
-            }
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
         });
-    } else {
-        console.log('Login form non trovato nel DOM.');
+
+        const result = await response.json();
+
+        if (result.message === 'Login riuscito') {
+            // Mostra un messaggio di successo
+            showFeedback('Login effettuato con successo!', 'success');
+            
+            // Puoi aggiungere qui la logica per reindirizzare l'utente alla pagina principale o ad una dashboard
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            showFeedback(result.message || 'Errore durante il login', 'error');
+        }
+    } catch (error) {
+        console.error('Errore:', error);
+        showFeedback('Errore di rete. Riprova più tardi.', 'error');
     }
 });
+
+function showFeedback(message, type) {
+    const feedbackDiv = document.getElementById('loginFeedback');
+    
+    feedbackDiv.textContent = message;
+    feedbackDiv.style.display = 'block';
+    
+    if (type === 'success') {
+        feedbackDiv.style.color = 'green';
+    } else {
+        feedbackDiv.style.color = 'red';
+    }
+
+    setTimeout(() => {
+        feedbackDiv.style.display = 'none';
+    }, 5000); // Nasconde il feedback dopo 5 secondi
+}
 
 
 
