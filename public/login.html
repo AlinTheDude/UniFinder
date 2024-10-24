@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - UniFinder</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#registrazione">Registrazione</a></li>
+                <li><a href="index.html#ricerca-universita">Ricerca Università</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="login">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <div id="loginError" style="color: red; display: none;"></div>
+        </form>
+        <p>Non hai un account? <a href="index.html">Registrati qui</a></p> <!-- Evidenziare meglio il messaggio di registrazione -->
+    </section>
+
+    <footer>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

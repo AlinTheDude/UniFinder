@@ -17,18 +17,18 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     .then(response => response.json())
     .then(data => {
         alert(data.message);
+        this.reset();
     })
     .catch(error => console.error('Errore:', error));
 });
 
 // Funzione per gestire il login
 document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    event.preventDefault(); // Previene l'invio del form
+    
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-
-    // Debug: verifica i dati raccolti dal form di login
-    console.log("Dati del form di login:", { email, password });
+    const loginError = document.getElementById('loginError'); // Elemento per gli errori
 
     fetch('http://localhost:3001/login', {
         method: 'POST',
@@ -38,12 +38,22 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(response => response.json())
     .then(data => {
         if (data.user) {
+            // Login riuscito: resetta l'errore e mostra messaggio di successo
+            loginError.style.display = 'none';
+            loginError.innerText = '';
             alert('Login riuscito: ' + data.user.nome);
+            // Puoi anche fare un redirect qui
         } else {
-            alert('Errore: ' + data.message);
+            // Mostra l'errore se le credenziali non sono corrette
+            loginError.style.display = 'block';
+            loginError.innerText = 'Errore: ' + data.message;
         }
     })
-    .catch(error => console.error('Errore:', error));
+    .catch(error => {
+        console.error('Errore:', error);
+        loginError.style.display = 'block';
+        loginError.innerText = 'Errore: si è verificato un problema con il server.';
+    });
 });
 
 // Funzione per gestire la ricerca delle università
