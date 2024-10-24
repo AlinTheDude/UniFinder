@@ -122,6 +122,7 @@ process.on('SIGINT', () => {
 });
 
 // Avvio del server
-app.listen(port, () => {
-    console.log(`Server API in esecuzione su http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server API in esecuzione su http://0.0.0.0:${port}`);
 });
+
