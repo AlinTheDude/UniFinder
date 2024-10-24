@@ -23,48 +23,41 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 // Funzione per gestire il login
-document.addEventListener('DOMContentLoaded', function() {
-    // Funzione per gestire il login
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Previene l'invio del form
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Evita il ricaricamento della pagina
 
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        const loginError = document.getElementById('loginError'); // Elemento per gli errori
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-        // Pulisci il messaggio di errore precedente
-        loginError.style.display = 'none'; 
-        loginError.innerText = '';
-
-        fetch('http://65.108.146.104:3001/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: password })
-        })
-        .then(response => {
-            // Log della risposta per il debug
-            console.log('Response:', response);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data:', data); // Log dei dati ricevuti
-
-            if (data.user) {
-                // Login riuscito
-                alert('Login riuscito: ' + data.user.nome);
-                // Qui puoi anche fare un redirect se necessario
-            } else {
-                // Mostra l'errore se le credenziali non sono corrette
-                loginError.style.display = 'block';
-                loginError.innerText = 'Errore: ' + data.message;
-            }
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            loginError.style.display = 'block';
-            loginError.innerText = 'Errore: si è verificato un problema con il server.';
-        });
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
     });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        // Login riuscito
+        document.getElementById('loginSuccess').style.display = 'block';
+        document.getElementById('loginSuccess').textContent = 'Login effettuato con successo!';
+
+        document.getElementById('loginError').style.display = 'none';
+
+        // Mostra un alert (popup)
+        alert('Login effettuato con successo!');
+        
+        // Puoi anche fare un redirect o altre azioni qui
+        // window.location.href = '/paginaDopoLogin'; // Reindirizzamento a una pagina dopo il login
+    } else {
+        // Login fallito
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('loginError').textContent = data.message || 'Errore durante il login.';
+
+        document.getElementById('loginSuccess').style.display = 'none';
+    }
 });
 
 

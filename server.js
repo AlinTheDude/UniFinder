@@ -65,24 +65,23 @@ app.post('/registrazione', (req, res) => {
 // Endpoint di login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    console.log('Dati ricevuti per login:', req.body); // Logging dei dati
 
     db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
-            console.error('Errore durante il login:', err.message); // Mostra l'errore
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({ message: 'Errore durante il login.' });
         }
         
         if (!row) {
-            return res.status(401).json({ message: 'Credenziali non valide' });
+            return res.status(401).json({ message: 'Email non trovata.' });
         }
 
         // Verifica la password
         if (row.password !== password) {
-            return res.status(401).json({ message: 'Password errata' });
+            return res.status(401).json({ message: 'Password errata.' });
         }
 
-        res.json({ message: 'Login riuscito', user: row });
+        // Login riuscito
+        res.status(200).json({ message: 'Login riuscito', user: row });
     });
 });
 
