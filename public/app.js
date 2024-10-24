@@ -23,41 +23,43 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 // Funzione per gestire il login
-document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault(); // Evita il ricaricamento della pagina
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Evita il ricaricamento della pagina
 
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
 
-    const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login riuscito
+            document.getElementById('loginSuccess').style.display = 'block';
+            document.getElementById('loginSuccess').textContent = 'Login effettuato con successo!';
+
+            document.getElementById('loginError').style.display = 'none';
+
+            // Mostra un alert (popup)
+            alert('Login effettuato con successo!');
+            
+            // Puoi anche fare un redirect o altre azioni qui
+            // window.location.href = '/paginaDopoLogin'; // Reindirizzamento a una pagina dopo il login
+        } else {
+            // Login fallito
+            document.getElementById('loginError').style.display = 'block';
+            document.getElementById('loginError').textContent = data.message || 'Errore durante il login.';
+
+            document.getElementById('loginSuccess').style.display = 'none';
+        }
     });
-
-    const data = await response.json();
-
-    if (response.ok) {
-        // Login riuscito
-        document.getElementById('loginSuccess').style.display = 'block';
-        document.getElementById('loginSuccess').textContent = 'Login effettuato con successo!';
-
-        document.getElementById('loginError').style.display = 'none';
-
-        // Mostra un alert (popup)
-        alert('Login effettuato con successo!');
-        
-        // Puoi anche fare un redirect o altre azioni qui
-        // window.location.href = '/paginaDopoLogin'; // Reindirizzamento a una pagina dopo il login
-    } else {
-        // Login fallito
-        document.getElementById('loginError').style.display = 'block';
-        document.getElementById('loginError').textContent = data.message || 'Errore durante il login.';
-
-        document.getElementById('loginSuccess').style.display = 'none';
-    }
 });
 
 
