@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Impedisce il comportamento predefinito di ricaricare la pagina
 
             console.log('Form submitted');
 
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('loginPassword').value;
 
             try {
-                // Assicuriamoci di usare l'URL corretto per il server
                 const response = await fetch('http://65.108.146.104:3001/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -45,9 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (result.message === 'Login riuscito') {
-                    alert('Login effettuato con successo!'); // Mostra un popup
+                    alert('Login effettuato con successo!');
                 } else {
-                    alert(result.message || 'Errore durante il login'); // Mostra l'errore come popup
+                    alert(result.message || 'Errore durante il login');
                 }
             } catch (error) {
                 console.error('Errore:', error);
