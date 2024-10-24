@@ -9,7 +9,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     // Debug: verifica i valori raccolti dal form
     console.log("Dati del form di registrazione:", { name, email, password, preferenze });
 
-    fetch('http://localhost:3001/registrazione', {
+    fetch('http://65.108.146.104:3001/registrazione', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loginError.style.display = 'none'; 
         loginError.innerText = '';
 
-        fetch('http://localhost:3001/login', {
+        fetch('http://65.108.146.104:3001/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: password })
