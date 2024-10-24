@@ -24,43 +24,54 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 
 // Funzione per gestire il login
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-        e.preventDefault(); // Evita il ricaricamento della pagina
+    // Riferimento al form di login
+    const loginForm = document.getElementById('loginForm');
 
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    // Controlla se il form esiste nel DOM
+    if (loginForm) {
+        console.log('Login form trovato. Aggiungo event listener.');
 
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
+        // Aggiungo event listener per l'invio del form
+        loginForm.addEventListener('submit', async function (e) {
+            e.preventDefault();  // Prevenire il comportamento di default del form
+
+            // Prendi i valori email e password dai campi di input
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                // Effettua la richiesta di login
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })  // Invia i dati al server
+                });
+
+                // Trasforma la risposta in JSON
+                const data = await response.json();
+
+                // Se il login è riuscito
+                if (response.ok) {
+                    alert('Login effettuato con successo!');
+                    console.log('Login riuscito:', data);
+                } else {
+                    // Mostra un messaggio di errore in caso di credenziali errate
+                    const loginError = document.getElementById('loginError');
+                    loginError.textContent = data.message || 'Credenziali non valide.';
+                    loginError.style.display = 'block';  // Mostra l'errore
+                    console.log('Errore di login:', data);
+                }
+            } catch (error) {
+                // Gestione degli errori della fetch (ad es. problemi di connessione)
+                console.error('Errore di rete:', error);
+                alert('Si è verificato un errore. Riprova più tardi.');
+            }
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Login riuscito
-            document.getElementById('loginSuccess').style.display = 'block';
-            document.getElementById('loginSuccess').textContent = 'Login effettuato con successo!';
-
-            document.getElementById('loginError').style.display = 'none';
-
-            // Mostra un alert (popup)
-            alert('Login effettuato con successo!');
-            
-            // Puoi anche fare un redirect o altre azioni qui
-            // window.location.href = '/paginaDopoLogin'; // Reindirizzamento a una pagina dopo il login
-        } else {
-            // Login fallito
-            document.getElementById('loginError').style.display = 'block';
-            document.getElementById('loginError').textContent = data.message || 'Errore durante il login.';
-
-            document.getElementById('loginSuccess').style.display = 'none';
-        }
-    });
+    } else {
+        console.log('Login form non trovato nel DOM.');
+    }
 });
+
 
 
 
