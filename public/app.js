@@ -23,38 +23,51 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 // Funzione per gestire il login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Previene l'invio del form
-    
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const loginError = document.getElementById('loginError'); // Elemento per gli errori
+document.addEventListener('DOMContentLoaded', function() {
+    // Funzione per gestire il login
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Previene l'invio del form
 
-    fetch('http://localhost:3001/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, password: password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.user) {
-            // Login riuscito: resetta l'errore e mostra messaggio di successo
-            loginError.style.display = 'none';
-            loginError.innerText = '';
-            alert('Login riuscito: ' + data.user.nome);
-            // Puoi anche fare un redirect qui
-        } else {
-            // Mostra l'errore se le credenziali non sono corrette
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const loginError = document.getElementById('loginError'); // Elemento per gli errori
+
+        // Pulisci il messaggio di errore precedente
+        loginError.style.display = 'none'; 
+        loginError.innerText = '';
+
+        fetch('http://localhost:3001/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        })
+        .then(response => {
+            // Log della risposta per il debug
+            console.log('Response:', response);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data:', data); // Log dei dati ricevuti
+
+            if (data.user) {
+                // Login riuscito
+                alert('Login riuscito: ' + data.user.nome);
+                // Qui puoi anche fare un redirect se necessario
+            } else {
+                // Mostra l'errore se le credenziali non sono corrette
+                loginError.style.display = 'block';
+                loginError.innerText = 'Errore: ' + data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Errore:', error);
             loginError.style.display = 'block';
-            loginError.innerText = 'Errore: ' + data.message;
-        }
-    })
-    .catch(error => {
-        console.error('Errore:', error);
-        loginError.style.display = 'block';
-        loginError.innerText = 'Errore: si è verificato un problema con il server.';
+            loginError.innerText = 'Errore: si è verificato un problema con il server.';
+        });
     });
 });
+
+
 
 // Funzione per gestire la ricerca delle università
 document.getElementById('searchForm').addEventListener('submit', function(event) {

@@ -52,13 +52,20 @@ app.post('/registrazione', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    db.get(`SELECT * FROM utenti WHERE email = ? AND password = ?`, [email, password], (err, row) => {
+    db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
+        
         if (!row) {
             return res.status(401).json({ message: 'Credenziali non valide' });
         }
+
+        // Verifica la password
+        if (row.password !== password) {
+            return res.status(401).json({ message: 'Password errata' });
+        }
+
         res.json({ message: 'Login riuscito', user: row });
     });
 });
