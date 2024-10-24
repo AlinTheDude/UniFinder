@@ -23,40 +23,41 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 // Funzione per gestire il login
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Impedisce il comportamento predefinito di ricaricare la pagina
+// Funzione per gestire il login
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Impedisce il comportamento predefinito di ricaricare la pagina
+    
+    // Raccogliere i dati del form
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-            console.log('Form submitted');
+    // Debug: verifica i valori raccolti dal form
+    console.log("Dati del form di login:", { email, password });
 
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+    fetch('http://65.108.146.104:3001/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Debug: controlla la risposta del server
+        console.log("Risposta dal server:", data);
 
-            try {
-                const response = await fetch('http://65.108.146.104:3001/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const result = await response.json();
-
-                if (result.message === 'Login riuscito') {
-                    alert('Login effettuato con successo!');
-                } else {
-                    alert(result.message || 'Errore durante il login');
-                }
-            } catch (error) {
-                console.error('Errore:', error);
-                alert('Errore di rete. Riprova più tardi.');
-            }
-        });
-    } else {
-        console.error('Elemento #loginForm non trovato');
-    }
+        if (data.message === 'Login riuscito') {
+            alert('Login effettuato con successo!');
+            // Qui puoi reindirizzare a un'altra pagina, se necessario
+            // window.location.href = 'homepage.html'; 
+        } else {
+            alert(data.message || 'Errore durante il login');
+        }
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        alert('Errore di rete. Riprova più tardi.');
+    });
 });
+
 
 
 
