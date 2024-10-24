@@ -3,9 +3,13 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3001; // Cambia la porta qui
 
-let db = new sqlite3.Database('./database.db', (err) => {
+// Percorso assoluto del database
+const path = require('path');
+const dbPath = path.join(__dirname, 'database.db');
+
+let db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        return console.error(err.message);
+        return console.error('Errore nella connessione al database:', err.message);
     }
     console.log('Connesso al database SQLite.');
 });
@@ -18,10 +22,14 @@ app.use(express.static('public')); // Serve i file statici
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT,
-    email TEXT,
+    email TEXT UNIQUE,
     password TEXT,
     preferenze TEXT
-)`);
+)`, (err) => {
+    if (err) {
+        console.error('Errore nella creazione della tabella utenti:', err.message);
+    }
+});
 
 db.run(`CREATE TABLE IF NOT EXISTS universita (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,16 +40,22 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
     borse_di_studio TEXT,
     offerta_formativa TEXT,
     reputazione INTEGER
-)`);
+)`, (err) => {
+    if (err) {
+        console.error('Errore nella creazione della tabella università:', err.message);
+    }
+});
 
 // Endpoint di registrazione
 app.post('/registrazione', (req, res) => {
     const { nome, email, password, preferenze } = req.body;
+    console.log('Dati ricevuti per registrazione:', req.body); // Logging dei dati
 
     db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
         [nome, email, password, preferenze],
         function (err) {
             if (err) {
+                console.error('Errore durante la registrazione:', err.message); // Mostra l'errore
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Registrazione completata', id: this.lastID });
@@ -51,9 +65,11 @@ app.post('/registrazione', (req, res) => {
 // Endpoint di login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
+    console.log('Dati ricevuti per login:', req.body); // Logging dei dati
 
     db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
+            console.error('Errore durante il login:', err.message); // Mostra l'errore
             return res.status(500).json({ error: err.message });
         }
         
@@ -73,6 +89,7 @@ app.post('/login', (req, res) => {
 // Endpoint per la ricerca università
 app.post('/ricerca-universita', (req, res) => {
     const { paese, indirizzo, tasseMassime, borse_di_studio, offerta_formativa, reputazioneMinima } = req.body;
+    console.log('Dati ricevuti per ricerca università:', req.body); // Logging dei dati
 
     let query = `SELECT * FROM universita WHERE 1=1`;
     let params = [];
@@ -104,6 +121,7 @@ app.post('/ricerca-universita', (req, res) => {
 
     db.all(query, params, (err, rows) => {
         if (err) {
+            console.error('Errore durante la ricerca università:', err.message); // Mostra l'errore
             return res.status(500).json({ error: err.message });
         }
         res.json({ universita: rows });
@@ -114,7 +132,7 @@ app.post('/ricerca-universita', (req, res) => {
 process.on('SIGINT', () => {
     db.close((err) => {
         if (err) {
-            return console.error(err.message);
+            return console.error('Errore nella chiusura del database:', err.message);
         }
         console.log('Chiusura del database.');
         process.exit(0);
