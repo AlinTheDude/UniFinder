@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             console.log('Form submitted');
 
             const email = document.getElementById('loginEmail').value;
@@ -45,42 +45,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (result.message === 'Login riuscito') {
-                    showFeedback('Login effettuato con successo!', 'success');
-                    
-                    // Rimuovi il reindirizzamento temporaneo per testare il feedback
-                    // setTimeout(() => {
-                    //     window.location.href = 'index.html';
-                    // }, 2000);
+                    alert('Login effettuato con successo!'); // Mostra un popup
                 } else {
-                    showFeedback(result.message || 'Errore durante il login', 'error');
+                    alert(result.message || 'Errore durante il login'); // Mostra l'errore come popup
                 }
             } catch (error) {
                 console.error('Errore:', error);
-                showFeedback('Errore di rete. Riprova più tardi.', 'error');
+                alert('Errore di rete. Riprova più tardi.');
             }
         });
     } else {
         console.error('Elemento #loginForm non trovato');
     }
 });
-
-function showFeedback(message, type) {
-    const feedbackDiv = document.getElementById('loginFeedback');
-    
-    feedbackDiv.textContent = message;
-    feedbackDiv.style.display = 'block';
-    
-    if (type === 'success') {
-        feedbackDiv.style.color = 'green';
-    } else {
-        feedbackDiv.style.color = 'red';
-    }
-
-    setTimeout(() => {
-        feedbackDiv.style.display = 'none';
-    }, 5000); // Nasconde il feedback dopo 5 secondi
-}
-
 
 
 
