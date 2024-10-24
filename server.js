@@ -86,6 +86,9 @@ app.post('/login', (req, res) => {
         console.log('Utente trovato:', row); // Log dell'utente trovato
 
         // Controlla la password
+        console.log('Password memorizzata:', row.password); // Log della password memorizzata
+        console.log('Password inviata:', password); // Log della password inviata
+
         if (row.password !== password) {
             console.log('Password errata per l\'utente:', email); // Log
             return res.status(401).json({ message: 'Password errata' });
