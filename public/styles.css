@@ -47,8 +47,9 @@ header nav ul li a:hover {
 
 /* Sezione */
 section {
-    margin: 20px;
+    margin: 20px auto; /* Centrato orizzontalmente */
     padding: 20px;
+    max-width: 600px; /* Limita la larghezza per dispositivi più grandi */
     background: var(--bianco); /* Bianco semi-trasparente */
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -118,4 +119,12 @@ button {
 
 button:hover {
     background-color: #27ae60; /* Verde scuro al passaggio del mouse */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    header nav ul li {
+        display: block; /* Imposta i link su una colonna per schermi piccoli */
+        margin: 10px 0; /* Margine verticale per spazio */
+    }
 }
