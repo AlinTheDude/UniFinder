@@ -67,18 +67,27 @@ app.post('/registrazione', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    
+
+    console.log('Richiesta di login ricevuta:', req.body); // Log dei dati di login
+
+    // Cerca l'utente nel database
     db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
             console.error('Errore durante il login:', err.message);
             return res.status(500).json({ error: err.message });
         }
-        
+
+        // Se l'utente non esiste
         if (!row) {
+            console.log('Nessun utente trovato con questa email'); // Log
             return res.status(401).json({ message: 'Credenziali non valide' });
         }
 
+        console.log('Utente trovato:', row); // Log dell'utente trovato
+
+        // Controlla la password
         if (row.password !== password) {
+            console.log('Password errata per l\'utente:', email); // Log
             return res.status(401).json({ message: 'Password errata' });
         }
 
