@@ -95,8 +95,8 @@ Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca 
 
 --------------------------------------------------------------------------------------------------------
 
-Use Case Diagram:
-
+**Use Case Diagram:**
+--------------------------------------------------------------------------------------------------------
 ![image](https://github.com/user-attachments/assets/3776a3af-d922-4c7a-b633-4f68551eeeec)
 
 
