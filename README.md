@@ -93,7 +93,6 @@ Ranking e valutazioni: Il sistema deve integrarsi con i ranking accademici inter
 Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca e università salvate, devono essere protetti e non devono essere condivisi con terze parti senza il consenso dell’utente.
 
 
---------------------------------------------------------------------------------------------------------
 
 **Use Case Diagram:**
 --------------------------------------------------------------------------------------------------------
