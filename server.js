@@ -21,9 +21,9 @@ app.use(express.static('public'));
 // Creazione della tabella 'utenti' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT,
-    email TEXT UNIQUE,
-    password TEXT,
+    nome TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
     preferenze TEXT
 )`, (err) => {
     if (err) {
@@ -49,27 +49,29 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
 
 // Endpoint per la registrazione
 app.post('/registrazione', (req, res) => {
-    console.log('Richiesta di registrazione ricevuta:', req.body);
+    console.log('Richiesta di registrazione ricevuta:', req.body);  // Log iniziale
 
-    // Controllo campi obbligatori
+    // Verifica che i campi obbligatori siano presenti
     if (!req.body.nome || !req.body.email || !req.body.password) {
         console.error('Errore: campi obbligatori mancanti');
         return res.status(400).json({ error: 'Compila tutti i campi obbligatori' });
     }
 
-    // Inserimento dati nel database
+    // Inserisci i dati nel database
     db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
         [req.body.nome, req.body.email, req.body.password, req.body.preferenze],
         function (err) {
             if (err) {
+                // Verifica se l'errore è dovuto a un'email duplicata
                 if (err.message.includes("UNIQUE constraint failed: utenti.email")) {
                     console.error('Errore: email già registrata');
                     return res.status(400).json({ error: "Email già registrata" });
                 }
-                console.error('Errore durante la registrazione:', err.message);
+                // Log generico per altri errori del database
+                console.error('Errore durante la registrazione nel database:', err.message);
                 return res.status(500).json({ error: 'Errore durante la registrazione. Riprovare.' });
             }
-            console.log('Registrazione completata con successo');
+            console.log('Registrazione completata con successo, ID utente:', this.lastID);
             res.json({ message: 'Registrazione completata', id: this.lastID });
         });
 });
