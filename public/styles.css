@@ -139,6 +139,55 @@ button:hover {
     background-color: #27ae60; /* Verde scuro al passaggio del mouse */
 }
 
+/* Dashboard Styles */
+.dashboard {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.dashboard p {
+    font-size: 16px;
+    color: #555;
+}
+
+.notifications, .user-tips {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e3f2fd;
+    border-radius: 5px;
+}
+
+.notifications h2, .user-tips h2 {
+    font-size: 20px;
+    color: #007bff;
+}
+
+.notifications ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #333;
+}
+
+.notifications li {
+    margin-bottom: 8px;
+}
+
+.user-tips p {
+    font-size: 15px;
+    color: #555;
+}
+
+
 /* Responsiveness */
 @media (max-width: 768px) {
     header nav ul li {
