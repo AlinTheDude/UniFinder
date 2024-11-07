@@ -1,18 +1,12 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const path = require('path');
-const cors = require('cors'); // Per permettere richieste da client esterni
-require('dotenv').config(); // Per caricare le variabili d'ambiente
-
 const app = express();
-const port = 3001;
+const port = 3001; // Cambia la porta qui
 
 // Percorso assoluto del database
+const path = require('path');
 const dbPath = path.join(__dirname, 'database.db');
 
-// Connessione al database SQLite
 let db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         return console.error('Errore nella connessione al database:', err.message);
@@ -20,12 +14,11 @@ let db = new sqlite3.Database(dbPath, (err) => {
     console.log('Connesso al database SQLite.');
 });
 
-// Middleware
+// Middleware per gestire il parsing JSON
 app.use(express.json());
-app.use(cors()); // Abilita il CORS
 app.use(express.static('public')); // Serve i file statici
 
-// Creazione delle tabelle
+// Creazione della tabella 'utenti' e 'università'
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT,
@@ -53,38 +46,16 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
     }
 });
 
-// Funzione per generare token JWT
-function generateToken(userId) {
-    return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
-}
-
-// Middleware per autenticare il token
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) return res.status(401).json({ message: 'Accesso negato. Token mancante' });
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Token non valido' });
-        req.user = user;
-        next();
-    });
-}
-
 // Endpoint di registrazione
 app.post('/registrazione', (req, res) => {
     const { nome, email, password, preferenze } = req.body;
-    console.log('Dati ricevuti per registrazione:', req.body);
-
-    // Hashing della password
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    console.log('Dati ricevuti per registrazione:', req.body); // Logging dei dati
 
     db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
-        [nome, email, hashedPassword, preferenze],
+        [nome, email, password, preferenze],
         function (err) {
             if (err) {
-                console.error('Errore durante la registrazione:', err.message);
+                console.error('Errore durante la registrazione:', err.message); // Mostra l'errore
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Registrazione completata', id: this.lastID });
@@ -92,37 +63,48 @@ app.post('/registrazione', (req, res) => {
 });
 
 // Endpoint di login
+// ... (il resto del codice rimane invariato)
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    console.log('Richiesta di login ricevuta:', req.body);
 
+    console.log('Richiesta di login ricevuta:', req.body); // Log dei dati di login
+
+    // Cerca l'utente nel database
     db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
         if (err) {
             console.error('Errore durante il login:', err.message);
             return res.status(500).json({ error: err.message });
         }
 
+        // Se l'utente non esiste
         if (!row) {
-            console.log('Nessun utente trovato con questa email');
+            console.log('Nessun utente trovato con questa email'); // Log
             return res.status(401).json({ message: 'Credenziali non valide' });
         }
 
-        const isPasswordValid = bcrypt.compareSync(password, row.password);
-        if (!isPasswordValid) {
-            console.log('Password errata per l\'utente:', email);
+        console.log('Utente trovato:', row); // Log dell'utente trovato
+
+        // Controlla la password
+        console.log('Password memorizzata:', row.password); // Log della password memorizzata
+        console.log('Password inviata:', password); // Log della password inviata
+
+        if (row.password !== password) {
+            console.log('Password errata per l\'utente:', email); // Log
             return res.status(401).json({ message: 'Password errata' });
         }
 
-        // Genera e restituisci il token
-        const token = generateToken(row.id);
-        res.json({ message: 'Login riuscito', token });
+        res.json({ message: 'Login riuscito', user: row });
     });
 });
 
-// Endpoint per la ricerca università (protetto da autenticazione)
-app.post('/ricerca-universita', authenticateToken, (req, res) => {
+// ... (il resto del codice rimane invariato)
+
+
+// Endpoint per la ricerca università
+app.post('/ricerca-universita', (req, res) => {
     const { paese, indirizzo, tasseMassime, borse_di_studio, offerta_formativa, reputazioneMinima } = req.body;
-    console.log('Dati ricevuti per ricerca università:', req.body);
+    console.log('Dati ricevuti per ricerca università:', req.body); // Logging dei dati
 
     let query = `SELECT * FROM universita WHERE 1=1`;
     let params = [];
@@ -154,23 +136,20 @@ app.post('/ricerca-universita', authenticateToken, (req, res) => {
 
     db.all(query, params, (err, rows) => {
         if (err) {
-            console.error('Errore durante la ricerca università:', err.message);
+            console.error('Errore durante la ricerca università:', err.message); // Mostra l'errore
             return res.status(500).json({ error: err.message });
         }
         res.json({ universita: rows });
     });
 });
 
-// Endpoint di autenticazione per verificare il token
-app.get('/api/auth', authenticateToken, (req, res) => {
-    res.json({ authenticated: true });
-});
 
-// Chiude la connessione al database alla chiusura del server
+
+// Chiude la connessione al database in caso di chiusura del server
 process.on('SIGINT', () => {
     db.close((err) => {
         if (err) {
-            console.error('Errore nella chiusura del database:', err.message);
+            return console.error('Errore nella chiusura del database:', err.message);
         }
         console.log('Chiusura del database.');
         process.exit(0);
@@ -181,3 +160,4 @@ process.on('SIGINT', () => {
 app.listen(port, '65.108.146.104', () => {
     console.log(`Server API in esecuzione su http://65.108.146.104:${port}`);
 });
+
