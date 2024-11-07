@@ -25,36 +25,46 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Funzione per gestire il login
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Impedisce il comportamento predefinito di ricaricare la pagina
-        
-        // Raccogliere i dati del form
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        // Debug: verifica i valori raccolti dal form
-        console.log("Dati del form di login:", { email, password });
-
-        fetch('http://65.108.146.104:3001/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Debug: controlla la risposta del server
-            console.log("Risposta dal server:", data);
-
-            if (data.success) {
-                alert("Login effettuato con successo!");
-                window.location.href = "dashboard.html";
-            } else {
-                alert(data.message || 'Errore durante il login');
-            }
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Errore di rete. Riprova più tardi.');
+    document.addEventListener("DOMContentLoaded", function() {
+        // Funzione per gestire il login
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Raccogliere i dati del form
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+    
+            // Debug: verifica i dati del form di login
+            console.log("Dati del form di login:", { email, password });
+    
+            fetch('http://65.108.146.104:3001/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
+            })
+            .then(response => {
+                // Verifica se la risposta è andata a buon fine
+                if (!response.ok) {
+                    throw new Error('Errore nella risposta del server');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Debug: stampa la risposta del server
+                console.log("Risposta dal server:", data);
+    
+                // Controlla se il login ha avuto successo
+                if (data.success) {
+                    alert("Login effettuato con successo!");
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert(data.message || 'Errore durante il login');
+                }
+            })
+            .catch(error => {
+                console.error('Errore:', error);
+                alert('Errore di rete o del server. Controlla la console per maggiori dettagli.');
+            });
         });
     });
 
