@@ -1,138 +1,158 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-
 const app = express();
-const port = 3001;
+const port = 3001; // Cambia la porta qui
 
-app.use(express.json());
-app.use(cors());
+// Percorso assoluto del database
+const path = require('path');
+const dbPath = path.join(__dirname, 'database.db');
 
-// Connetti al database SQLite
-let db = new sqlite3.Database('./unifinder.db', (err) => {
+let db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error(err.message);
+        return console.error('Errore nella connessione al database:', err.message);
     }
     console.log('Connesso al database SQLite.');
 });
 
-// Funzione per creare le tabelle se non esistono
-function createTables() {
-    db.run(`
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-        )
-    `, (err) => {
-        if (err) {
-            console.error(err.message);
-        }
-    });
+// Middleware per gestire il parsing JSON
+app.use(express.json());
+app.use(express.static('public')); // Serve i file statici
 
-    db.run(`
-        CREATE TABLE IF NOT EXISTS universities (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            country TEXT NOT NULL,
-            tuition_fees REAL,
-            scholarships BOOLEAN,
-            academic_offerings TEXT,
-            reputation INTEGER
-        )
-    `, (err) => {
-        if (err) {
-            console.error(err.message);
-        }
-    });
-}
-
-createTables();
-
-// Endpoint per la registrazione
-app.post('/registrazione', (req, res) => {
-    const { nome, email, password, preferenze } = req.body;
-
-    // Hash della password
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    db.run(`INSERT INTO users (name, email, password) VALUES (?, ?, ?)`,
-        [nome, email, hashedPassword],
-        function(err) {
-            if (err) {
-                res.status(400).json({ message: 'Errore durante la registrazione' });
-            } else {
-                res.json({ message: 'Registrazione effettuata con successo' });
-            }
-        }
-    );
+// Creazione della tabella 'utenti' e 'università'
+db.run(`CREATE TABLE IF NOT EXISTS utenti (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT,
+    email TEXT UNIQUE,
+    password TEXT,
+    preferenze TEXT
+)`, (err) => {
+    if (err) {
+        console.error('Errore nella creazione della tabella utenti:', err.message);
+    }
 });
 
-// Endpoint per il login
+db.run(`CREATE TABLE IF NOT EXISTS universita (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT,
+    paese TEXT,
+    indirizzo TEXT,
+    tasse INTEGER,
+    borse_di_studio TEXT,
+    offerta_formativa TEXT,
+    reputazione INTEGER
+)`, (err) => {
+    if (err) {
+        console.error('Errore nella creazione della tabella università:', err.message);
+    }
+});
+
+// Endpoint di registrazione
+app.post('/registrazione', (req, res) => {
+    const { nome, email, password, preferenze } = req.body;
+    console.log('Dati ricevuti per registrazione:', req.body); // Logging dei dati
+
+    db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
+        [nome, email, password, preferenze],
+        function (err) {
+            if (err) {
+                console.error('Errore durante la registrazione:', err.message); // Mostra l'errore
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: 'Registrazione completata', id: this.lastID });
+        });
+});
+
+// Endpoint di login
+// ... (il resto del codice rimane invariato)
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    db.get('SELECT * FROM users WHERE email = ?', [email], (err, row) => {
-        if (err || !row) {
-            res.status(401).json({ message: 'Credenziali non valide' });
-        } else {
-            const isValidPassword = bcrypt.compareSync(password, row.password);
+    console.log('Richiesta di login ricevuta:', req.body); // Log dei dati di login
 
-            if (!isValidPassword) {
-                res.status(401).json({ message: 'Credenziali non valide' });
-            } else {
-                const token = jwt.sign({ userId: row.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-                res.json({ token: token });
-            }
+    // Cerca l'utente nel database
+    db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
+        if (err) {
+            console.error('Errore durante il login:', err.message);
+            return res.status(500).json({ error: err.message });
         }
+
+        // Se l'utente non esiste
+        if (!row) {
+            console.log('Nessun utente trovato con questa email'); // Log
+            return res.status(401).json({ message: 'Credenziali non valide' });
+        }
+
+        console.log('Utente trovato:', row); // Log dell'utente trovato
+
+        // Controlla la password
+        console.log('Password memorizzata:', row.password); // Log della password memorizzata
+        console.log('Password inviata:', password); // Log della password inviata
+
+        if (row.password !== password) {
+            console.log('Password errata per l\'utente:', email); // Log
+            return res.status(401).json({ message: 'Password errata' });
+        }
+
+        res.json({ message: 'Login riuscito', user: row });
     });
 });
 
-// Endpoint per il logout
-app.post('/logout', (req, res) => {
-    res.json({ message: 'Logout effettuato con successo' });
-});
+// ... (il resto del codice rimane invariato)
+
 
 // Endpoint per la ricerca università
 app.post('/ricerca-universita', (req, res) => {
-    const { paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima } = req.body;
+    const { paese, indirizzo, tasseMassime, borse_di_studio, offerta_formativa, reputazioneMinima } = req.body;
+    console.log('Dati ricevuti per ricerca università:', req.body); // Logging dei dati
 
-    let query = `
-        SELECT * FROM universities 
-        WHERE country LIKE ?
-          AND tuition_fees <= ?
-          AND scholarships = ?
-          AND academic_offerings LIKE ?
-          AND reputation >= ?
-    `;
+    let query = `SELECT * FROM universita WHERE 1=1`;
+    let params = [];
 
-    db.all(query, [`%${paese}%`, tasseMassime, borseDiStudio === 'Sì', `%${offertaFormativa}%`, reputazioneMinima], (err, rows) => {
+    if (paese) {
+        query += ` AND paese = ?`;
+        params.push(paese);
+    }
+    if (indirizzo) {
+        query += ` AND indirizzo = ?`;
+        params.push(indirizzo);
+    }
+    if (tasseMassime) {
+        query += ` AND tasse <= ?`;
+        params.push(tasseMassime);
+    }
+    if (borse_di_studio) {
+        query += ` AND borse_di_studio = ?`;
+        params.push(borse_di_studio);
+    }
+    if (offerta_formativa) {
+        query += ` AND offerta_formativa = ?`;
+        params.push(offerta_formativa);
+    }
+    if (reputazioneMinima) {
+        query += ` AND reputazione >= ?`;
+        params.push(reputazioneMinima);
+    }
+
+    db.all(query, params, (err, rows) => {
         if (err) {
-            res.status(500).json({ message: 'Errore durante la ricerca' });
-        } else {
-            res.json(rows);
+            console.error('Errore durante la ricerca università:', err.message); // Mostra l'errore
+            return res.status(500).json({ error: err.message });
         }
+        res.json({ universita: rows });
     });
 });
 
-// Endpoint per verificare l'autenticazione
-app.get('/api/auth', (req, res) => {
-    const token = req.headers.authorization;
 
-    if (!token) {
-        return res.status(401).json({ authenticated: false });
-    }
 
-    jwt.verify(token.split(' ')[1], process.env.JWT_SECRET, (err, decoded) => {
+// Chiude la connessione al database in caso di chiusura del server
+process.on('SIGINT', () => {
+    db.close((err) => {
         if (err) {
-            res.status(401).json({ authenticated: false });
-        } else {
-            res.json({ authenticated: true });
+            return console.error('Errore nella chiusura del database:', err.message);
         }
+        console.log('Chiusura del database.');
+        process.exit(0);
     });
 });
 

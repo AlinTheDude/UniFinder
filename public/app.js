@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-            this.reset();
+            if (data.success) this.reset();
         })
         .catch(error => console.error('Errore:', error));
     });
@@ -33,12 +33,11 @@ document.addEventListener("DOMContentLoaded", function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: password })
         })
-        .then(response => {
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.token) {
                 alert("Login effettuato con successo!");
+                localStorage.setItem('token', data.token);
                 window.location.href = "dashboard.html";
             } else {
                 alert(data.message || 'Errore durante il login');
@@ -53,70 +52,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // Funzione per gestire il logout
     document.getElementById("logoutButton").addEventListener("click", function(event) {
         event.preventDefault();
-        fetch('http://65.108.146.104:3001/logout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = "login.html";
-            } else {
-                alert(data.message || 'Errore durante il logout');
-            }
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Errore di rete o del server. Controlla la console per maggiori dettagli.');
-        });
-    });
-
-    // Funzione per gestire la ricerca delle università
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const paese = document.getElementById('paese').value;
-        const tasseMassime = document.getElementById('tasseMassime').value;
-        const borseDiStudio = document.getElementById('borseDiStudio').value;
-        const offertaFormativa = document.getElementById('offertaFormativa').value;
-        const reputazioneMinima = document.getElementById('reputazioneMinima').value;
-
-        fetch('http://65.108.146.104:3001/ricerca-universita', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ paese: paese, tasseMassime: tasseMassime, borse_di_studio: borseDiStudio, offerta_formativa: offertaFormativa, reputazioneMinima: reputazioneMinima })
-        })
-        .then(response => response.json())
-        .then(data => {
-            let resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = ''; // Pulisci il contenuto precedente
-            if (data.universita.length > 0) {
-                data.universita.forEach(universita => {
-                    let p = document.createElement('p');
-                    p.textContent = `Nome: ${universita.nome}, Paese: ${universita.paese}, Tasse: ${universita.tasse}, Reputazione: ${universita.reputazione}`;
-                    resultDiv.appendChild(p);
-                });
-            } else {
-                resultDiv.innerHTML = '<p>Nessuna università trovata.</p>';
-            }
-        })
-        .catch(error => console.error('Errore:', error));
+        localStorage.removeItem('token');
+        window.location.href = "login.html";
     });
 
     // Funzione per verificare l'autenticazione
     function checkAuth() {
-        fetch('http://65.108.146.104:3001/api/auth', { method: 'GET' })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                if (!data.authenticated) {
-                    window.location.href = 'login.html';
-                }
-            })
-            .catch(error => {
-                console.error('Errore durante la verifica dell\'autenticazione:', error);
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        fetch('http://65.108.146.104:3001/api/auth', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.authenticated) {
                 window.location.href = 'login.html';
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Errore durante la verifica dell\'autenticazione:', error);
+            window.location.href = 'login.html';
+        });
     }
 
     // Chiamata iniziale alla funzione di controllo
