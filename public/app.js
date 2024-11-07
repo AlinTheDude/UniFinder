@@ -63,6 +63,31 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         // Esegui eventuali operazioni di logout, se necessario
         window.location.href = "login.html";
+    }); 
+
+    document.getElementById("loginButton").addEventListener("click", function(event) {
+        event.preventDefault();
+    
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+    
+        fetch("http://65.108.146.104:3001/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Login avvenuto con successo!");
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Errore: " + data.message);
+            }
+        })
+        .catch(error => console.error("Errore:", error));
     });
 
     // Funzione per gestire la ricerca delle università
