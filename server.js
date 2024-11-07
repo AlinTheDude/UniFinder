@@ -143,6 +143,8 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
+
+
 // Chiude la connessione al database in caso di chiusura del server
 process.on('SIGINT', () => {
     db.close((err) => {

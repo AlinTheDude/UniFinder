@@ -15,34 +15,52 @@ body {
 }
 
 /* Header */
-header nav {
-    background-color: rgba(52, 152, 219, 0.8); /* Aggiunta trasparenza per uno sfondo più elegante */
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Ombra per profondità */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-header nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-header nav ul li {
-    display: inline;
-    margin: 0 20px; /* Spazio aumentato per i link */
-}
-
-header nav ul li a {
+.navbar-logo a {
+    font-size: 24px;
     color: white;
+    font-weight: bold;
     text-decoration: none;
-    font-size: 18px; /* Aumentato per una migliore leggibilità */
-    transition: color 0.3s, transform 0.3s; /* Aggiunta transizione */
 }
 
-header nav ul li a:hover {
-    color: #ecf0f1; /* Colore più chiaro al passaggio del mouse */
-    transform: scale(1.1); /* Effetto di ingrandimento al passaggio del mouse */
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.navbar-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-profile .navbar-button {
+    text-decoration: none;
+    color: white;
+    background-color: #4facfe;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.navbar-profile .navbar-button:hover {
+    background-color: #00c6ff;
 }
 
 /* Sezione */
@@ -128,3 +146,5 @@ button:hover {
         margin: 10px 0; /* Margine verticale per spazio */
     }
 }
+
+
