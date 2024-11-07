@@ -9,55 +9,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gestione della registrazione
-    waitForElement('#registrationForm', () => {
-        const registrationForm = document.getElementById('registrationForm');
-        
-        if (registrationForm) {
-            registrationForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                const name = document.getElementById('regName').value.trim();
-                const email = document.getElementById('regEmail').value.trim();
-                const password = document.getElementById('regPassword').value.trim();
-                const preferenze = document.getElementById('regPreferenze').value.trim();
+// Gestione della registrazione
+waitForElement('#registrationForm', () => {
+    const registrationForm = document.getElementById('registrationForm');
     
-                console.log("Dati del form di registrazione:", {
-                    nome: name,
-                    email: email,
-                    password: password,
-                    preferenze: preferenze
-                });
-    
-                fetch('http://65.108.146.104:3001/registrazione', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
-                })
-               .then(response => {
-                   if (!response.ok) {
-                       throw new Error(`HTTP error! status: ${response.status}`);
-                   }
-                   return response.json();
-               })
-               .then(data => {
-                   console.log("Risposta dal server:", data);
-    
-                   if (data.message === 'Registrazione completata') {
-                       alert('Registrazione effettuata con successo!');
-                       registrationForm.reset();
-                   } else {
-                       alert(data.message || 'Errore durante la registrazione');
-                   }
-               })
-               .catch(error => {
-                   console.error('Errore durante la registrazione:', error);
-                   alert('Errore durante la registrazione. Riprova più tardi.');
-               });
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const preferenze = document.getElementById('regPreferenze').value.trim();
+
+            console.log("Dati del form di registrazione:", {
+                nome: name,
+                email: email,
+                password: password,
+                preferenze: preferenze
             });
-        } else {
-            console.warn("Elemento #registrationForm non trovato");
-        }
-    });
+
+            fetch('http://65.108.146.104:3001/registrazione', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
+            })
+           .then(response => {
+               if (!response.ok) {
+                   throw new Error(`HTTP error! status: ${response.status}`);
+               }
+               return response.json();
+           })
+           .then(data => {
+               console.log("Risposta dal server:", data);
+
+               if (data.message === 'Registrazione completata') {
+                   alert('Registrazione effettuata con successo!');
+                   registrationForm.reset();
+               } else {
+                   alert(data.message || 'Errore durante la registrazione');
+               }
+           })
+           .catch(error => {
+               console.error('Errore durante la registrazione:', error);
+               alert('Errore durante la registrazione. Riprova più tardi.');
+           });
+        });
+    } else {
+        console.warn("Elemento #registrationForm non trovato");
+    }
+});
+
     // Gestione del login
     waitForElement('#loginForm', () => {
         const loginForm = document.getElementById('loginForm');

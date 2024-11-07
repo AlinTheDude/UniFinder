@@ -48,16 +48,16 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
 
 // Endpoint di registrazione
 app.post('/registrazione', (req, res) => {
-    const { nome, email, password, preferenze } = req.body;
-    console.log('Dati ricevuti per registrazione:', req.body); // Logging dei dati
-
+    console.log('Richiesta di registrazione ricevuta:', req.body);
+    
     db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
-        [nome, email, password, preferenze],
+        [req.body.nome, req.body.email, req.body.password, req.body.preferenze],
         function (err) {
             if (err) {
-                console.error('Errore durante la registrazione:', err.message); // Mostra l'errore
+                console.error('Errore durante la registrazione:', err.message);
                 return res.status(500).json({ error: err.message });
             }
+            console.log('Registrazione completata con successo');
             res.json({ message: 'Registrazione completata', id: this.lastID });
         });
 });
