@@ -1,4 +1,21 @@
-UniFinder è un'applicazione che permette agli studenti di trovare l'università perfetta in base a preferenze personalizzate come località, costi, borse di studio e altro ancora. Questo documento descrive l'endpoint per l'autenticazione degli utenti, che consente agli studenti di accedere alla piattaforma.
+UniFinder è un'applicazione progettata per semplificare la ricerca dell'università perfetta, basandosi su criteri personalizzati dell'utente. Gli studenti possono inserire le loro preferenze e ottenere una lista di università che meglio corrispondono alle loro esigenze. I criteri di ricerca includono indirizzo dell'università, paese specifico, costi di iscrizione e spese associate, opportunità di borse di studio, offerta formativa e reputazione accademica.
+
+**Target**
+---------------------------------------------------------------------------------------------------------------------------------------
+Studenti
+
+**Problema**
+---------------------------------------------------------------------------------------------------------------------------------------
+Opzioni per i studenti che hanno l'intenzione di frequentare l'universita e hanno criteri specifici per che tipologia di università cercano
+
+**Competitor**
+---------------------------------------------------------------------------------------------------------------------------------------
+Niche, College Board - BigFuture, Cappex, College Scorecard, Unigo, Peterson’s, Fastweb, CollegeData, College XPress, The Princeton Review, Chegg College Search, College Navigator
+
+**Tecnologie**
+---------------------------------------------------------------------------------------------------------------------------------------
+HTML, CSS, JS, GIT, SQL
+
 
 **Requisiti Funzionali (Functional Requirements)**
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -77,69 +94,8 @@ Privacy degli utenti: I dati personali degli utenti, come preferenze di ricerca 
 
 
 
-1. Criteri di Ricerca 
-Esempio di richiesta per cercare università in base a criteri specifici.
-
-{
-  "location": "Milano",
-  "country": "Italia",
-  "tuition_fee_range": {
-    "min": 5000,
-    "max": 15000
-  },
-  "scholarships": true,
-  "programs": ["Ingegneria", "Economia"],
-  "reputation": "alto"
-}
-
-Risposta:
-
-{
-  "status": "success",
-  "message": "Università trovate.",
-  "data": [
-    {
-      "university_id": 1,
-      "name": "Università degli Studi di Milano",
-      "tuition_fee": 12000,
-      "scholarship_opportunities": true,
-      "ranking": 150
-    },
-    {
-      "university_id": 2,
-      "name": "Politecnico di Milano",
-      "tuition_fee": 13000,
-      "scholarship_opportunities": true,
-      "ranking": 50
-    }
-  ]
-}
-
-
-4. Salvataggio Università Preferite
-Esempio di richiesta per salvare un'università nei preferiti dell'utente.
-
-Richiesta:
-
-{
-  "user_id": 78910,
-  "university_id": 1
-}
-
-Risposta:
-
-{
-  "status": "success",
-  "message": "Università salvata tra i preferiti."
-}
-
-
-
-
+**Use Case Diagram:**
 --------------------------------------------------------------------------------------------------------
-
-Use Case Diagram:
-
 ![image](https://github.com/user-attachments/assets/3776a3af-d922-4c7a-b633-4f68551eeeec)
 
 
