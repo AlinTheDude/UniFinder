@@ -34,26 +34,27 @@ waitForElement('#registrationForm', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
             })
-           .then(response => {
-               if (!response.ok) {
-                   throw new Error(`HTTP error! status: ${response.status}`);
-               }
-               return response.json();
-           })
-           .then(data => {
-               console.log("Risposta dal server:", data);
-
-               if (data.message === 'Registrazione completata') {
-                   alert('Registrazione effettuata con successo!');
-                   registrationForm.reset();
-               } else {
-                   alert(data.message || 'Errore durante la registrazione');
-               }
-           })
-           .catch(error => {
-               console.error('Errore durante la registrazione:', error);
-               alert('Errore durante la registrazione. Riprova più tardi.');
-           });
+            .then(response => {
+                console.log('Status della risposta:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Risposta dal server:", data);
+            
+                if (data.message === 'Registrazione completata') {
+                    alert('Registrazione effettuata con successo!');
+                    registrationForm.reset();
+                } else {
+                    alert(data.error || 'Errore durante la registrazione');
+                }
+            })
+            .catch(error => {
+                console.error('Errore durante la registrazione:', error);
+                alert('Errore durante la registrazione. Riprova più tardi.');
+            });
         });
     } else {
         console.warn("Elemento #registrationForm non trovato");
