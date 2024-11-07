@@ -31,41 +31,84 @@ function init() {
     }
 
     // Gestione del login
-    const loginForm = document.getElementById('loginForm');
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        
+        if (loginForm) {
+            // Il tuo codice per gestire il submit del form qui
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
     
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-           
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            console.log("Dati del form di login:", { email, password });
-
-            fetch('http://65.108.146.104:3001/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, password: password })
-            })
-           .then(response => response.json())
-           .then(data => {
-               console.log("Risposta dal server:", data);
-
-               if (data.message === 'Login riuscito') {
-                   alert('Login effettuato con successo!');
-                   // window.location.href = 'homepage.html';
-               } else {
-                   alert(data.message || 'Errore durante il login');
-               }
-           })
-           .catch(error => {
-               console.error('Errore:', error);
-               alert('Errore di rete. Riprova più tardi.');
-           });
-        });
-    } else {
-        console.warn("Elemento #loginForm non trovato");
-    }
+                console.log("Dati del form di login:", { email, password });
+    
+                fetch('http://65.108.146.104:3001/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                })
+               .then(response => response.json())
+               .then(data => {
+                   console.log("Risposta dal server:", data);
+    
+                   if (data.message === 'Login riuscito') {
+                       alert('Login effettuato con successo!');
+                       // window.location.href = 'homepage.html';
+                   } else {
+                       alert(data.message || 'Errore durante il login');
+                   }
+               })
+               .catch(error => {
+                   console.error('Errore:', error);
+                   alert('Errore di rete. Riprova più tardi.');
+               });
+            });
+        } else {
+            console.warn("Elemento #loginForm non trovato");
+            
+            // Aggiungi un event listener per quando il form viene aggiunto dinamicamente
+            document.addEventListener('DOMSubtreeModified', function() {
+                const loginForm = document.getElementById('loginForm');
+                
+                if (loginForm) {
+                    console.log("Form #loginForm trovato dopo l'inizializzazione");
+                    
+                    // Il tuo codice per gestire il submit del form qui
+                    loginForm.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        
+                        const email = document.getElementById('loginEmail').value;
+                        const password = document.getElementById('loginPassword').value;
+    
+                        console.log("Dati del form di login:", { email, password });
+    
+                        fetch('http://65.108.146.104:3001/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email, password: password })
+                        })
+                       .then(response => response.json())
+                       .then(data => {
+                           console.log("Risposta dal server:", data);
+    
+                           if (data.message === 'Login riuscito') {
+                               alert('Login effettuato con successo!');
+                               // window.location.href = 'homepage.html';
+                           } else {
+                               alert(data.message || 'Errore durante il login');
+                           }
+                       })
+                       .catch(error => {
+                           console.error('Errore:', error);
+                           alert('Errore di rete. Riprova più tardi.');
+                       });
+                    });
+                }
+            });
+        }
+    });
 
     // Gestione della ricerca università
     const searchForm = document.getElementById('searchForm');
