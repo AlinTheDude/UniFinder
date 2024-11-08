@@ -1,10 +1,10 @@
 /* Variabili di colore */
 :root {
-    --verde: #2ecc71; /* Verde erba */
-    --azzurro: #3498db; /* Blu cielo */
-    --bianco: rgba(255, 255, 255, 0.9); /* Bianco semi-trasparente */
-    --scuro: #2c3e50; /* Colore scuro */
-    --grigio-chiaro: #ecf0f1; /* Sfondo chiaro */
+    --verde: #2ecc71;
+    --azzurro: #3498db;
+    --bianco: rgba(255, 255, 255, 0.9);
+    --scuro: #2c3e50;
+    --grigio-chiaro: #ecf0f1;
 }
 
 /* Reset e stile generale */
@@ -18,7 +18,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+    background-image: url('Imgs/cambridge.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -48,7 +48,7 @@ h2 {
 
 /* Header e Navbar */
 header {
-    background: rgba(44, 62, 80, 0.9); /* Scuro semi-trasparente */
+    background: rgba(44, 62, 80, 0.9);
     padding: 10px 0;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -207,4 +207,71 @@ button, input, a {
 input:focus, button:hover, a:hover {
     transition: 0.2s ease-in;
     transform: scale(1.02);
+}
+
+/* MEDIA QUERIES */
+
+/* Tablet */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    section {
+        width: 90%;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Smartphone */
+@media (max-width: 480px) {
+    body {
+        background-size: cover;
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        padding: 8px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    section {
+        padding: 15px;
+        margin: 15px auto;
+        width: 100%;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    header nav ul li a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
 }
