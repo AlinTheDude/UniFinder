@@ -1,130 +1,210 @@
-/* Generale */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: rgba(244, 244, 249, 0.8); /* Leggero sfondo bianco */
-}
-
-/* Colori principali */
+/* Variabili di colore */
 :root {
     --verde: #2ecc71; /* Verde erba */
     --azzurro: #3498db; /* Blu cielo */
     --bianco: rgba(255, 255, 255, 0.9); /* Bianco semi-trasparente */
     --scuro: #2c3e50; /* Colore scuro */
+    --grigio-chiaro: #ecf0f1; /* Sfondo chiaro */
 }
 
-/* Header */
-header nav {
-    background-color: rgba(52, 152, 219, 0.8); /* Aggiunta trasparenza per uno sfondo più elegante */
-    padding: 15px;
+/* Reset e stile generale */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--scuro);
+    padding: 0;
+}
+
+/* Stile generale per titoli e testo */
+h1, h2 {
+    color: var(--bianco);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
     text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Ombra per profondità */
+    padding: 10px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Header e Navbar */
+header {
+    background: rgba(44, 62, 80, 0.9); /* Scuro semi-trasparente */
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+header nav h1 {
+    color: var(--azzurro);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 header nav ul {
     list-style: none;
-    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 }
 
 header nav ul li {
     display: inline;
-    margin: 0 20px; /* Spazio aumentato per i link */
 }
 
 header nav ul li a {
-    color: white;
+    color: var(--bianco);
     text-decoration: none;
-    font-size: 18px; /* Aumentato per una migliore leggibilità */
-    transition: color 0.3s, transform 0.3s; /* Aggiunta transizione */
+    padding: 8px 15px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
 }
 
 header nav ul li a:hover {
-    color: #ecf0f1; /* Colore più chiaro al passaggio del mouse */
-    transform: scale(1.1); /* Effetto di ingrandimento al passaggio del mouse */
+    background-color: var(--verde);
+    color: var(--bianco);
 }
 
-/* Sezione */
+/* Stile delle sezioni */
 section {
-    margin: 20px auto; /* Centrato orizzontalmente */
+    background-color: rgba(255, 255, 255, 0.85);
+    margin: 20px auto;
     padding: 20px;
-    max-width: 600px; /* Limita la larghezza per dispositivi più grandi */
-    background: var(--bianco); /* Bianco semi-trasparente */
     border-radius: 8px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Form */
-form {
-    margin-bottom: 30px;
-}
-
-input {
+/* Stile per i moduli di input */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+button {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid var(--grigio-chiaro);
+    font-size: 1rem;
+    background-color: var(--bianco);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--azzurro);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+    outline: none;
 }
 
 button {
-    background-color: var(--azzurro); /* Colore blu cielo */
-    color: white;
-    padding: 10px 15px;
+    background-color: var(--azzurro);
+    color: var(--bianco);
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-weight: bold;
 }
 
 button:hover {
-    background-color: #2980b9; /* Colore blu scuro al passaggio del mouse */
+    background-color: var(--verde);
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Testo sotto i form */
+form p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+form p a {
+    color: var(--azzurro);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+form p a:hover {
+    color: var(--verde);
+    text-decoration: underline;
+}
+
+/* Sezione dei risultati della ricerca */
+#result ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#result li {
+    padding: 10px;
+    background-color: var(--grigio-chiaro);
+    margin: 8px 0;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--scuro);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+#result li:hover {
+    background-color: var(--azzurro);
+    color: var(--bianco);
+    transform: translateY(-2px);
+    transition: 0.3s;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    margin-top: 30px;
-    padding: 10px;
-    background-color: var(--scuro); /* Colore scuro */
-    color: white;
+    background-color: rgba(44, 62, 80, 0.9);
+    padding: 15px 0;
+    color: var(--bianco);
+    font-size: 0.9rem;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
-#result {
-    margin-top: 20px;
+footer p {
+    margin: 0;
 }
 
-/* Risultati */
-#result p {
-    background-color: #ecf0f1; /* Colore chiaro per i risultati */
-    padding: 10px;
-    border-left: 5px solid var(--azzurro); /* Linea blu a sinistra */
-    margin-bottom: 10px;
-    border-radius: 3px;
+footer p a {
+    color: var(--verde);
+    text-decoration: none;
+    font-weight: bold;
 }
 
-/* Modifiche per il tema verde */
-h1, h2 {
-    color: var(--scuro); /* Colore scuro per i titoli */
+footer p a:hover {
+    text-decoration: underline;
 }
 
-section h2 {
-    color: var(--verde); /* Verde per i titoli delle sezioni */
+/* Transizioni generali */
+button, input, a {
+    transition: 0.3s ease;
 }
 
-button {
-    background-color: var(--verde); /* Colore verde per i pulsanti */
-}
-
-button:hover {
-    background-color: #27ae60; /* Verde scuro al passaggio del mouse */
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-    header nav ul li {
-        display: block; /* Imposta i link su una colonna per schermi piccoli */
-        margin: 10px 0; /* Margine verticale per spazio */
-    }
+input:focus, button:hover, a:hover {
+    transition: 0.2s ease-in;
+    transform: scale(1.02);
 }
