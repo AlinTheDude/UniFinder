@@ -122,19 +122,27 @@ waitForElement('#searchForm', () => {
                 reputazioneMinima: reputazioneMinima
             });
 
-            fetch('http://65.108.146.104:3001/ricerca', {
+            // Fai una richiesta POST al server
+            fetch('http://65.108.146.104:3001/ricerca-universita', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima })
+                body: JSON.stringify({
+                    paese: paese,
+                    tasseMassime: tasseMassime,
+                    borse_di_studio: borseDiStudio,
+                    offerta_formativa: offertaFormativa,
+                    reputazioneMinima: reputazioneMinima
+                })
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Risposta dal server per ricerca:", data);
+                console.log("Risposta dal server per la ricerca:", data);
 
+                // Se ci sono università nel risultato, visualizzale
                 if (data.universita && data.universita.length > 0) {
                     let resultHTML = '<ul>';
                     data.universita.forEach(universita => {
-                        resultHTML += `<li>${universita.nome}, ${universita.paese} - ${universita.reputazione}</li>`;
+                        resultHTML += `<li>${universita.nome}, ${universita.paese} - Reputazione: ${universita.reputazione}</li>`;
                     });
                     resultHTML += '</ul>';
                     document.getElementById('result').innerHTML = resultHTML;

@@ -144,42 +144,6 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.post('/ricerca', (req, res) => {
-    const { paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima } = req.body;
-    console.log('Richiesta di ricerca università ricevuta:', req.body);
-
-    let query = 'SELECT * FROM universita WHERE 1=1';
-    let params = [];
-
-    if (paese) {
-        query += ' AND paese = ?';
-        params.push(paese);
-    }
-    if (tasseMassime) {
-        query += ' AND tasse <= ?';
-        params.push(tasseMassime);
-    }
-    if (borseDiStudio) {
-        query += ' AND borse_di_studio = ?';
-        params.push(borseDiStudio);
-    }
-    if (offertaFormativa) {
-        query += ' AND offerta_formativa LIKE ?';
-        params.push(`%${offertaFormativa}%`);
-    }
-    if (reputazioneMinima) {
-        query += ' AND reputazione >= ?';
-        params.push(reputazioneMinima);
-    }
-
-    db.all(query, params, (err, rows) => {
-        if (err) {
-            console.error('Errore durante la ricerca:', err.message);
-            return res.status(500).json({ error: 'Errore durante la ricerca. Riprova più tardi.' });
-        }
-        res.json({ universita: rows });
-    });
-});
 
 
 // Gestione della chiusura del database alla chiusura del server
