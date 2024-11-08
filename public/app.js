@@ -128,46 +128,45 @@ function getUniversita() {
 }
 
 // Funzione per eliminare un'università tramite ID
-function getUniversita() {
-    fetch('/getUniversita')
-        .then(response => {
-            if (!response.ok) throw new Error('Errore nella risposta');
-            return response.json();
-        })
-        .then(data => {
-            // Sezione in cui mostrare l'elenco delle università
-            const universitaList = document.getElementById('universita-list');
-            universitaList.innerHTML = '';
-
-            // Itera sugli elementi dell'array di università e li visualizza
-            data.forEach(universita => {
-                const div = document.createElement('div');
-                div.textContent = `ID: ${universita.id} - Nome: ${universita.nome} - Città: ${universita.citta}`;
-                universitaList.appendChild(div);
-            });
-        })
-        .catch(error => {
-            console.error('Errore durante il caricamento delle università:', error);
-        });
-}
-
-// Funzione per eliminare un'università tramite AJAX
-function deleteUniversita(id) {
-    fetch(`/deleteUniversita/${id}`, {
-        method: 'DELETE'
+function fetchUserDetails() {
+    fetch('http://65.108.146.104:3001/getUserDetails', {
+        method: 'GET', // O 'POST' se necessario
+        headers: {
+            'Content-Type': 'application/json',
+        },
     })
-    .then(response => {
-        if (!response.ok) throw new Error('Errore nella cancellazione');
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log(data.message);  // Mostra il messaggio di successo o errore nel log
-        getUniversita();  // Ricarica la lista delle università per aggiornare la visualizzazione
+        console.log('Dettagli utente:', data);
+        // Aggiungi codice per elaborare i dati, come visualizzarli
     })
     .catch(error => {
-        console.error('Errore durante la cancellazione dell\'università:', error);
+        console.error('Errore durante il recupero dei dettagli utente:', error);
     });
 }
+
+
+function fetchUniversityData() {
+    const country = document.getElementById('paese').value;
+    const maxFees = document.getElementById('tasseMassime').value;
+    
+    fetch('http://65.108.146.104:3001/searchUniversities', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ country: country, maxFees: maxFees })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Risultati della ricerca università:', data);
+        // Aggiungi codice per visualizzare i risultati della ricerca
+    })
+    .catch(error => {
+        console.error('Errore durante la ricerca delle università:', error);
+    });
+}
+
 
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
 document.addEventListener('DOMContentLoaded', handleDefaultFormEvents);

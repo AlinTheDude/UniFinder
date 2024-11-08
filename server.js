@@ -144,27 +144,26 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.get('/getUniversita', (req, res) => {
-    db.all('SELECT * FROM universita', (err, rows) => {
+app.get('/getUserDetails', (req, res) => {
+    // Codice per ottenere i dettagli utente dal database
+    db.get('SELECT * FROM utenti WHERE id = ?', [req.query.id], (err, row) => {
         if (err) {
-            console.error('Errore durante il recupero delle università:', err.message);
-            res.status(500).json({ error: 'Errore nel recupero delle università' });
-        } else {
-            res.json(rows);
+            console.error('Errore nel recupero dettagli utente:', err.message);
+            return res.status(500).json({ error: 'Errore durante il recupero dei dettagli utente' });
         }
+        res.json(row);
     });
 });
 
-// Endpoint per eliminare un'università tramite ID
-app.delete('/deleteUniversita/:id', (req, res) => {
-    const universitaId = req.params.id;
-    db.run('DELETE FROM universita WHERE id = ?', universitaId, function (err) {
+// Endpoint per la ricerca delle università
+app.post('/searchUniversities', (req, res) => {
+    const { country, maxFees } = req.body;
+    db.all('SELECT * FROM universita WHERE paese = ? AND tasse <= ?', [country, maxFees], (err, rows) => {
         if (err) {
-            console.error('Errore durante l\'eliminazione dell\'università:', err.message);
-            res.status(500).json({ error: 'Errore durante l\'eliminazione' });
-        } else {
-            res.json({ message: 'Università eliminata con successo', id: universitaId });
+            console.error('Errore nella ricerca università:', err.message);
+            return res.status(500).json({ error: 'Errore durante la ricerca delle università' });
         }
+        res.json(rows); // Risultati delle università trovate
     });
 });
 
