@@ -101,6 +101,58 @@ waitForElement('#registrationForm', () => {
     });
 });
 
+waitForElement('#searchForm', () => {
+    const searchForm = document.getElementById('searchForm');
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const paese = document.getElementById('paese').value.trim();
+            const tasseMassime = document.getElementById('tasseMassime').value.trim();
+            const borseDiStudio = document.getElementById('borseDiStudio').value.trim();
+            const offertaFormativa = document.getElementById('offertaFormativa').value.trim();
+            const reputazioneMinima = document.getElementById('reputazioneMinima').value.trim();
+
+            console.log("Dati per la ricerca università:", {
+                paese: paese,
+                tasseMassime: tasseMassime,
+                borseDiStudio: borseDiStudio,
+                offertaFormativa: offertaFormativa,
+                reputazioneMinima: reputazioneMinima
+            });
+
+            fetch('http://65.108.146.104:3001/ricerca', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Risposta dal server per ricerca:", data);
+
+                if (data.universita && data.universita.length > 0) {
+                    let resultHTML = '<ul>';
+                    data.universita.forEach(universita => {
+                        resultHTML += `<li>${universita.nome}, ${universita.paese} - ${universita.reputazione}</li>`;
+                    });
+                    resultHTML += '</ul>';
+                    document.getElementById('result').innerHTML = resultHTML;
+                } else {
+                    document.getElementById('result').innerHTML = 'Nessuna università trovata con i criteri specificati.';
+                }
+            })
+            .catch(error => {
+                console.error('Errore durante la ricerca:', error);
+                alert('Errore durante la ricerca. Riprova più tardi.');
+            });
+        });
+    } else {
+        console.warn("Elemento #searchForm non trovato");
+    }
+});
+
+
 // Funzione per gestire gli eventi predefiniti dei form
 function handleDefaultFormEvents() {
     const forms = document.querySelectorAll('form');
