@@ -144,15 +144,7 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.get('/utenti', (req, res) => {
-    db.all('SELECT * FROM utenti', (err, rows) => {
-        if (err) {
-            console.error('Errore nel recupero degli utenti:', err.message);
-            return res.status(500).json({ error: 'Errore nel recupero degli utenti' });
-        }
-        res.json(rows);  // Restituisce tutti gli utenti
-    });
-});
+
 
 // Gestione della chiusura del database alla chiusura del server
 process.on('SIGINT', () => {

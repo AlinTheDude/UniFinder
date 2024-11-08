@@ -115,16 +115,7 @@ function handleDefaultFormEvents() {
     });
 }
 
-function getUsers() {
-    fetch('http://65.108.146.104:3001/utenti')
-    .then(response => response.json())
-    .then(data => {
-        console.log("Utenti ricevuti:", data);
-    })
-    .catch(error => {
-        console.error("Errore nel recupero degli utenti:", error);
-    });
-}
+
 
 
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
