@@ -115,57 +115,49 @@ function handleDefaultFormEvents() {
     });
 }
 
-function getUniversita() {
-    fetch('/getUniversita')
-        .then(response => response.json())
-        .then(data => {
-            console.log("Università:", data);
-            // Qui puoi aggiornare l'interfaccia utente con i dati delle università
-        })
-        .catch(error => {
-            console.error('Errore durante il recupero delle università:', error);
+waitForElement('#searchForm', () => {
+    const searchForm = document.getElementById('searchForm');
+    
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const paese = document.getElementById('paese').value.trim();
+            const tasseMassime = document.getElementById('tasseMassime').value.trim();
+            const borseDiStudio = document.getElementById('borseDiStudio').value.trim();
+            const offertaFormativa = document.getElementById('offertaFormativa').value.trim();
+            const reputazioneMinima = document.getElementById('reputazioneMinima').value.trim();
+            
+            const queryParams = new URLSearchParams({
+                paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima
+            });
+
+            fetch(`http://65.108.146.104:3001/universita?${queryParams.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Università trovate:", data);
+                    // Visualizza i risultati nel div "result"
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = data.map(universita => `
+                        <div>
+                            <h3>${universita.nome}</h3>
+                            <p>Paese: ${universita.paese}</p>
+                            <p>Reputazione: ${universita.reputazione}</p>
+                            <p>Borse di studio: ${universita.borse_di_studio}</p>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Errore durante la ricerca:', error);
+                    alert('Errore durante la ricerca. Riprova più tardi.');
+                });
         });
-}
+    } else {
+        console.warn("Elemento #searchForm non trovato");
+    }
+});
 
 // Funzione per eliminare un'università tramite ID
-function fetchUserDetails() {
-    fetch('http://65.108.146.104:3001/getUserDetails', {
-        method: 'GET', // O 'POST' se necessario
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Dettagli utente:', data);
-        // Aggiungi codice per elaborare i dati, come visualizzarli
-    })
-    .catch(error => {
-        console.error('Errore durante il recupero dei dettagli utente:', error);
-    });
-}
-
-
-function fetchUniversityData() {
-    const country = document.getElementById('paese').value;
-    const maxFees = document.getElementById('tasseMassime').value;
-    
-    fetch('http://65.108.146.104:3001/searchUniversities', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ country: country, maxFees: maxFees })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Risultati della ricerca università:', data);
-        // Aggiungi codice per visualizzare i risultati della ricerca
-    })
-    .catch(error => {
-        console.error('Errore durante la ricerca delle università:', error);
-    });
-}
 
 
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato

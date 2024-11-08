@@ -144,26 +144,39 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.get('/getUserDetails', (req, res) => {
-    // Codice per ottenere i dettagli utente dal database
-    db.get('SELECT * FROM utenti WHERE id = ?', [req.query.id], (err, row) => {
+app.get('/universita', (req, res) => {
+    const { paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima } = req.query;
+    
+    let query = 'SELECT * FROM universita WHERE 1=1';
+    const params = [];
+    
+    if (paese) {
+        query += ' AND paese LIKE ?';
+        params.push(`%${paese}%`);
+    }
+    if (tasseMassime) {
+        query += ' AND tasse <= ?';
+        params.push(tasseMassime);
+    }
+    if (borseDiStudio) {
+        query += ' AND borse_di_studio = ?';
+        params.push(borseDiStudio);
+    }
+    if (offertaFormativa) {
+        query += ' AND offerta_formativa LIKE ?';
+        params.push(`%${offertaFormativa}%`);
+    }
+    if (reputazioneMinima) {
+        query += ' AND reputazione >= ?';
+        params.push(reputazioneMinima);
+    }
+    
+    db.all(query, params, (err, rows) => {
         if (err) {
-            console.error('Errore nel recupero dettagli utente:', err.message);
-            return res.status(500).json({ error: 'Errore durante il recupero dei dettagli utente' });
+            console.error('Errore nel recupero delle università:', err.message);
+            return res.status(500).json({ error: 'Errore nel recupero delle università' });
         }
-        res.json(row);
-    });
-});
-
-// Endpoint per la ricerca delle università
-app.post('/searchUniversities', (req, res) => {
-    const { country, maxFees } = req.body;
-    db.all('SELECT * FROM universita WHERE paese = ? AND tasse <= ?', [country, maxFees], (err, rows) => {
-        if (err) {
-            console.error('Errore nella ricerca università:', err.message);
-            return res.status(500).json({ error: 'Errore durante la ricerca delle università' });
-        }
-        res.json(rows); // Risultati delle università trovate
+        res.json(rows);  // Restituisce le università filtrate
     });
 });
 
