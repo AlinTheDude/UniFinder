@@ -115,5 +115,41 @@ function handleDefaultFormEvents() {
     });
 }
 
+function getUniversita() {
+    fetch('/getUniversita')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Università:", data);
+            // Qui puoi aggiornare l'interfaccia utente con i dati delle università
+        })
+        .catch(error => {
+            console.error('Errore durante il recupero delle università:', error);
+        });
+}
+
+// Funzione per eliminare un'università tramite ID
+function deleteUniversita(id) {
+    fetch(`/deleteUniversita/${id}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            // Qui puoi aggiornare l'interfaccia utente rimuovendo l'università eliminata
+        })
+        .catch(error => {
+            console.error('Errore durante l\'eliminazione dell\'università:', error);
+        });
+}
+
+// Esempio di chiamata delle funzioni
+document.addEventListener('DOMContentLoaded', () => {
+    // Carica la lista delle università all'inizio
+    getUniversita();
+
+    // Esempio: elimina un'università con un certo ID (per esempio, 3)
+     deleteUniversita(3);
+});
+
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
 document.addEventListener('DOMContentLoaded', handleDefaultFormEvents);

@@ -144,6 +144,30 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
+app.get('/getUniversita', (req, res) => {
+    db.all('SELECT * FROM universita', (err, rows) => {
+        if (err) {
+            console.error('Errore durante il recupero delle università:', err.message);
+            res.status(500).json({ error: 'Errore nel recupero delle università' });
+        } else {
+            res.json(rows);
+        }
+    });
+});
+
+// Endpoint per eliminare un'università tramite ID
+app.delete('/deleteUniversita/:id', (req, res) => {
+    const universitaId = req.params.id;
+    db.run('DELETE FROM universita WHERE id = ?', universitaId, function (err) {
+        if (err) {
+            console.error('Errore durante l\'eliminazione dell\'università:', err.message);
+            res.status(500).json({ error: 'Errore durante l\'eliminazione' });
+        } else {
+            res.json({ message: 'Università eliminata con successo', id: universitaId });
+        }
+    });
+});
+
 // Gestione della chiusura del database alla chiusura del server
 process.on('SIGINT', () => {
     db.close((err) => {
