@@ -128,28 +128,46 @@ function getUniversita() {
 }
 
 // Funzione per eliminare un'università tramite ID
+function getUniversita() {
+    fetch('/getUniversita')
+        .then(response => {
+            if (!response.ok) throw new Error('Errore nella risposta');
+            return response.json();
+        })
+        .then(data => {
+            // Sezione in cui mostrare l'elenco delle università
+            const universitaList = document.getElementById('universita-list');
+            universitaList.innerHTML = '';
+
+            // Itera sugli elementi dell'array di università e li visualizza
+            data.forEach(universita => {
+                const div = document.createElement('div');
+                div.textContent = `ID: ${universita.id} - Nome: ${universita.nome} - Città: ${universita.citta}`;
+                universitaList.appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.error('Errore durante il caricamento delle università:', error);
+        });
+}
+
+// Funzione per eliminare un'università tramite AJAX
 function deleteUniversita(id) {
     fetch(`/deleteUniversita/${id}`, {
         method: 'DELETE'
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-            // Qui puoi aggiornare l'interfaccia utente rimuovendo l'università eliminata
-        })
-        .catch(error => {
-            console.error('Errore durante l\'eliminazione dell\'università:', error);
-        });
+    .then(response => {
+        if (!response.ok) throw new Error('Errore nella cancellazione');
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);  // Mostra il messaggio di successo o errore nel log
+        getUniversita();  // Ricarica la lista delle università per aggiornare la visualizzazione
+    })
+    .catch(error => {
+        console.error('Errore durante la cancellazione dell\'università:', error);
+    });
 }
-
-// Esempio di chiamata delle funzioni
-document.addEventListener('DOMContentLoaded', () => {
-    // Carica la lista delle università all'inizio
-    getUniversita();
-
-    // Esempio: elimina un'università con un certo ID (per esempio, 3)
-     deleteUniversita(3);
-});
 
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
 document.addEventListener('DOMContentLoaded', handleDefaultFormEvents);
