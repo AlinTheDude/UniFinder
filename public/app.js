@@ -115,49 +115,16 @@ function handleDefaultFormEvents() {
     });
 }
 
-waitForElement('#searchForm', () => {
-    const searchForm = document.getElementById('searchForm');
-    
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const paese = document.getElementById('paese').value.trim();
-            const tasseMassime = document.getElementById('tasseMassime').value.trim();
-            const borseDiStudio = document.getElementById('borseDiStudio').value.trim();
-            const offertaFormativa = document.getElementById('offertaFormativa').value.trim();
-            const reputazioneMinima = document.getElementById('reputazioneMinima').value.trim();
-            
-            const queryParams = new URLSearchParams({
-                paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima
-            });
-
-            fetch(`http://65.108.146.104:3001/universita?${queryParams.toString()}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Università trovate:", data);
-                    // Visualizza i risultati nel div "result"
-                    const resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = data.map(universita => `
-                        <div>
-                            <h3>${universita.nome}</h3>
-                            <p>Paese: ${universita.paese}</p>
-                            <p>Reputazione: ${universita.reputazione}</p>
-                            <p>Borse di studio: ${universita.borse_di_studio}</p>
-                        </div>
-                    `).join('');
-                })
-                .catch(error => {
-                    console.error('Errore durante la ricerca:', error);
-                    alert('Errore durante la ricerca. Riprova più tardi.');
-                });
-        });
-    } else {
-        console.warn("Elemento #searchForm non trovato");
-    }
-});
-
-// Funzione per eliminare un'università tramite ID
+function getUsers() {
+    fetch('http://65.108.146.104:3001/utenti')
+    .then(response => response.json())
+    .then(data => {
+        console.log("Utenti ricevuti:", data);
+    })
+    .catch(error => {
+        console.error("Errore nel recupero degli utenti:", error);
+    });
+}
 
 
 // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato

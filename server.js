@@ -144,39 +144,13 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.get('/universita', (req, res) => {
-    const { paese, tasseMassime, borseDiStudio, offertaFormativa, reputazioneMinima } = req.query;
-    
-    let query = 'SELECT * FROM universita WHERE 1=1';
-    const params = [];
-    
-    if (paese) {
-        query += ' AND paese LIKE ?';
-        params.push(`%${paese}%`);
-    }
-    if (tasseMassime) {
-        query += ' AND tasse <= ?';
-        params.push(tasseMassime);
-    }
-    if (borseDiStudio) {
-        query += ' AND borse_di_studio = ?';
-        params.push(borseDiStudio);
-    }
-    if (offertaFormativa) {
-        query += ' AND offerta_formativa LIKE ?';
-        params.push(`%${offertaFormativa}%`);
-    }
-    if (reputazioneMinima) {
-        query += ' AND reputazione >= ?';
-        params.push(reputazioneMinima);
-    }
-    
-    db.all(query, params, (err, rows) => {
+app.get('/utenti', (req, res) => {
+    db.all('SELECT * FROM utenti', (err, rows) => {
         if (err) {
-            console.error('Errore nel recupero delle università:', err.message);
-            return res.status(500).json({ error: 'Errore nel recupero delle università' });
+            console.error('Errore nel recupero degli utenti:', err.message);
+            return res.status(500).json({ error: 'Errore nel recupero degli utenti' });
         }
-        res.json(rows);  // Restituisce le università filtrate
+        res.json(rows);  // Restituisce tutti gli utenti
     });
 });
 
