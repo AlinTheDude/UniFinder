@@ -29,7 +29,7 @@ waitForElement('#registrationForm', () => {
                 preferenze: preferenze
             });
 
-            fetch('http://65.108.146.104:3001/registrazione', {
+            fetch('http://65.108.146.104:80/registrazione', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
@@ -74,7 +74,7 @@ waitForElement('#registrationForm', () => {
 
                 console.log("Dati del form di login:", { email, password });
 
-                fetch('http://65.108.146.104:3001/login', {
+                fetch('http://65.108.146.104:80/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, password: password })
@@ -123,7 +123,7 @@ waitForElement('#searchForm', () => {
             });
 
             // Fai una richiesta POST al server
-            fetch('http://65.108.146.104:3001/ricerca-universita', {
+            fetch('http://65.108.146.104:80/ricerca-universita', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
