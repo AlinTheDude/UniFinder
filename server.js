@@ -144,6 +144,30 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
+app.get('/api/students', (req, res) => {
+    const query = "SELECT * FROM studenti"; // Cambia il nome della tabella se necessario
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: "Errore nel recupero degli studenti" });
+        } else {
+            res.json(rows);
+        }
+    });
+});
+
+// Endpoint per ottenere le università
+app.get('/api/universities', (req, res) => {
+    const query = "SELECT * FROM universita"; // Cambia il nome della tabella se necessario
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: "Errore nel recupero delle università" });
+        } else {
+            res.json(rows);
+        }
+    });
+});
 
 
 // Gestione della chiusura del database alla chiusura del server
