@@ -61,30 +61,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Gestione del login
-    document.getElementById('loginForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+    waitForElement('#loginForm', () => {
+        const loginForm = document.getElementById('loginForm');
     
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        if (loginForm) {
+            loginForm.addEventListener('submit', function (event) {
+                event.preventDefault();
     
-        fetch('http://65.108.146.104:3001/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Login riuscito') {
-                    sessionStorage.setItem('userEmail', data.user.email);
-                    sessionStorage.setItem('userName', data.user.nome); // Salva il nome utente
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert(data.message || 'Errore durante il login.');
-                }
-            })
-            .catch(error => console.error('Errore durante il login:', error));
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+    
+                console.log("Dati del form di login:", { email, password });
+    
+                fetch('http://65.108.146.104:3001/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Risposta dal server:", data);
+    
+                        if (data.message === 'Login riuscito') {
+                            // Salva email e nome nella sessione
+                            sessionStorage.setItem('loginEmail', email);
+                            sessionStorage.setItem('userName', data.nome || 'Utente'); // Aggiungi il nome utente se disponibile
+                            alert('Login effettuato con successo!');
+                            window.location.href = 'dashboard.html'; // Reindirizza alla pagina della dashboard
+                        } else {
+                            alert(data.message || 'Errore durante il login');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                        alert('Errore di rete. Riprova più tardi.');
+                    });
+            });
+        } else {
+            console.warn("Elemento #loginForm non trovato");
+        }
     });
-    
 
     waitForElement('#searchForm', () => {
         const searchForm = document.getElementById('searchForm');

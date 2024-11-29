@@ -146,35 +146,30 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.post('/preferenze', (req, res) => {
-    const { email, paese, corsi } = req.body;
-    db.run(
-        `INSERT INTO preferenze (email, paese, corsi) VALUES (?, ?, ?) 
-         ON CONFLICT(email) DO UPDATE SET paese = ?, corsi = ?`,
-        [email, paese, corsi, paese, corsi],
-        function(err) {
-            if (err) {
-                res.status(500).json({ error: 'Errore del server.' });
-            } else {
-                res.json({ message: 'Preferenze salvate con successo.' });
-            }
-        }
-    );
-});
-
-app.get('/preferenze', (req, res) => {
-    const email = req.query.email;
-    db.get('SELECT * FROM preferenze WHERE email = ?', [email], (err, row) => {
+app.get('/api/students', (req, res) => {
+    const query = "SELECT * FROM studenti"; // Cambia il nome della tabella se necessario
+    db.all(query, [], (err, rows) => {
         if (err) {
-            res.status(500).json({ error: 'Errore del server.' });
-        } else if (row) {
-            res.json({ preferenze: row });
+            console.error(err.message);
+            res.status(500).json({ error: "Errore nel recupero degli studenti" });
         } else {
-            res.json({ preferenze: null });
+            res.json(rows);
         }
     });
 });
 
+// Endpoint per ottenere le università
+app.get('/api/universities', (req, res) => {
+    const query = "SELECT * FROM universita"; // Cambia il nome della tabella se necessario
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: "Errore nel recupero delle università" });
+        } else {
+            res.json(rows);
+        }
+    });
+});
 
 
 // Gestione della chiusura del database alla chiusura del server
