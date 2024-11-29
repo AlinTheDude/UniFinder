@@ -22,14 +22,14 @@
             <div class="profile-header">
                 <img src="Imgs/images.jpg" alt="Default Profile Picture" class="profile-picture">
                 <div class="profile-info">
-                    <h2 id="username">Username</h2>
+                    <h2 id="username">Username</h2> <!-- Il nome utente sarà dinamicamente aggiornato -->
                     <p id="user-role">Studente</p>
                 </div>
             </div>
             <div class="profile-details">
                 <h3>Profile Details</h3>
                 <ul>
-                    <li><strong>Email:</strong> <span id="email">example@example.com</span></li>
+                    <li><strong>Email:</strong> <span id="email">example@example.com</span></li> <!-- Email aggiornata dinamicamente -->
                 </ul>
                 <div class="profile-actions">
                     <!-- Bottone Preferenze che porta a index.html -->
@@ -38,10 +38,12 @@
                     </a>
                     
                     <!-- Bottone Logout che porta a login.html -->
-                    <a href="login.html">
+                    <a href="login.html" onclick="sessionStorage.clear();">
                         <button>Logout</button>
                     </a>
                 </div>
+            </div>
+        </div>
     </div>
 
     <script src="dashboard.js"></script>
