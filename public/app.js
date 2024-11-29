@@ -81,14 +81,15 @@ waitForElement('#registrationForm', () => {
                 })
                .then(response => response.json())
                .then(data => {
-                   console.log("Risposta dal server:", data);
+                sessionStorage.setItem('userEmail', email); // Salva l'email nella sessione
+                console.log("Risposta dal server:", data);
 
                    if (data.message === 'Login riuscito') {
-                       alert('Login effettuato con successo!');
-                       // window.location.href = 'homepage.html'; // Disabilitato temporaneamente
-                   } else {
-                       alert(data.message || 'Errore durante il login');
-                   }
+                    alert('Login effettuato con successo!');
+                    window.location.href = 'dashboard.html'; // Reindirizza alla pagina della dashboard
+                } else {
+                    alert(data.message || 'Errore durante il login');
+                }
                })
                .catch(error => {
                    console.error('Errore:', error);
