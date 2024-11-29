@@ -2,6 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
+    background: url('../Imgs/cambridge.jpg') no-repeat center center fixed;
     background: linear-gradient(120deg, #3498db, #8e44ad);
     margin: 0;
     padding: 0;
