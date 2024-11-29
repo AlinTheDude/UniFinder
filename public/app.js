@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
                         if (data.message === 'Login riuscito') {
                             // Salva email e nome nella sessione
-                            sessionStorage.setItem('loginEmail', email);
+                            sessionStorage.setItem('userEmail', email);
                             sessionStorage.setItem('userName', data.nome || 'Utente'); // Aggiungi il nome utente se disponibile
                             alert('Login effettuato con successo!');
                             window.location.href = 'dashboard.html'; // Reindirizza alla pagina della dashboard
