@@ -100,15 +100,7 @@ app.post('/login', (req, res) => {
             return res.status(401).json({ message: 'Password errata' });
         }
 
-        // Restituire tutti i dati dell'utente
-        res.json({
-            message: 'Login riuscito',
-            user: {
-                nome: row.nome,
-                cognome: row.cognome || '',
-                email: row.email,
-            }
-        });
+        res.json({ message: 'Login riuscito', user: row });
     });
 });
 
