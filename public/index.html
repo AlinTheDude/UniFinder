@@ -58,6 +58,30 @@
         <div id="result"></div>
     </section>
 
+    <button id="allUsers">Mostra Tutti gli Utenti</button>
+    <button id="filteredUsers">Mostra Utenti Filtrati</button>
+
+    <script>
+        // Bottone per mostrare tutti gli utenti
+        document.getElementById('allUsers').addEventListener('click', () => {
+            fetch('http://65.108.146.104:3001/utenti')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Tutti gli utenti:', data);
+                })
+                .catch(error => console.error('Errore:', error));
+        });
+
+        // Bottone per mostrare gli utenti filtrati
+        document.getElementById('filteredUsers').addEventListener('click', () => {
+            fetch('http://65.108.146.104:3001/utenti-filtrati')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Utenti filtrati:', data);
+                })
+                .catch(error => console.error('Errore:', error));
+        });
+    </script>
 
 
     <footer>

@@ -146,25 +146,25 @@ app.post('/ricerca-universita', (req, res) => {
     });
 });
 
-app.get('/api/students', (req, res) => {
-    const query = "SELECT * FROM studenti"; // Cambia il nome della tabella se necessario
+app.get('/utenti', (req, res) => {
+    const query = 'SELECT * FROM utenti';
     db.all(query, [], (err, rows) => {
         if (err) {
-            console.error(err.message);
-            res.status(500).json({ error: "Errore nel recupero degli studenti" });
+            console.error('Errore nel recupero degli utenti:', err.message);
+            res.status(500).json({ error: 'Errore nel recupero degli utenti' });
         } else {
             res.json(rows);
         }
     });
 });
 
-// Endpoint per ottenere le università
-app.get('/api/universities', (req, res) => {
-    const query = "SELECT * FROM universita"; // Cambia il nome della tabella se necessario
+// Restituisce gli utenti con preferenze specifiche
+app.get('/utenti-filtrati', (req, res) => {
+    const query = `SELECT * FROM utenti WHERE preferenze LIKE '%Italia%' AND preferenze LIKE '%Informatica%'`;
     db.all(query, [], (err, rows) => {
         if (err) {
-            console.error(err.message);
-            res.status(500).json({ error: "Errore nel recupero delle università" });
+            console.error('Errore nel recupero degli utenti filtrati:', err.message);
+            res.status(500).json({ error: 'Errore nel recupero degli utenti filtrati' });
         } else {
             res.json(rows);
         }
