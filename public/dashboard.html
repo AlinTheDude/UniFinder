@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>User Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <header>
-            <h1>Benvenuto nella tua Dashboard</h1>
-        </header>
-
-        <!-- Sezione Profilo -->
-        <section id="user-profile">
-            <h2>Profilo Utente</h2>
-            <div class="profile-info">
-                <p><strong>Email:</strong> <span id="userEmail">Caricamento...</span></p>
-                <p><strong>Nome Utente:</strong> <span id="userName">Non specificato</span></p>
+        <div class="profile-card">
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-picture">
+                <div class="profile-info">
+                    <h2 id="username">John Doe</h2>
+                    <p id="user-role">Student</p>
+                    <button class="btn edit-profile">Edit Profile</button>
+                </div>
             </div>
-        </section>
-
-        <!-- Sezione Preferenze -->
-        <section id="user-preferences">
-            <h2>Preferenze</h2>
-            <form id="preferencesForm">
-                <label for="prefPaese">Paese preferito:</label>
-                <input type="text" id="prefPaese" placeholder="Inserisci il paese preferito">
-
-                <label for="prefCorsi">Corsi di interesse:</label>
-                <input type="text" id="prefCorsi" placeholder="Inserisci i corsi di interesse">
-
-                <button type="submit">Salva Preferenze</button>
-                <p id="preferencesFeedback"></p>
-            </form>
-        </section>
+            <div class="profile-details">
+                <h3>Profile Details</h3>
+                <ul>
+                    <li><strong>Email:</strong> <span id="email">johndoe@example.com</span></li>
+                    <li><strong>Phone:</strong> <span id="phone">123-456-7890</span></li>
+                    <li><strong>Country:</strong> <span id="country">USA</span></li>
+                </ul>
+            </div>
+            <div class="profile-actions">
+                <h3>Actions</h3>
+                <button class="btn">Manage Preferences</button>
+                <button class="btn">Log Out</button>
+            </div>
+        </div>
     </div>
-    <script src="dashboard.js"></script>
 </body>
 </html>
