@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="login.html">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="dashboard-container">
+        <header>
+            <h1>Benvenuto nella tua Dashboard</h1>
+        </header>
 
-    <section id="dashboard">
-        <h2>Benvenuto, <span id="userName">Utente</span>!</h2>
-        
-        <h3>Preferenze</h3>
-        <form id="preferencesForm">
-            <input type="text" id="prefPaese" placeholder="Paese preferito">
-            <input type="text" id="prefCorsi" placeholder="Corsi preferiti">
-            <button type="submit">Salva preferenze</button>
-        </form>
-        <div id="preferencesFeedback"></div>
+        <!-- Sezione Profilo -->
+        <section id="user-profile">
+            <h2>Profilo Utente</h2>
+            <div class="profile-info">
+                <p><strong>Email:</strong> <span id="userEmail">Caricamento...</span></p>
+                <p><strong>Nome Utente:</strong> <span id="userName">Non specificato</span></p>
+            </div>
+        </section>
 
-        <h3>Università Preferite</h3>
-        <ul id="favoriteUniversities">
-            <!-- Lista università preferite -->
-        </ul>
-    </section>
+        <!-- Sezione Preferenze -->
+        <section id="user-preferences">
+            <h2>Preferenze</h2>
+            <form id="preferencesForm">
+                <label for="prefPaese">Paese preferito:</label>
+                <input type="text" id="prefPaese" placeholder="Inserisci il paese preferito">
 
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-    </footer>
+                <label for="prefCorsi">Corsi di interesse:</label>
+                <input type="text" id="prefCorsi" placeholder="Inserisci i corsi di interesse">
 
-    <script src="dashboard.js" defer></script>
+                <button type="submit">Salva Preferenze</button>
+                <p id="preferencesFeedback"></p>
+            </form>
+        </section>
+    </div>
+    <script src="dashboard.js"></script>
 </body>
 </html>
