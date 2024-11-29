@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+        /* Aggiungere uno stile per l'immagine di sfondo */
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+            color: white; /* Colore del testo per la leggibilità */
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="profile-card">
             <div class="profile-header">
-                <img src="https://via.placeholder.com/150/cccccc/ffffff?text=Profile" alt="Default Profile Picture" class="profile-picture">
+                <img src="Imgs/images.jpg" alt="Default Profile Picture" class="profile-picture">
                 <div class="profile-info">
                     <h2 id="username">Username</h2>
                     <p id="user-role">Studente</p>
@@ -21,12 +31,17 @@
                 <ul>
                     <li><strong>Email:</strong> <span id="email">example@example.com</span></li>
                 </ul>
-            </div>
-            <div class="profile-actions">
-                <button class="btn">Preferenze</button>
-                <button class="btn logout-btn">Log Out</button>
-            </div>
-        </div>
+                <div class="profile-actions">
+                    <!-- Bottone Preferenze che porta a index.html -->
+                    <a href="index.html">
+                        <button class="btn">Preferenze</button>
+                    </a>
+                    
+                    <!-- Bottone Logout che porta a login.html -->
+                    <a href="login.html">
+                        <button>Logout</button>
+                    </a>
+                </div>
     </div>
 
     <script src="dashboard.js"></script>
