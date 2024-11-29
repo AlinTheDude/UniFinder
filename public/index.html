@@ -58,40 +58,6 @@
         <div id="result"></div>
     </section>
 
-    <button id="getStudents">Ottieni Studenti</button>
-    <button id="getUniversities">Ottieni Università</button>
-
-    <script>
-        $(document).ready(function () {
-            // Evento per ottenere gli studenti
-            $('#getStudents').on('click', function () {
-                $.ajax({
-                    url: '/api/students',
-                    method: 'GET',
-                    success: function (data) {
-                        console.log('Studenti:', data);
-                    },
-                    error: function (error) {
-                        console.error('Errore nel recupero degli studenti:', error);
-                    }
-                });
-            });
-
-            // Evento per ottenere le università
-            $('#getUniversities').on('click', function () {
-                $.ajax({
-                    url: '/api/universities',
-                    method: 'GET',
-                    success: function (data) {
-                        console.log('Università:', data);
-                    },
-                    error: function (error) {
-                        console.error('Errore nel recupero delle università:', error);
-                    }
-                });
-            });
-        });
-    </script>
 
 
     <footer>
