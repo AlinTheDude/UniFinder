@@ -1,30 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
     const email = sessionStorage.getItem('userEmail');
     if (!email) {
-        window.location.href = 'login.html'; // Reindirizza se non c'è l'email
+        window.location.href = 'login.html';
     }
     
     document.getElementById('email').innerText = email;
-    
+
     fetch(`http://65.108.146.104:3001/utente?email=${email}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('username').innerText = data.nome || 'Non specificato';
+            document.getElementById('lastLogin').innerText = data.lastLogin || 'Non Disponibile';
+        })
+        .catch(() => {
+            document.getElementById('username').innerText = 'Errore';
         });
 
-    // Carica preferenze utente
-    fetch(`http://65.108.146.104:3001/preferenze?email=${email}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.preferenze) {
-                document.getElementById('prefPaese').value = data.preferenze.paese || '';
-                document.getElementById('prefCorsi').value = data.preferenze.corsi || '';
-            }
-        });
-
-    // Salva preferenze
     document.getElementById('preferencesForm').addEventListener('submit', function (event) {
         event.preventDefault();
+
         const paese = document.getElementById('prefPaese').value.trim();
         const corsi = document.getElementById('prefCorsi').value.trim();
 
@@ -35,7 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('preferencesFeedback').innerText = data.message || 'Errore';
+            const feedback = document.getElementById('preferencesFeedback');
+            feedback.innerText = data.message || 'Preferenze salvate con successo';
+            feedback.style.color = 'green';
+        })
+        .catch(() => {
+            document.getElementById('preferencesFeedback').innerText = 'Errore durante il salvataggio';
         });
     });
 });

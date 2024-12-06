@@ -5,45 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Aggiungere uno stile per l'immagine di sfondo */
         body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
-            color: white; /* Colore del testo per la leggibilità */
+            background-image: url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <img src="Imgs/images.jpg" alt="Default Profile Picture" class="profile-picture">
-                <div class="profile-info">
-                    <h2 id="username">Username</h2> <!-- Il nome utente sarà dinamicamente aggiornato -->
-                    <p id="user-role">Studente</p>
-                </div>
-            </div>
-            <div class="profile-details">
-                <h3>Profile Details</h3>
+        <header class="dashboard-header">
+            <h1>Benvenuto su UniFinder</h1>
+            <nav>
                 <ul>
-                    <li><strong>Email:</strong> <span id="email">example@example.com</span></li> <!-- Email aggiornata dinamicamente -->
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#profile">Profilo</a></li>
+                    <li><a href="#preferences">Preferenze</a></li>
+                    <li><a href="login.html">Logout</a></li>
                 </ul>
-                <div class="profile-actions">
-                    <!-- Bottone Preferenze che porta a index.html -->
-                    <a href="index.html">
-                        <button class="btn">Preferenze</button>
-                    </a>
-                    
-                    <!-- Bottone Logout che porta a login.html -->
-                    <a href="login.html">
-                        <button>Logout</button>
-                    </a>
+            </nav>
+        </header>
+
+        <section class="profile-section" id="profile">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="Imgs/images.jpg" alt="Default Profile Picture" class="profile-picture">
+                    <div class="profile-info">
+                        <h2 id="username">Username</h2>
+                        <p id="user-role">Studente</p>
+                        <button id="editProfile" class="btn">Modifica Profilo</button>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <ul>
+                        <li><strong>Email:</strong> <span id="email">example@example.com</span></li>
+                        <li><strong>Ultimo Accesso:</strong> <span id="lastLogin">Non Disponibile</span></li>
+                    </ul>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section class="preferences-section" id="preferences">
+            <h2>Preferenze</h2>
+            <form id="preferencesForm">
+                <label for="prefPaese">Paese Preferito</label>
+                <input type="text" id="prefPaese" placeholder="Inserisci il Paese">
+                
+                <label for="prefCorsi">Corsi Preferiti</label>
+                <input type="text" id="prefCorsi" placeholder="Inserisci i Corsi">
+                
+                <button type="submit" class="btn">Salva Preferenze</button>
+                <p id="preferencesFeedback" class="feedback-message"></p>
+            </form>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>&copy; 2024 UniFinder | Creato da <span class="brand">5ic</span></p>
+        </footer>
     </div>
 
     <script src="dashboard.js"></script>
