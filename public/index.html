@@ -3,109 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFinder</title>
+    <title>UniFinder - Trova la tua Università</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        #hero {
-            text-align: center;
-            color: var(--bianco);
-            padding: 100px 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        #hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        #hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .btn-container a {
-            text-decoration: none;
-            padding: 15px 25px;
-            font-size: 1rem;
-            color: var(--bianco);
-            background-color: var(--azzurro);
-            border-radius: 5px;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .btn-container a:hover {
-            background-color: var(--verde);
-            transform: scale(1.1);
-        }
-
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 50px 0;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.85);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .features div {
-            text-align: center;
-            max-width: 300px;
-        }
-
-        .features img {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
-        }
-
-        .features h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .features p {
-            font-size: 0.9rem;
-            color: var(--scuro);
-        }
-    </style>
 </head>
 <body>
     <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="registrazione.html">Registrazione</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="ricerca.html">Ricerca Università</a></li>
-            </ul>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <h1 class="logo">UniFinder</h1>
+                <ul class="navbar-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="registrazione.html">Registrazione</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="ricerca.html">Ricerca Università</a></li>
+                </ul>
+                <div class="hamburger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
         <!-- Hero Section -->
         <section id="hero">
-            <h1>Benvenuto su UniFinder!</h1>
-            <p>Esplora le università di tutto il mondo con il nostro potente motore di ricerca. <br> Inizia la tua avventura accademica oggi stesso.</p>
+            <h1>Esplora il Futuro con UniFinder</h1>
+            <p>Il tuo viaggio accademico inizia qui. Trova, confronta e scegli tra le migliori università del mondo.</p>
             <div class="btn-container">
-                <a href="registrazione.html">Registrati Ora</a>
+                <a href="registrazione.html">Inizia Ora</a>
                 <a href="ricerca.html">Cerca Università</a>
             </div>
         </section>
@@ -115,25 +42,50 @@
             <div>
                 <img src="Imgs/search.png" alt="Ricerca">
                 <h3>Motore di Ricerca</h3>
-                <p>Trova rapidamente università che soddisfano le tue esigenze personali e accademiche.</p>
+                <p>Trova le università perfette per te con strumenti avanzati di ricerca.</p>
             </div>
             <div>
                 <img src="Imgs/users.png" alt="Comunità">
                 <h3>Community</h3>
-                <p>Unisciti a una community di studenti e condividi recensioni, esperienze e consigli.</p>
+                <p>Condividi esperienze e recensioni con studenti di tutto il mondo.</p>
             </div>
             <div>
                 <img src="Imgs/globe.png" alt="Globale">
                 <h3>Accesso Globale</h3>
-                <p>Esplora opportunità accademiche in tutto il mondo con informazioni dettagliate.</p>
+                <p>Esplora le opportunità accademiche senza confini.</p>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <h2>Cosa dicono i nostri utenti</h2>
+            <div class="testimonial-container">
+                <div class="testimonial">
+                    <p>"Grazie a UniFinder ho trovato l'università dei miei sogni!"</p>
+                    <span>- Maria, Italia</span>
+                </div>
+                <div class="testimonial">
+                    <p>"La piattaforma è intuitiva e mi ha aiutato tantissimo nella ricerca."</p>
+                    <span>- John, Regno Unito</span>
+                </div>
+                <div class="testimonial">
+                    <p>"Ottima community! Ho scoperto informazioni preziose sulle università."</p>
+                    <span>- Ling, Cina</span>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+            <div class="social-icons">
+                <a href="#"><img src="Imgs/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="Imgs/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="Imgs/instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
     </footer>
-
-    <script src="app.js" defer></script>
+<script src="app.js" defer></script>
 </body>
 </html>
