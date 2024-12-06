@@ -274,6 +274,61 @@ footer {
     transform: scale(1.1);
 }
 
+section {
+    text-align: center;
+    color: var(--bianco);
+    padding: 80px 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+form input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--grigio-chiaro);
+    width: 300px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+form button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    background-color: var(--azzurro);
+    color: var(--bianco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background-color: var(--verde);
+}
+
+section p {
+    margin-top: 20px;
+}
+
+section a {
+    color: var(--azzurro);
+    text-decoration: none;
+}
+
+section a:hover {
+    text-decoration: underline;
+}
+
 /* Media Queries */
 @media (max-width: 480px) {
     h1 {
