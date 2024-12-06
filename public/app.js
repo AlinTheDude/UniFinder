@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    waitForElement('.hamburger-menu', () => {
+        const hamburger = document.querySelector(".hamburger-menu");
+        const navLinks = document.querySelector(".navbar-links");
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener("click", () => {
+                hamburger.classList.toggle("active");
+                navLinks.classList.toggle("active");
+            });
+        } else {
+            console.warn("Elementi hamburger-menu o navbar-links non trovati");
+        }
+    });
+
 
     // Gestione della registrazione
     waitForElement('#registrationForm', () => {
