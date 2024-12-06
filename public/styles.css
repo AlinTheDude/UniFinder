@@ -262,9 +262,6 @@ footer p a:hover {
     transition: transform 0.3s ease;
 }
 
-.social-icons img:hover {
-    transform: scale(1.1);
-}
 
 /* Media Queries */
 @media (max-width: 480px) {
