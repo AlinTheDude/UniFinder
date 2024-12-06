@@ -1,18 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
     const email = sessionStorage.getItem('userEmail'); // Ottieni l'email salvata durante il login
+    const username = sessionStorage.getItem('userName'); // Ottieni il nome salvato durante il login
+
     if (!email) {
         window.location.href = 'login.html'; // Se non c'è l'email, reindirizza al login
     }
 
-    // Mostra email dell'utente nel profilo
-    document.getElementById('userEmail').innerText = email;
+    // Mostra email e nome dell'utente nel profilo
+    document.getElementById('email').innerText = email;
+    document.getElementById('username').innerText = username || 'Utente'; // Usa il nome salvato o un valore predefinito
 
     // Aggiungere un esempio di nome utente (da backend in futuro)
-    fetch(`http://65.108.146.104:3001/utente?email=${email}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('userName').innerText = data.name || 'Non specificato';
-        });
+    // Se vuoi fare una richiesta al server per recuperare altre informazioni dell'utente:
+    // fetch(`http://65.108.146.104:3001/utente?email=${email}`)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         document.getElementById('username').innerText = data.nome || 'Non specificato';
+    //     });
 
     // Carica preferenze utente
     fetch(`http://65.108.146.104:3001/preferenze?email=${email}`)
