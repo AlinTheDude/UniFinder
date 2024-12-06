@@ -8,14 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    const hamburger = document.querySelector(".hamburger-menu");
-    const navLinks = document.querySelector(".navbar-links");
-
-    hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        navLinks.classList.toggle("active");
-    });
-
     // Gestione della registrazione
     waitForElement('#registrationForm', () => {
         const registrationForm = document.getElementById('registrationForm');
