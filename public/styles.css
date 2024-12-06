@@ -51,6 +51,11 @@ header {
     background: rgba(44, 62, 80, 0.9);
     padding: 10px 0;
     text-align: center;
+    position: fixed; /* Usa 'fixed' per mantenerla sempre in cima */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* Imposta un valore più basso per la navbar originale */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -175,6 +180,52 @@ form p a:hover {
     transition: 0.3s;
 }
 
+.testimonials {
+    background-color: rgba(173, 216, 230, 0.9); /* Azzurro chiaro con trasparenza */
+    padding: 40px 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 40px auto;
+    width: 80%;
+    max-width: 900px;
+}
+
+.testimonials h2 {
+    font-size: 2rem;
+    color: #005f73; /* Colore principale del sito */
+    margin-bottom: 20px;
+}
+
+.testimonial-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    background-color: #ffffff; /* Sfondo bianco per ogni testimonianza */
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    text-align: center;
+    flex: 1;
+}
+
+.testimonial p {
+    font-size: 1rem;
+    font-style: italic;
+    color: #333333;
+}
+
+.testimonial span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #008CBA; /* Colore del nome del testimone */
+}
+
 /* Footer */
 footer {
     text-align: center;
@@ -281,10 +332,12 @@ body {
 /* Navbar */
 .navbar {
     padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: fixed; /* Posiziona in modo fisso sulla pagina */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar-container {
