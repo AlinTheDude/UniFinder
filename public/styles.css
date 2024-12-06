@@ -379,7 +379,7 @@ body {
 /* Hero Section */
 #hero {
     text-align: center;
-    color: var(--bianco);
+    background-color: rgba(173, 216, 230, 0.8); /* Azzurro chiaro con opacità */
     padding: 100px 20px;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -424,7 +424,7 @@ body {
     gap: 20px;
     margin: 50px 0;
     padding: 20px;
-    background-color: transparent;
+    background-color: rgba(173, 216, 230, 0.8); /* Azzurro chiaro con opacità */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
