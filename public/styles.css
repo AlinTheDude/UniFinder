@@ -88,7 +88,7 @@ header nav ul li a:hover {
 
 /* Stile delle sezioni */
 section {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: transparent;
     margin: 20px auto;
     padding: 20px;
     border-radius: 8px;
