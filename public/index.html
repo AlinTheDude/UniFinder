@@ -6,83 +6,34 @@
     <title>UniFinder</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Aggiungere uno stile per l'immagine di sfondo */
         body {
             background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
     </style>
 </head>
 <body>
-
     <header>
         <nav>
             <h1>UniFinder</h1>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="#registrazione">Registrazione</a></li>
+                <li><a href="registrazione.html">Registrazione</a></li>
                 <li><a href="login.html">Login</a></li>
-                <li><a href="#ricerca-universita">Ricerca Università</a></li>
+                <li><a href="ricerca.html">Ricerca Università</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Registrazione -->
-    <section id="registrazione">
-        <h2>Registrazione</h2>
-        <form id="registrationForm">
-            <input type="text" id="regName" placeholder="Nome" required>
-            <input type="email" id="regEmail" placeholder="Email" required>
-            <input type="password" id="regPassword" placeholder="Password" required>
-            <input type="text" id="regPreferenze" placeholder="Preferenze (es. Paese, Corso)">
-            <button type="submit">Registrati</button>
-        </form>
-        <p>Hai già un account? <a href="login.html">Accedi qui</a></p> <!-- Evidenziare meglio il messaggio di registrazione -->
-    </section>
-
-
-    <!-- Ricerca Università -->
-    <section id="ricerca-universita">
-        <h2>Ricerca Università</h2>
-        <form id="searchForm">
-            <input type="text" id="paese" placeholder="Paese">
-            <input type="number" id="tasseMassime" placeholder="Tasse massime">
-            <input type="text" id="borseDiStudio" placeholder="Borse di studio (Sì/No)">
-            <input type="text" id="offertaFormativa" placeholder="Offerta formativa">
-            <input type="number" id="reputazioneMinima" placeholder="Reputazione minima (1-5)">
-            <button type="submit">Cerca</button>
-        </form>
-
-        <div id="result"></div>
-    </section>
-
-    <button id="allUsers">Mostra Tutti gli Utenti</button>
-    <button id="filteredUsers">Mostra Utenti Filtrati</button>
-
-    <script>
-        // Bottone per mostrare tutti gli utenti
-        document.getElementById('allUsers').addEventListener('click', () => {
-            fetch('http://65.108.146.104:3001/utenti')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Tutti gli utenti:', data);
-                })
-                .catch(error => console.error('Errore:', error));
-        });
-
-        // Bottone per mostrare gli utenti filtrati
-        document.getElementById('filteredUsers').addEventListener('click', () => {
-            fetch('http://65.108.146.104:3001/utenti-filtrati')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Utenti filtrati:', data);
-                })
-                .catch(error => console.error('Errore:', error));
-        });
-    </script>
-
+    <!-- Pagina principale vuota -->
+    <main>
+        <section id="welcome">
+            <h2>Benvenuto su UniFinder!</h2>
+            <p>Esplora le università di tutto il mondo con UniFinder. <br> Registrati o accedi per iniziare la tua ricerca personalizzata.</p>
+        </section>
+    </main>
 
     <footer>
         <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
