@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard - UniFinder</title>
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-    <!-- Navbar migliorata e responsive -->
+    <!-- Navbar originale ma migliorata -->
     <header>
         <nav class="navbar">
             <div class="navbar-container">
@@ -28,21 +28,24 @@
         </nav>
     </header>
 
-    <!-- Container Dashboard -->
+    <!-- Contenuto principale della Dashboard -->
     <div class="dashboard-container">
         <div class="profile-card">
             <div class="profile-header">
-                <img src="Imgs/images.jpg" alt="Profile Picture" class="profile-picture">
+                <img src="Imgs/images.jpg" alt="Immagine Profilo" class="profile-picture">
                 <div class="profile-info">
-                    <h2 id="username">Username</h2>
+                    <h2 id="username">Nome Utente</h2>
                     <p id="user-role">Studente</p>
                 </div>
             </div>
+
+            <!-- Dettagli del profilo -->
             <div class="profile-details">
-                <h3>Dettagli Profilo</h3>
+                <h3>Dettagli del Profilo</h3>
                 <ul>
                     <li><strong>Email:</strong> <span id="email">example@example.com</span></li>
                 </ul>
+
                 <div class="profile-actions">
                     <a href="preferences.html">
                         <button class="btn">Modifica Preferenze</button>
@@ -51,6 +54,18 @@
                         <button class="btn">Logout</button>
                     </a>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Sezione con statistiche o attività recenti -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Eventi Recenti</h3>
+                <p id="recent-events">Non ci sono eventi recenti.</p>
+            </div>
+            <div class="stat-card">
+                <h3>Università Preferite</h3>
+                <p id="favorite-universities">Nessuna università preferita.</p>
             </div>
         </div>
     </div>
