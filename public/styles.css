@@ -51,11 +51,6 @@ header {
     background: rgba(44, 62, 80, 0.9);
     padding: 10px 0;
     text-align: center;
-    position: fixed; /* Usa 'fixed' per mantenerla sempre in cima */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100; /* Imposta un valore più basso per la navbar originale */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -332,12 +327,10 @@ body {
 /* Navbar */
 .navbar {
     padding: 10px 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    position: fixed; /* Posiziona in modo fisso sulla pagina */
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
     z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-container {
