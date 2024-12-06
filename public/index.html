@@ -3,89 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFinder - Trova la tua Università</title>
+    <title>UniFinder</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Aggiungere uno stile per l'immagine di sfondo */
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <nav class="navbar">
-            <div class="navbar-container">
-                <h1 class="logo">UniFinder</h1>
-                <ul class="navbar-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="registrazione.html">Registrazione</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="ricerca.html">Ricerca Università</a></li>
-                </ul>
-                <div class="hamburger-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#registrazione">Registrazione</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="#ricerca-universita">Ricerca Università</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero">
-            <h1>Esplora il Futuro con UniFinder</h1>
-            <p>Il tuo viaggio accademico inizia qui. Trova, confronta e scegli tra le migliori università del mondo.</p>
-            <div class="btn-container">
-                <a href="registrazione.html">Inizia Ora</a>
-                <a href="ricerca.html">Cerca Università</a>
-            </div>
-        </section>
+    <!-- Registrazione -->
+    <section id="registrazione">
+        <h2>Registrazione</h2>
+        <form id="registrationForm">
+            <input type="text" id="regName" placeholder="Nome" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <input type="text" id="regPreferenze" placeholder="Preferenze (es. Paese, Corso)">
+            <button type="submit">Registrati</button>
+        </form>
+        <p>Hai già un account? <a href="login.html">Accedi qui</a></p> <!-- Evidenziare meglio il messaggio di registrazione -->
+    </section>
 
-        <!-- Features Section -->
-        <section class="features">
-            <div>
-                <img src="Imgs/search.png" alt="Ricerca">
-                <h3>Motore di Ricerca</h3>
-                <p>Trova le università perfette per te con strumenti avanzati di ricerca.</p>
-            </div>
-            <div>
-                <img src="Imgs/users.png" alt="Comunità">
-                <h3>Community</h3>
-                <p>Condividi esperienze e recensioni con studenti di tutto il mondo.</p>
-            </div>
-            <div>
-                <img src="Imgs/globe.png" alt="Globale">
-                <h3>Accesso Globale</h3>
-                <p>Esplora le opportunità accademiche senza confini.</p>
-            </div>
-        </section>
 
-        <!-- Testimonials Section -->
-        <section class="testimonials">
-            <h2>Cosa dicono i nostri utenti</h2>
-            <div class="testimonial-container">
-                <div class="testimonial">
-                    <p>"Grazie a UniFinder ho trovato l'università dei miei sogni!"</p>
-                    <span>- Maria, Italia</span>
-                </div>
-                <div class="testimonial">
-                    <p>"La piattaforma è intuitiva e mi ha aiutato tantissimo nella ricerca."</p>
-                    <span>- John, Regno Unito</span>
-                </div>
-                <div class="testimonial">
-                    <p>"Ottima community! Ho scoperto informazioni preziose sulle università."</p>
-                    <span>- Ling, Cina</span>
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- Ricerca Università -->
+    <section id="ricerca-universita">
+        <h2>Ricerca Università</h2>
+        <form id="searchForm">
+            <input type="text" id="paese" placeholder="Paese">
+            <input type="number" id="tasseMassime" placeholder="Tasse massime">
+            <input type="text" id="borseDiStudio" placeholder="Borse di studio (Sì/No)">
+            <input type="text" id="offertaFormativa" placeholder="Offerta formativa">
+            <input type="number" id="reputazioneMinima" placeholder="Reputazione minima (1-5)">
+            <button type="submit">Cerca</button>
+        </form>
+
+        <div id="result"></div>
+    </section>
+
+    <button id="allUsers">Mostra Tutti gli Utenti</button>
+    <button id="filteredUsers">Mostra Utenti Filtrati</button>
+
+    <script>
+        // Bottone per mostrare tutti gli utenti
+        document.getElementById('allUsers').addEventListener('click', () => {
+            fetch('http://65.108.146.104:3001/utenti')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Tutti gli utenti:', data);
+                })
+                .catch(error => console.error('Errore:', error));
+        });
+
+        // Bottone per mostrare gli utenti filtrati
+        document.getElementById('filteredUsers').addEventListener('click', () => {
+            fetch('http://65.108.146.104:3001/utenti-filtrati')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Utenti filtrati:', data);
+                })
+                .catch(error => console.error('Errore:', error));
+        });
+    </script>
+
 
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-            <div class="social-icons">
-                <a href="http://www.facebook.com"><img src="Imgs/facebook.png" alt="Facebook"></a>
-                <a href="http://twitter.com"><img src="Imgs/twitter.png" alt="Twitter"></a>
-                <a href="http://instagram.com"><img src="Imgs/instagram.png" alt="Instagram"></a>
-            </div>
-        </div>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
     </footer>
-<script src="app.js" defer></script>
+
+    <script src="app.js" defer></script>
 </body>
 </html>
