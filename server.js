@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
-
+require('dotenv').config();
 const app = express();
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
