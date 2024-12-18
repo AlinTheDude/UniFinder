@@ -7,6 +7,12 @@ require('dotenv').config();
 const app = express();
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
+// MOCK DATABASE CONFIGURAZIONE
+//const mockdb = [
+    //{ id: 1, nome: "Università di Roma", paese: "Italia" },
+    //{ id: 2, nome: "Harvard University", paese: "USA" },
+    //{ id: 3, nome: "University of Tokyo", paese: "Giappone" }
+//];
 
 // Connessione al database
 let db = new sqlite3.Database(dbPath, (err) => {
@@ -15,6 +21,10 @@ let db = new sqlite3.Database(dbPath, (err) => {
     }
     console.log('Connesso al database SQLite.');
 });
+
+//app.get('/api/mockdb', (req, res) => {
+  //  res.json(mockdb);
+// });
 
 // Middleware per il parsing del JSON
 app.use(express.json());
