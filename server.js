@@ -4,7 +4,10 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 require('dotenv').config();
+const WebSocket = require('ws');
 const app = express();
+const server = http.createServer(app); // Usa il server HTTP per supportare WebSocket
+const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
 // MOCK DATABASE CONFIGURAZIONE
@@ -153,6 +156,27 @@ app.post('/ricerca-universita', (req, res) => {
             return res.status(500).json({ error: 'Errore durante la ricerca università. Riprova più tardi.' });
         }
         res.json({ universita: rows });
+    });
+});
+
+wss.on('connection', (ws) => {
+    console.log('Nuovo client connesso alla chat');
+
+    // Quando il client invia un messaggio
+    ws.on('message', (message) => {
+        console.log('Messaggio ricevuto dal client:', message);
+        
+        // Invia il messaggio a tutti i client connessi
+        wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+
+    // Quando il client si disconnette
+    ws.on('close', () => {
+        console.log('Client disconnesso dalla chat');
     });
 });
 

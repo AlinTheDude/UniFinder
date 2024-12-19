@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Assistenza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #4caf50;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: #f4f4f4;
+        }
+        .chat-messages .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #e4e6eb;
+        }
+        .chat-messages .message.user {
+            background-color: #4caf50;
+            color: #fff;
+            text-align: right;
+        }
+        .chat-input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+        .send-button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        Chat Assistenza
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-container">
+        <input type="text" id="chat-input" class="chat-input" placeholder="Scrivi un messaggio...">
+        <button id="send-button" class="send-button">Invia</button>
+    </div>
+</div>
+
+<script>
+    const socket = new WebSocket('ws://localhost:3001'); // Connetti al server WebSocket
+    const messagesContainer = document.getElementById('chat-messages');
+    const inputField = document.getElementById('chat-input');
+    const sendButton = document.getElementById('send-button');
+
+    // Quando la connessione è aperta
+    socket.addEventListener('open', () => {
+        console.log('Connessione aperta con il server WebSocket');
+    });
+
+    // Quando riceviamo un messaggio dal server
+    socket.addEventListener('message', (event) => {
+        const message = event.data;
+        console.log('Messaggio dal server:', message);
+        
+        // Aggiungi il messaggio alla chat
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.textContent = message;
+        messagesContainer.appendChild(messageElement);
+
+        // Scorri automaticamente verso l'ultimo messaggio
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    // Invia messaggio quando si preme il pulsante
+    sendButton.addEventListener('click', sendMessage);
+    inputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const message = inputField.value;
+        if (message.trim() !== '') {
+            socket.send(message); // Invia il messaggio al server
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'user');
+            messageElement.textContent = message;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            inputField.value = ''; // Pulisci il campo di input
+        }
+    }
+</script>
+
+</body>
+</html>
