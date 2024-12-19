@@ -178,6 +178,61 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const chatBox = document.getElementById('chatBox');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+
+    // Funzione per inviare messaggio
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message === '') return; // Non inviare messaggi vuoti
+
+        // Aggiunge il messaggio utente alla chat
+        appendMessage(message, 'user-message');
+
+        // Pulisce il campo di input
+        chatInput.value = '';
+
+        // Simulazione di una risposta del "bot" o dell'assistenza
+        setTimeout(() => {
+            const botResponse = generateBotResponse(message);
+            appendMessage(botResponse, 'bot-message');
+        }, 1000); // Ritardo di 1 secondo
+    }
+
+    // Funzione per aggiungere un messaggio alla chat
+    function appendMessage(message, className) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', className);
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scorrimento automatico in basso
+    }
+
+    // Simulazione di risposte automatiche
+    function generateBotResponse(userMessage) {
+        const responses = {
+            'ciao': 'Ciao! Come posso aiutarti oggi?',
+            'help': 'Ecco alcuni suggerimenti su come usare UniFinder...',
+            'problema': 'Mi dispiace sapere che hai un problema. Puoi spiegarmi di più?',
+            'grazie': 'Prego! Se hai bisogno di altro, fammelo sapere.',
+        };
+
+        for (let keyword in responses) {
+            if (userMessage.toLowerCase().includes(keyword)) {
+                return responses[keyword];
+            }
+        }
+
+        return 'Non sono sicuro di aver capito. Puoi riformulare?';
+    }
+
+    // Invia il messaggio con il pulsante o premendo il tasto "Invio"
+    sendButton.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
     // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
     document.addEventListener('DOMContentLoaded', handleDefaultFormEvents);
 });
