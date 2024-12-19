@@ -217,7 +217,6 @@ process.on('SIGINT', () => {
     });
 });
 
-// Avvio del server
 app.listen(port, '65.108.146.104', () => {
     console.log(`Server API in esecuzione su http://65.108.146.104:${port}`);
 });
