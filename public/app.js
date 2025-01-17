@@ -246,6 +246,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+
+    function handleGoogleLogin() {
+        const googleButton = document.getElementById('google-login-button');
+        if (!googleButton) return;
+    
+        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
+        const scope = 'openid email profile';
+    
+        google.accounts.id.initialize({
+            client_id: clientId,
+            callback: handleGoogleLoginCallback
+        });
+    
+        google.accounts.id.renderButton(googleButton, {
+            theme: 'outline',
+            size: 'large'
+        });
+    }
+    
+    // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
+    document.addEventListener('DOMContentLoaded', handleGoogleLogin);
+
+
     // Gestione del callback di login di Google
     function handleGoogleLoginCallback(response) {
         console.log('Risposta di Google:', response);
