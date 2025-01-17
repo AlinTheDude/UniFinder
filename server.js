@@ -192,6 +192,48 @@ app.get('/utenti', (req, res) => {
     });
 });
 
+app.post('/api/google-login', async (req, res) => {
+    const { credential } = req.body;
+    
+    try {
+        const { id_token } = await googleVerifyToken(credential);
+        
+        const { email, name } = id_token.payload;
+        
+        // Verifica se l'utente esiste nel database
+        const existingUser = await db.get('SELECT * FROM utenti WHERE email = ?', [email]);
+        
+        if (existingUser) {
+            res.json({ message: 'Login riuscito', email, name });
+        } else {
+            // Se non esiste, crea un nuovo utente
+            const newUser = { email, name };
+            const userId = await db.run('INSERT INTO utenti (nome, email, password) VALUES (?, ?, ?)', 
+                [newUser.name, newUser.email, 'password123']); // Usa una password temporanea
+            
+            res.json({ message: 'Login riuscito', email, name, id: userId });
+        }
+    } catch (error) {
+        console.error('Errore durante il login con Google:', error);
+        res.status(500).json({ error: 'Errore durante il login con Google' });
+    }
+});
+
+// Funzione per verificare il token di Google
+async function googleVerifyToken(token) {
+    try {
+        const response = await axios.request({
+            method: 'POST',
+            url: `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`,
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Token non valido');
+    }
+}
+
+
 // Restituisce gli utenti con preferenze specifiche
 app.get('/utenti-filtrati', (req, res) => {
     const query = `SELECT * FROM utenti WHERE preferenze LIKE '%Italia%' AND preferenze LIKE '%Informatica%'`;
