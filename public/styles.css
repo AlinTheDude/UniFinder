@@ -365,3 +365,33 @@ input:focus, button:hover, a:hover {
     transform: scale(1.05);
 }
 
+.google-login-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 15px;
+    background-color: var(--azzurro);
+    color: var(--bianco);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.google-login-button:hover {
+    background-color: var(--verde);
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.google-login-button img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.google-login-button span {
+    vertical-align: middle;
+}
+
