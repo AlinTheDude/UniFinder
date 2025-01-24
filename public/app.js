@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!googleButton) return;
     
         // Inserisci qui il client ID ottenuto da Google Cloud Console
-        const clientId = '.....';
+        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
         const scope = 'openid email profile';
     
         google.accounts.id.initialize({
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!googleButton) return;
     
         // Inserisci qui il client ID ottenuto da Google Cloud Console
-        const clientId = '....';
+        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
         const scope = 'openid email profile';
     
         google.accounts.id.initialize({
