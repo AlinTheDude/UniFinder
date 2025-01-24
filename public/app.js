@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     preferenze: preferenze
                 });
 
-                fetch('http://localhost:3001/registrazione', {
+                fetch('http://65.108.146.104:3001/registrazione', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
                 console.log("Dati del form di login:", { email, password });
     
-                fetch('http://localhost:3001/login', {
+                fetch('http://65.108.146.104:3001/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, password: password })
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // Fai una richiesta POST al server
-                fetch('http://localhost:3001/ricerca-universita', {
+                fetch('http://65.108.146.104:3001/ricerca-universita', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
