@@ -3,53 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Assistenza - UniFinder</title>
+    <title>Login - UniFinder</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Aggiungere uno stile per l'immagine di sfondo */
+        /* Stile per l'immagine di sfondo */
         body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
+            background-image: url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
         }
     </style>
 </head>
 <body>
-
     <header>
         <nav>
             <h1>UniFinder</h1>
             <ul>
                 <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#registrazione">Registrazione</a></li>
                 <li><a href="login.html">Login</a></li>
-                <li><a href="chat.html" class="active">Chat Assistenza</a></li> <!-- Link attivo -->
-                <li><a href="#ricerca-universita">Ricerca Università</a></li>
+                <li><a href="chat.html">Chat Assistenza</a></li>
+                <li><a href="index.html#ricerca-universita">Ricerca Università</a></li>
                 <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni.</a></li>
+                <li><a href="Terms.html">Termini e Condizioni</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="chat-container">
-        <h2>Chat Assistenza</h2>
+    <section id="login">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Accedi</button>
+        </form>
         
-        <!-- Sezione della chat -->
-        <div class="chat-box" id="chatBox">
-            <!-- Messaggi vengono aggiunti qui dinamicamente -->
+        <div id="google-login-container">
+            <h3>Accedi con Google</h3>
+            <button id="google-login-button" class="google-login-button">
+                <img src="Imgs/google_icon.png" alt="Google Login">
+                <span>Accedi con Google</span>
+            </button>
         </div>
 
-        <!-- Sezione di input -->
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." autocomplete="off">
-            <button id="sendButton">Invia</button>
-        </div>
-    </main>
+        <p>Non hai un account? <a href="index.html#registrazione">Registrati qui</a></p>
+        
+        <div id="loginFeedback"></div>
+    </section>
 
     <footer>
         <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
     </footer>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="app.js" defer></script>
 </body>
 </html>

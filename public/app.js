@@ -272,32 +272,66 @@ function handleGoogleLogin() {
 // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
 document.addEventListener('DOMContentLoaded', handleGoogleLogin);
 
-function handleGoogleLoginCallback(response) {
-    console.log('Risposta di Google:', response);
-    const { credential } = response;
+const googleButton = document.getElementById('google-login-button');
+    if (!googleButton) {
+        console.error("Pulsante di login Google non trovato");
+        return;
+    }
 
-    fetch('/auth/google', {
-        method: 'POST',
-        body: JSON.stringify({ credential }),
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Risposta del server:', data);
-        if (data.message === 'Login riuscito') {
-            sessionStorage.setItem('userEmail', data.email);
-            sessionStorage.setItem('userName', data.name || 'Utente');
-            alert('Login effettuato con successo!');
-            window.location.href = 'dashboard.html';
-        } else {
-            alert(data.message || 'Errore durante il login');
-        }
-    })
-    .catch(error => {
-        console.error('Errore durante il login con Google:', error);
-        alert('Errore di rete. Riprova più tardi.');
+    // Inizializzazione del pulsante di login Google
+    const clientId = config.google.clientId;
+    const scope = 'openid email profile';
+
+    google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleLoginCallback
     });
-}
+
+    google.accounts.id.renderButton(googleButton, {
+        theme: 'outline',
+        size: 'large'
+    });
+
+    // Aggiungiamo un event listener per il click sul pulsante
+    googleButton.addEventListener('click', function() {
+        console.log("Pulsante di login Google cliccato");
+        handleGoogleLoginCallback();
+    });
+
+    // Funzione per gestire il callback di Google
+    function handleGoogleLoginCallback(response) {
+        console.log('Risposta di Google:', response);
+        const { credential } = response;
+
+        fetch('/auth/google', {
+            method: 'POST',
+            body: JSON.stringify({ credential }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Risposta del server:', data);
+            if (data.message === 'Login riuscito') {
+                sessionStorage.setItem('userEmail', data.email);
+                sessionStorage.setItem('userName', data.name || 'Utente');
+                alert('Login effettuato con successo!');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert(data.message || 'Errore durante il login');
+            }
+        })
+        .catch(error => {
+            console.error('Errore durante il login con Google:', error);
+            alert('Errore di rete. Riprova più tardi.');
+        });
+    }
+
+    // Gestione degli errori
+    google.accounts.id.on('error', function(e) {
+        console.error('Errore Google OAuth:', e);
+        alert('Si è verificato un errore durante il processo di autenticazione. Riprova più tardi.');
+    });
+
     
     // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
     document.addEventListener('DOMContentLoaded', () => {
