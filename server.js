@@ -52,15 +52,35 @@ passport.use(new GoogleStrategy({
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google OAuth callback route
-app.get('/auth/google/callback',
-  passport.authorize('google',
-    function(req, res) {
-      // The Google OAuth 2.0 token was returned with authentication code in the URI.
-      // Use that token to obtain the OAuth 2.0 user info
-      res.redirect('/dashboard.html');
-    }
-  )
-);
+// Google OAuth callback route
+app.post('/auth/google/callback',
+    passport.authorize('google',
+      function(req, res) {
+        // The Google OAuth 2.0 token was returned with authentication code in the URI.
+        // Use that token to obtain the OAuth 2.0 user info
+        const { credential } = req.body;
+        
+        fetch('/api/google-login', {
+          method: 'POST',
+          body: JSON.stringify({ credential }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Risposta del server:', data);
+          if (data.message === 'Login riuscito') {
+            res.redirect('/dashboard.html');
+          } else {
+            res.status(401).json({ message: 'Errore durante il login' });
+          }
+        })
+        .catch(error => {
+          console.error('Errore durante il login con Google:', error);
+          res.status(500).json({ error: 'Errore durante il login con Google' });
+        });
+      }
+    )
+  );
 
 //app.get('/api/mockdb', (req, res) => {
   //  res.json(mockdb);

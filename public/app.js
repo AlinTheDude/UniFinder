@@ -247,56 +247,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 
-    function handleGoogleLoginCallback(response) {
-        console.log('Risposta di Google:', response);
-        const { credential } = response;
-    
-        fetch('/auth/google', {
-            method: 'GET'
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Risposta del server:', data);
-            if (data.message === 'Login riuscito') {
-                // Salva email e nome utente nella sessione
-                sessionStorage.setItem('userEmail', data.email);
-                sessionStorage.setItem('userName', data.name || 'Utente');
-                alert('Login effettuato con successo!');
-                window.location.href = 'dashboard.html'; // Reindirizza alla pagina della dashboard
-            } else {
-                alert(data.message || 'Errore durante il login');
-            }
-        })
-        .catch(error => {
-            console.error('Errore durante il login con Google:', error);
-            alert('Errore di rete. Riprova più tardi.');
-        });
-    }
-    
-    
-    // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
-    document.addEventListener('DOMContentLoaded', handleGoogleLogin);
-
 
     // Gestione del callback di login di Google
-    function handleGoogleLogin() {
-        const googleButton = document.getElementById('google-login-button');
-        if (!googleButton) return;
     
-        // Inserisci qui il client ID ottenuto da Google Cloud Console
-        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
-        const scope = 'openid email profile';
-    
-        google.accounts.id.initialize({
-            client_id: clientId,
-            callback: handleGoogleLoginCallback
-        });
-    
-        google.accounts.id.renderButton(googleButton, {
-            theme: 'outline',
-            size: 'large'
-        });
-    }
+function handleGoogleLogin() {
+    const googleButton = document.getElementById('google-login-button');
+    if (!googleButton) return;
+
+    // Inserisci qui il client ID ottenuto da Google Cloud Console
+    const clientId = config.google.clientId;
+    const scope = 'openid email profile';
+
+    google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleGoogleLoginCallback
+    });
+
+    google.accounts.id.renderButton(googleButton, {
+        theme: 'outline',
+        size: 'large'
+    });
+}
+
+// Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
+document.addEventListener('DOMContentLoaded', handleGoogleLogin);
+
+function handleGoogleLoginCallback(response) {
+    console.log('Risposta di Google:', response);
+    const { credential } = response;
+
+    fetch('/auth/google', {
+        method: 'POST',
+        body: JSON.stringify({ credential }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Risposta del server:', data);
+        if (data.message === 'Login riuscito') {
+            sessionStorage.setItem('userEmail', data.email);
+            sessionStorage.setItem('userName', data.name || 'Utente');
+            alert('Login effettuato con successo!');
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(data.message || 'Errore durante il login');
+        }
+    })
+    .catch(error => {
+        console.error('Errore durante il login con Google:', error);
+        alert('Errore di rete. Riprova più tardi.');
+    });
+}
     
     // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
     document.addEventListener('DOMContentLoaded', () => {
