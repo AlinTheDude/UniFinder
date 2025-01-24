@@ -10,6 +10,11 @@ const server = http.createServer(app); // Usa il server HTTP per supportare WebS
 const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
+const config = require('./config');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
     //{ id: 1, nome: "Università di Roma", paese: "Italia" },
@@ -24,6 +29,38 @@ let db = new sqlite3.Database(dbPath, (err) => {
     }
     console.log('Connesso al database SQLite.');
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Configure Google Strategy
+passport.use(new GoogleStrategy({
+    clientID: config.google.clientID,
+    clientSecret: config.google.clientSecret,
+    callbackURL: config.google.callbackURL
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // In-memory storage for demonstration purposes only!
+    // The user's OAuth ID should be tied to any accounts data stored in your database
+    return cb(null, profile);
+  }
+));
+
+// ... (other routes)
+
+// Google OAuth route
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Google OAuth callback route
+app.get('/auth/google/callback',
+  passport.authorize('google',
+    function(req, res) {
+      // The Google OAuth 2.0 token was returned with authentication code in the URI.
+      // Use that token to obtain the OAuth 2.0 user info
+      res.redirect('/dashboard.html');
+    }
+  )
+);
 
 //app.get('/api/mockdb', (req, res) => {
   //  res.json(mockdb);
@@ -45,6 +82,8 @@ db.run(`CREATE TABLE IF NOT EXISTS utenti (
         console.error('Errore nella creazione della tabella utenti:', err.message);
     }
 });
+
+
 
 // Creazione della tabella 'universita' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS universita (

@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!googleButton) return;
     
         // Inserisci qui il client ID ottenuto da Google Cloud Console
-        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
+        const clientId = '.....';
         const scope = 'openid email profile';
     
         google.accounts.id.initialize({
@@ -247,43 +247,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 
-    function handleGoogleLogin() {
-        const googleButton = document.getElementById('google-login-button');
-        if (!googleButton) return;
-    
-        const clientId = '630061902452-lrubn0joaj9pt5hhrq2e2k7nvfqsgep4.apps.googleusercontent.com';
-        const scope = 'openid email profile';
-    
-        google.accounts.id.initialize({
-            client_id: clientId,
-            callback: handleGoogleLoginCallback
-        });
-    
-        google.accounts.id.renderButton(googleButton, {
-            theme: 'outline',
-            size: 'large'
-        });
-    }
-    
-    // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
-    document.addEventListener('DOMContentLoaded', handleGoogleLogin);
-
-
-    // Gestione del callback di login di Google
     function handleGoogleLoginCallback(response) {
         console.log('Risposta di Google:', response);
         const { credential } = response;
-        const encodedCredential = encodeURIComponent(credential);
     
-        fetch('/api/google-login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ credential: encodedCredential })
+        fetch('/auth/google', {
+            method: 'GET'
         })
         .then(response => response.json())
         .then(data => {
+            console.log('Risposta del server:', data);
             if (data.message === 'Login riuscito') {
-                // Salva l'email e il nome utente nella sessione
+                // Salva email e nome utente nella sessione
                 sessionStorage.setItem('userEmail', data.email);
                 sessionStorage.setItem('userName', data.name || 'Utente');
                 alert('Login effettuato con successo!');
@@ -293,8 +268,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Errore:', error);
+            console.error('Errore durante il login con Google:', error);
             alert('Errore di rete. Riprova più tardi.');
+        });
+    }
+    
+    
+    // Chiamata per inizializzare il pulsante di login di Google quando il DOM è completamente caricato
+    document.addEventListener('DOMContentLoaded', handleGoogleLogin);
+
+
+    // Gestione del callback di login di Google
+    function handleGoogleLogin() {
+        const googleButton = document.getElementById('google-login-button');
+        if (!googleButton) return;
+    
+        // Inserisci qui il client ID ottenuto da Google Cloud Console
+        const clientId = '....';
+        const scope = 'openid email profile';
+    
+        google.accounts.id.initialize({
+            client_id: clientId,
+            callback: handleGoogleLoginCallback
+        });
+    
+        google.accounts.id.renderButton(googleButton, {
+            theme: 'outline',
+            size: 'large'
         });
     }
     
