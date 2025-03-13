@@ -318,6 +318,6 @@ process.on('SIGINT', () => {
     });
 });
 
-app.listen(port, '65.108.146.104', () => {
-    console.log(`Server API in esecuzione su http://65.108.146.104:${port}`);
+app.listen(3001, () => {
+    console.log('Server in esecuzione su http://localhost:3001');
 });
