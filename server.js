@@ -14,6 +14,7 @@ const config = require('./config');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const http = require('http'); // Aggiungi questa riga per importare il modulo http
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
