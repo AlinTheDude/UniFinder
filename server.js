@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http'); // Questa deve essere la prima importazione
+const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
@@ -12,11 +13,7 @@ const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
 const config = require('./config');
-const session = require('express-session');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const GOOGLE_CLIENT_ID = 'IL_TUO_CLIENT_ID';
-const GOOGLE_CLIENT_SECRET = 'IL_TUO_CLIENT_SECRET';
+
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
     //{ id: 1, nome: "Università di Roma", paese: "Italia" },
@@ -32,64 +29,7 @@ let db = new sqlite3.Database(dbPath, (err) => {
     console.log('Connesso al database SQLite.');
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
 
-// Configure Google Strategy
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/google/callback',
-},
-function(accessToken, refreshToken, profile, done) {
-    // Gestisci il profilo dell'utente (salvando nel DB o sessione)
-    return done(null, profile);
-}
-));
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-    done(null, obj);
-});
-
-// ... (other routes)
-
-// Google OAuth route
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// Google OAuth callback route
-// Google OAuth callback route
-app.post('/auth/google/callback',
-    passport.authorize('google',
-      function(req, res) {
-        // The Google OAuth 2.0 token was returned with authentication code in the URI.
-        // Use that token to obtain the OAuth 2.0 user info
-        const { credential } = req.body;
-        
-        fetch('/api/google-login', {
-          method: 'POST',
-          body: JSON.stringify({ credential }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Risposta del server:', data);
-          if (data.message === 'Login riuscito') {
-            res.redirect('/dashboard.html');
-          } else {
-            res.status(401).json({ message: 'Errore durante il login' });
-          }
-        })
-        .catch(error => {
-          console.error('Errore durante il login con Google:', error);
-          res.status(500).json({ error: 'Errore durante il login con Google' });
-        });
-      }
-    )
-  );
 
 //app.get('/api/mockdb', (req, res) => {
   //  res.json(mockdb);
@@ -260,46 +200,6 @@ app.get('/utenti', (req, res) => {
     });
 });
 
-app.post('/api/google-login', async (req, res) => {
-    const { credential } = req.body;
-    
-    try {
-        const { id_token } = await googleVerifyToken(credential);
-        
-        const { email, name } = id_token.payload;
-        
-        // Verifica se l'utente esiste nel database
-        const existingUser = await db.get('SELECT * FROM utenti WHERE email = ?', [email]);
-        
-        if (existingUser) {
-            res.json({ message: 'Login riuscito', email, name });
-        } else {
-            // Se non esiste, crea un nuovo utente
-            const newUser = { email, name };
-            const userId = await db.run('INSERT INTO utenti (nome, email, password) VALUES (?, ?, ?)', 
-                [newUser.name, newUser.email, 'password123']); // Usa una password temporanea
-            
-            res.json({ message: 'Login riuscito', email, name, id: userId });
-        }
-    } catch (error) {
-        console.error('Errore durante il login con Google:', error);
-        res.status(500).json({ error: 'Errore durante il login con Google' });
-    }
-});
-
-// Funzione per verificare il token di Google
-async function googleVerifyToken(token) {
-    try {
-        const response = await axios.request({
-            method: 'POST',
-            url: `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`,
-            headers: { 'Content-Type': 'application/json' }
-        });
-        return response.data;
-    } catch (error) {
-        throw new Error('Token non valido');
-    }
-}
 
 
 // Restituisce gli utenti con preferenze specifiche
