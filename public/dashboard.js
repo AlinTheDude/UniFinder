@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('email').innerText = email;
     
     // Chiamata API per ottenere il nome dell'utente
-    fetch(`http://65.108.146.104:3001/utente?email=${email}`)
+    fetch(`http://localhost:3001/utente?email=${email}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('username').innerText = data.nome || 'Non specificato';
