@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http'); // Questa deve essere la prima importazione
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
@@ -14,7 +15,6 @@ const config = require('./config');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const http = require('http'); // Aggiungi questa riga per importare il modulo http
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
