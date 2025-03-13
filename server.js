@@ -80,31 +80,36 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
 
 // Endpoint per la registrazione
 app.post('/registrazione', (req, res) => {
-    console.log('Richiesta di registrazione ricevuta:', req.body);  // Log iniziale
-
-    // Verifica che i campi obbligatori siano presenti
+    console.log('1. Richiesta di registrazione ricevuta:', req.body);
+    
+    // Verifica 1: Dati del form
+    console.log('2. Verifica dati form:', {
+        nome: req.body.nome,
+        email: req.body.email,
+        password: '***' // Non mostrare la password
+    });
+    
+    // Verifica 2: Validazione
     if (!req.body.nome || !req.body.email || !req.body.password) {
-        console.error('Errore: campi obbligatori mancanti');
+        console.log('3. Errore: campi obbligatori mancanti');
         return res.status(400).json({ error: 'Compila tutti i campi obbligatori' });
     }
-
-    // Inserisci i dati nel database
-    db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`,
+    
+    // Verifica 3: Database
+    db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`, 
         [req.body.nome, req.body.email, req.body.password, req.body.preferenze],
         function (err) {
             if (err) {
-                // Verifica se l'errore è dovuto a un'email duplicata
-                if (err.message.includes("UNIQUE constraint failed: utenti.email")) {
-                    console.error('Errore: email già registrata');
+                console.log('4. Errore database:', err.message);
+                if (err.message.includes("UNIQUE constraint failed")) {
                     return res.status(400).json({ error: "Email già registrata" });
                 }
-                // Log generico per altri errori del database
-                console.error('Errore durante la registrazione nel database:', err.message);
-                return res.status(500).json({ error: 'Errore durante la registrazione. Riprovare.' });
+                return res.status(500).json({ error: 'Errore durante la registrazione' });
             }
-            console.log('Registrazione completata con successo, ID utente:', this.lastID);
+            console.log('5. Registrazione completata con successo');
             res.json({ message: 'Registrazione completata', id: this.lastID });
-        });
+        }
+    );
 });
 
 // Endpoint per il login
