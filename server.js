@@ -268,6 +268,6 @@ process.on('SIGINT', () => {
     });
 });
 
-app.listen(3001, () => {
+server.listen(3001, () => {
     console.log('Server in esecuzione su http://localhost:3001');
 });

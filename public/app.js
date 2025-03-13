@@ -65,38 +65,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginForm = document.getElementById('loginForm');
     
         if (loginForm) {
-            loginForm.addEventListener('submit', function (event) {
+            loginForm.addEventListener('submit', async function (event) {
                 event.preventDefault();
-    
                 const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
-    
-                console.log("Dati del form di login:", { email, password });
-    
-                fetch('http://localhost:3001/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, password: password })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log("Risposta dal server:", data);
-    
-                        if (data.message === 'Login riuscito') {
-                            // Salva i dettagli dell'utente nella sessione
-                            sessionStorage.setItem('userEmail', email);
-                            sessionStorage.setItem('userName', data.user.nome || 'Utente');
-                            
-                            // Vai a una nuova pagina o fai un'azione successiva
-                            window.location.href = "/dashboard"; // Esempio, reindirizza dopo il login
-                        } else {
-                            alert(data.message || 'Errore durante il login');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Errore:', error);
-                        alert('Errore di rete. Riprova più tardi.');
+                
+                try {
+                    const response = await fetch('http://localhost:3001/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
                     });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Errore di autenticazione');
+                    }
+                    
+                    const data = await response.json();
+                    sessionStorage.setItem('userEmail', email);
+                    sessionStorage.setItem('userName', data.user.nome || 'Utente');
+                    window.location.href = "/dashboard";
+                    
+                } catch (error) {
+                    console.error('Errore di login:', error.message);
+                    alert('Errore durante il login. Riprova più tardi.');
+                }
             });
         } else {
             console.warn("Elemento #loginForm non trovato");
