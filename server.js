@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http'); // Questa deve essere la prima importazione
+const cors = require('cors');
 const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -38,6 +39,8 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // Middleware per il parsing del JSON
 app.use(express.json());
 app.use(express.static('public'));
+app.use(cors());
+
 
 // Creazione della tabella 'utenti' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
@@ -123,9 +126,12 @@ app.post('/login', (req, res) => {
             return res.status(401).json({ message: 'Password errata' });
         }
 
+        // Aggiungi la sessione dell'utente
+        req.session.user = row; // Salva i dati dell'utente nella sessione
+
         res.json({ message: 'Login riuscito', user: row });
     });
-});
+})
 
 // Endpoint per la ricerca università
 app.post('/ricerca-universita', (req, res) => {

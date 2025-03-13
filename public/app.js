@@ -86,11 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log("Risposta dal server:", data);
     
                         if (data.message === 'Login riuscito') {
-                            // Salva email e nome nella sessione
+                            // Salva i dettagli dell'utente nella sessione
                             sessionStorage.setItem('userEmail', email);
-                            sessionStorage.setItem('userName', data.nome || 'Utente'); // Aggiungi il nome utente se disponibile
-                            alert('Login effettuato con successo!');
-                            window.location.href = 'dashboard.html'; // Reindirizza alla pagina della dashboard
+                            sessionStorage.setItem('userName', data.user.nome || 'Utente');
+                            
+                            // Vai a una nuova pagina o fai un'azione successiva
+                            window.location.href = "/dashboard"; // Esempio, reindirizza dopo il login
                         } else {
                             alert(data.message || 'Errore durante il login');
                         }
