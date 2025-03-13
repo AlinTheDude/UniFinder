@@ -15,7 +15,8 @@ const config = require('./config');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = 'IL_TUO_CLIENT_ID';
+const GOOGLE_CLIENT_SECRET = 'IL_TUO_CLIENT_SECRET';
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
     //{ id: 1, nome: "Università di Roma", paese: "Italia" },
@@ -36,16 +37,23 @@ app.use(passport.session());
 
 // Configure Google Strategy
 passport.use(new GoogleStrategy({
-    clientID: config.google.clientID,
-    clientSecret: config.google.clientSecret,
-    callbackURL: config.google.callbackURL
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    // In-memory storage for demonstration purposes only!
-    // The user's OAuth ID should be tied to any accounts data stored in your database
-    return cb(null, profile);
-  }
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/google/callback',
+},
+function(accessToken, refreshToken, profile, done) {
+    // Gestisci il profilo dell'utente (salvando nel DB o sessione)
+    return done(null, profile);
+}
 ));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+    done(null, obj);
+});
 
 // ... (other routes)
 
