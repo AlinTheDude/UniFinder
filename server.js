@@ -54,6 +54,8 @@ db.run(`CREATE TABLE IF NOT EXISTS utenti (
 
 
 
+
+
 // Creazione della tabella 'universita' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS universita (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -197,6 +199,29 @@ app.get('/utenti', (req, res) => {
         } else {
             res.json(rows);
         }
+    });
+});
+
+app.get('/utente', (req, res) => {
+    const email = req.query.email;
+    console.log('Richiesta dettagli utente per:', email);
+
+    if (!email) {
+        return res.status(400).json({ error: 'Email mancante' });
+    }
+
+    db.get('SELECT * FROM utenti WHERE email = ?', [email], (err, row) => {
+        if (err) {
+            console.error('Errore durante il recupero dell\'utente:', err.message);
+            return res.status(500).json({ error: 'Errore durante il recupero dei dati utente' });
+        }
+
+        if (!row) {
+            return res.status(404).json({ error: 'Utente non trovato' });
+        }
+
+        // Restituisci i dettagli dell'utente
+        res.json({ nome: row.nome, email: row.email });
     });
 });
 
