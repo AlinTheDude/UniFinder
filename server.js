@@ -37,9 +37,12 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // });
 
 // Middleware per il parsing del JSON
-app.use(express.json());
 app.use(express.static('public'));
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Modifica con la porta del tuo frontend
+    credentials: true
+}));
+app.use(express.json());
 
 
 // Creazione della tabella 'utenti' se non esiste già
