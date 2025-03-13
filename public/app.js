@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    
-
-
     // Gestione della registrazione
     waitForElement('#registrationForm', () => {
         const registrationForm = document.getElementById('registrationForm');
@@ -228,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return 'Non sono sicuro di aver capito. Puoi riformulare?';
     }
 
-    
     // Invia il messaggio con il pulsante o premendo il tasto "Invio"
     sendButton.addEventListener('click', sendMessage);
     chatInput.addEventListener('keypress', (e) => {
