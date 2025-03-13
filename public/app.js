@@ -73,23 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 try {
                     const response = await fetch('http://localhost:3001/login', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password })
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password }),
+                        credentials: 'include' // Permette l'invio dei cookie
                     });
+                    
+                    if (response.status === 401) {
+                        throw new Error('Credenziali non valide');
+                    }
                     
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Errore di autenticazione');
                     }
                     
-                    const data = await response.json();
-                    sessionStorage.setItem('userEmail', email);
-                    sessionStorage.setItem('userName', data.user.nome || 'Utente');
-                    window.location.href = "/dashboard";
+                    return await response.json();
                     
                 } catch (error) {
                     console.error('Errore di login:', error.message);
-                    alert('Errore durante il login. Riprova più tardi.');
+                    throw error;
                 }
             });
         } else {
