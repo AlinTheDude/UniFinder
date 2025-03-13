@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gestione della registrazione
-    waitForElement('#registrationForm', () => {
+    document.addEventListener('DOMContentLoaded', function() {
         const registrationForm = document.getElementById('registrationForm');
         
         if (registrationForm) {

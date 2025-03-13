@@ -39,8 +39,10 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // Middleware per il parsing del JSON
 app.use(express.static('public'));
 app.use(cors({
-    origin: 'http://localhost:3000', // Modifica con la porta del tuo frontend
-    credentials: true
+    origin: ['http://localhost:3000'], // Array di origins consentiti
+    credentials: true,
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
 
