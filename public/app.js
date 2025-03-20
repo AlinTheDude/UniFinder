@@ -1,6 +1,6 @@
 const serverBaseUrl = window.location.hostname.includes('github.dev') 
-    ? 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev'
-    : 'http://localhost:3001'
+    ? 'https://cors-anywhere.herokuapp.com/https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev'
+    : 'http://localhost:3001';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Funzione per attendere l'esistenza di un elemento nel DOM

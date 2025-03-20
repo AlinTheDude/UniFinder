@@ -48,7 +48,7 @@ app.use(cors({
         // Consenti richieste da origini non-browser (come Postman)
         if (!origin) return callback(null, true);
         
-        if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('github.dev')) {
+        if (origin.includes('github.dev') || origin.includes('localhost')) {
             callback(null, true);
         } else {
             callback(new Error('Bloccato da CORS'));
@@ -57,7 +57,7 @@ app.use(cors({
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
+}))
 app.use(express.json());
 
 app.use(session({
