@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gestione della registrazione
-    document.addEventListener('DOMContentLoaded', function() {
+    waitForElement('#registrationForm', () => {
         const registrationForm = document.getElementById('registrationForm');
         
         if (registrationForm) {
@@ -20,39 +20,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 const email = document.getElementById('regEmail').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
                 const preferenze = document.getElementById('regPreferenze').value.trim();
-
+    
                 console.log("Dati del form di registrazione:", {
                     nome: name,
                     email: email,
-                    password: password,
+                    password: "***", // Non loggare la password
                     preferenze: preferenze
                 });
-
+    
                 fetch('http://localhost:3001/registrazione', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome: name, email: email, password: password, preferenze: preferenze })
+                    credentials: 'include', // Aggiungi questa riga
+                    body: JSON.stringify({ 
+                        nome: name, 
+                        email: email, 
+                        password: password, 
+                        preferenze: preferenze 
+                    })
                 })
                 .then(response => {
                     console.log('Status della risposta:', response.status);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
+                    return response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.error || `Errore del server: ${response.status}`);
+                        }
+                        return data;
+                    });
                 })
                 .then(data => {
                     console.log("Risposta dal server:", data);
-                
-                    if (data.message === 'Registrazione completata') {
-                        alert('Registrazione effettuata con successo!');
-                        registrationForm.reset();
-                    } else {
-                        alert(data.error || 'Errore durante la registrazione');
-                    }
+                    alert('Registrazione effettuata con successo!');
+                    registrationForm.reset();
+                    // Opzionale: reindirizza alla pagina di login
+                    // window.location.href = 'login.html';
                 })
                 .catch(error => {
-                    console.error('Errore durante la registrazione:', error);
-                    alert('Errore durante la registrazione. Riprova più tardi.');
+                    console.error('Errore durante la registrazione:', error.message);
+                    alert('Errore durante la registrazione: ' + error.message);
                 });
             });
         } else {
