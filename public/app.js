@@ -64,46 +64,41 @@ document.addEventListener('DOMContentLoaded', function() {
     waitForElement('#loginForm', () => {
         const loginForm = document.getElementById('loginForm');
         if (loginForm) {
-            loginForm.addEventListener('submit', async function(event) {
+            loginForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 
                 const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 
-                try {
-                    const response = await fetch('/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ email, password }),
-                        credentials: 'include'
-                    });
-    
-                    if (response.status === 401) {
-                        throw new Error('Credenziali non valide');
-                    }
-    
+                console.log("Tentativo di login con:", { email, password });
+                
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => {
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Errore di autenticazione');
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Credenziali non valide');
+                        });
                     }
-    
-                    const data = await response.json();
-                    console.log('Login riuscito:', data);
-                    
-                    // Salva l'email dell'utente in sessionStorage
-                    sessionStorage.setItem('userEmail', email);
-                    
-                    // Reindirizza alla dashboard
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Login riuscito:", data);
+                    alert('Login effettuato con successo!');
+                    // Reindirizza l'utente o aggiorna l'UI
                     window.location.href = 'dashboard.html';
-                    
-                } catch (error) {
-                    console.error('Errore di login:', error.message);
-                    alert('Errore durante il login: ' + error.message);
-                }
+                })
+                .catch(error => {
+                    console.log('Errore di login:', error.message);
+                    alert('Login fallito: ' + error.message);
+                });
             });
+        } else {
+            console.warn("Elemento #loginForm non trovato");
         }
     });
 
