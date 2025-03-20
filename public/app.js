@@ -93,8 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     console.log("Login riuscito:", data);
+                    // Salva l'email dalla risposta del server
+                    sessionStorage.setItem('userEmail', data.user.email);
                     alert('Login effettuato con successo!');
-                    // Reindirizza l'utente o aggiorna l'UI
                     window.location.href = 'dashboard.html';
                 })
                 .catch(error => {
