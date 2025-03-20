@@ -63,42 +63,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Gestione del login
     waitForElement('#loginForm', () => {
         const loginForm = document.getElementById('loginForm');
-    
         if (loginForm) {
-            loginForm.addEventListener('submit', async function (event) {
+            loginForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
+                
+                // Recupera i dati dal form
                 const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 
                 try {
+                    // Qui va il fetch login
                     const response = await fetch('http://localhost:3001/login', {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        body: JSON.stringify({ email, password }),
-                        credentials: 'include' // Permette l'invio dei cookie
+                        body: JSON.stringify({ 
+                            email, 
+                            password 
+                        }),
+                        mode: 'cors',
+                        credentials: 'include'
                     });
-                    
+    
                     if (response.status === 401) {
                         throw new Error('Credenziali non valide');
                     }
-                    
+    
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Errore di autenticazione');
                     }
-                    
-                    return await response.json();
-                    
+    
+                    const data = await response.json();
+                    console.log('Login riuscito:', data);
+    
                 } catch (error) {
                     console.error('Errore di login:', error.message);
-                    throw error;
+                    alert('Errore durante il login: ' + error.message);
                 }
             });
-        } else {
-            console.warn("Elemento #loginForm non trovato");
         }
     });
 
