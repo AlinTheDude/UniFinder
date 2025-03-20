@@ -236,5 +236,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
-    document.addEventListener('DOMContentLoaded', handleDefaultFormEvents);
+    handleDefaultFormEvents();
 });
