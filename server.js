@@ -13,6 +13,8 @@ const server = http.createServer(app); // Usa il server HTTP per supportare WebS
 const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const config = require('./config');
 const allowedOrigins = [
     'http://localhost:3000',
@@ -62,6 +64,62 @@ app.use(session({
     cookie: { secure: false } // Imposta su true se usi https
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    db.get('SELECT * FROM utenti WHERE id = ?', [id], (err, row) => {
+        done(err, row);
+    });
+});
+
+// Configurazione della strategia Google OAuth
+passport.use(new GoogleStrategy({
+    clientID: 'IL_TUO_CLIENT_ID', // Sostituisci con il tuo Client ID
+    clientSecret: 'IL_TUO_CLIENT_SECRET', // Sostituisci con il tuo Client Secret
+    callbackURL: 'http://localhost:3001/auth/google/callback',
+    userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
+}, (accessToken, refreshToken, profile, done) => {
+    console.log('Profilo Google ricevuto:', profile);
+    
+    // Controlla se l'utente esiste già nel database
+    db.get('SELECT * FROM utenti WHERE email = ?', [profile.emails[0].value], (err, row) => {
+        if (err) {
+            console.error('Errore nella ricerca dell\'utente:', err);
+            return done(err);
+        }
+        
+        if (row) {
+            // L'utente esiste già, restituiscilo
+            console.log('Utente esistente trovato:', row);
+            return done(null, row);
+        } else {
+            // Crea un nuovo utente
+            const randomPassword = Math.random().toString(36).slice(-8); // Password casuale
+            console.log('Creazione nuovo utente con email:', profile.emails[0].value);
+            
+            db.run(`INSERT INTO utenti (nome, email, password, preferenze) VALUES (?, ?, ?, ?)`, 
+                [profile.displayName, profile.emails[0].value, randomPassword, ''],
+                function (err) {
+                    if (err) {
+                        console.error('Errore nella creazione dell\'utente:', err);
+                        return done(err);
+                    }
+                    
+                    // Recupera l'utente appena creato
+                    db.get('SELECT * FROM utenti WHERE id = ?', [this.lastID], (err, newUser) => {
+                        console.log('Nuovo utente creato:', newUser);
+                        return done(null, newUser);
+                    });
+                }
+            );
+        }
+    });
+}));
 
 // Creazione della tabella 'utenti' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
@@ -77,7 +135,34 @@ db.run(`CREATE TABLE IF NOT EXISTS utenti (
 });
 
 
+app.get('/auth/google', 
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login.html' }),
+    (req, res) => {
+        // Autenticazione riuscita
+        console.log('Login con Google riuscito, utente:', req.user);
+        req.session.user = req.user;
+        
+        // Salva anche in sessionStorage attraverso un cookie o un redirect con parametri
+        res.redirect('/auth-success.html?email=' + encodeURIComponent(req.user.email));
+    }
+);
+
+// Endpoint per recuperare i dati dell'utente dalla sessione
+app.get('/user-info', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Non autenticato' });
+    }
+    
+    res.json({
+        id: req.session.user.id,
+        nome: req.session.user.nome,
+        email: req.session.user.email
+    });
+});
 
 
 // Creazione della tabella 'universita' se non esiste già
