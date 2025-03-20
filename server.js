@@ -92,6 +92,8 @@ app.post('/logout', (req, res) => {
     });
 });
 
+
+
 // Configurazione della strategia Google OAuth
 passport.use(new GoogleStrategy({
     clientID: '57709322978-liq6jtcbdhoc9o0voe4h6oujugqectrq.apps.googleusercontent.com', // Sostituisci con il tuo Client ID
@@ -168,7 +170,7 @@ app.get('/auth/google/callback',
 
 // Endpoint per recuperare i dati dell'utente dalla sessione
 app.get('/user-info', (req, res) => {
-    if (!req.session.user) {
+    if (!req.session || !req.session.user) {
         return res.status(401).json({ error: 'Non autenticato' });
     }
     
