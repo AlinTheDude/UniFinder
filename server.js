@@ -79,8 +79,8 @@ passport.deserializeUser((id, done) => {
 
 // Configurazione della strategia Google OAuth
 passport.use(new GoogleStrategy({
-    clientID: 'IL_TUO_CLIENT_ID', // Sostituisci con il tuo Client ID
-    clientSecret: 'IL_TUO_CLIENT_SECRET', // Sostituisci con il tuo Client Secret
+    clientID: '57709322978-liq6jtcbdhoc9o0voe4h6oujugqectrq.apps.googleusercontent.com', // Sostituisci con il tuo Client ID
+    clientSecret: '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', // Sostituisci con il tuo Client Secret
     callbackURL: 'http://localhost:3001/auth/google/callback',
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
 }, (accessToken, refreshToken, profile, done) => {
