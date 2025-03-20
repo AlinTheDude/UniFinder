@@ -395,3 +395,33 @@ input:focus, button:hover, a:hover {
     vertical-align: middle;
 }
 
+.social-login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: #757575;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 10px auto;
+    width: 220px;
+}
+
+.google-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.google-btn img {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}

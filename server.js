@@ -60,8 +60,11 @@ app.use(express.json());
 app.use(session({
     secret: 'unfinderSecretKey2024',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Imposta su true se usi https
+    saveUninitialized: false, // Cambia a false per evitare sessioni vuote
+    cookie: { 
+        secure: false, // Imposta su true se usi https
+        maxAge: 24 * 60 * 60 * 1000 // 24 ore
+    }
 }));
 
 app.use(passport.initialize());
@@ -74,6 +77,17 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     db.get('SELECT * FROM utenti WHERE id = ?', [id], (err, row) => {
         done(err, row);
+    });
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Errore durante la chiusura della sessione:', err);
+            return res.status(500).json({ error: 'Errore durante il logout' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Logout effettuato con successo' });
     });
 });
 
