@@ -67,12 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
             loginForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
                 
-                // Recupera i dati dal form
                 const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 
                 try {
-                    // Qui va il fetch login
                     const response = await fetch('http://localhost:3001/login', {
                         method: 'POST',
                         headers: {
@@ -80,18 +78,26 @@ document.addEventListener('DOMContentLoaded', function() {
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({ email, password }),
-                        mode: 'cors',
                         credentials: 'include'
-                    })
-                    .then(response => {
-                        console.log('Status:', response.status);
-                        console.log('Headers:', response.headers);
-                        return response.json();
-                    })
-                    .catch(error => {
-                        console.error('Errore dettagliato:', error);
-                        console.error('Stack:', error.stack);
                     });
+    
+                    if (response.status === 401) {
+                        throw new Error('Credenziali non valide');
+                    }
+    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Errore di autenticazione');
+                    }
+    
+                    const data = await response.json();
+                    console.log('Login riuscito:', data);
+    
+                } catch (error) {  // Questo catch era mancante
+                    console.error('Errore di login:', error.message);
+                    alert('Errore durante il login: ' + error.message);
+                }
+            });
         }
     });
 
