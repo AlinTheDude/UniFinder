@@ -44,20 +44,15 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // Middleware per il parsing del JSON
 app.use(express.static('public'));
 app.use(cors({
-    origin: function(origin, callback) {
-        // Consenti richieste da origini non-browser (come Postman)
-        if (!origin) return callback(null, true);
-        
-        if (origin.includes('github.dev') || origin.includes('localhost')) {
-            callback(null, true);
-        } else {
-            callback(new Error('Bloccato da CORS'));
-        }
-    },
+    origin: [
+        'http://localhost:3000', 
+        'https://glowing-guacamole-r47qvpjxj99fpvrr-3000.app.github.dev',
+        // Aggiungi qui l'URL del tuo client
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}))
+}));
 app.use(express.json());
 
 app.use(session({

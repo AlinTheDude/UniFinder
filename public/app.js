@@ -1,7 +1,3 @@
-const serverBaseUrl = window.location.hostname.includes('github.dev') 
-    ? 'https://cors-anywhere.herokuapp.com/https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev'
-    : 'http://localhost:3001';
-
 document.addEventListener('DOMContentLoaded', function() {
     // Funzione per attendere l'esistenza di un elemento nel DOM
     function waitForElement(selector, callback) {
@@ -32,35 +28,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     preferenze: preferenze
                 });
     
-                fetch(`${serverBaseUrl}/registrazione`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ 
-                        nome: name, 
-                        email: email, 
-                        password: password, 
-                        preferenze: preferenze 
-                    })
-                })
+  fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/registrazione', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ 
+        nome: name, 
+        email: email, 
+        password: password, 
+        preferenze: preferenze 
+    })
+})
                 .then(response => {
                     console.log('Status della risposta:', response.status);
-                    // Controlla il tipo di contenuto
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json().then(data => {
-                            if (!response.ok) {
-                                throw new Error(data.error || `Errore del server: ${response.status}`);
-                            }
-                            return data;
-                        });
-                    } else {
-                        // Se non è JSON, mostra il testo dell'errore
-                        return response.text().then(text => {
-                            console.error('Risposta non-JSON ricevuta:', text);
-                            throw new Error('Il server ha restituito una risposta non valida');
-                        });
-                    }
+                    return response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.error || `Errore del server: ${response.status}`);
+                        }
+                        return data;
+                    });
                 })
                 .then(data => {
                     console.log("Risposta dal server:", data);
