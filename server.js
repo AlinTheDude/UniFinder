@@ -48,6 +48,7 @@ app.use(express.static('public'));
 app.use(cors({
     origin: [
         'http://localhost:3000', 
+        'http://localhost:3001',
         'https://glowing-guacamole-r47qvpjxj99fpvrr-3000.app.github.dev',
         // Aggiungi qui l'URL del tuo client
     ],
