@@ -96,7 +96,7 @@ app.post('/logout', (req, res) => {
 passport.use(new GoogleStrategy({
     clientID: '57709322978-liq6jtcbdhoc9o0voe4h6oujugqectrq.apps.googleusercontent.com', // Sostituisci con il tuo Client ID
     clientSecret: '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', // Sostituisci con il tuo Client Secret
-    callbackURL: 'http://localhost:3001/auth/google/callback',
+    callbackURL: 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/auth/google/callback',
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
 }, (accessToken, refreshToken, profile, done) => {
     console.log('Profilo Google ricevuto:', profile);
@@ -384,6 +384,6 @@ process.on('SIGINT', () => {
     });
 });
 
-server.listen(3001, () => {
+server.listen(3001, '0.0.0.0', () => {
     console.log('Server in esecuzione su http://localhost:3001');
 });
