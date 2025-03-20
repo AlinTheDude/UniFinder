@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const password = document.getElementById('loginPassword').value.trim();
                 
                 try {
-                    const response = await fetch('http://localhost:3001/login', {
+                    const response = await fetch('/login', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
