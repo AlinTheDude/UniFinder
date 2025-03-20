@@ -92,8 +92,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
                     const data = await response.json();
                     console.log('Login riuscito:', data);
-    
-                } catch (error) {  // Questo catch era mancante
+                    
+                    // Salva l'email dell'utente in sessionStorage
+                    sessionStorage.setItem('userEmail', email);
+                    
+                    // Reindirizza alla dashboard
+                    window.location.href = 'dashboard.html';
+                    
+                } catch (error) {
                     console.error('Errore di login:', error.message);
                     alert('Errore durante il login: ' + error.message);
                 }

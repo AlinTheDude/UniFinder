@@ -46,6 +46,13 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.use(session({
+    secret: 'unfinderSecretKey2024',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Imposta su true se usi https
+}));
+
 
 // Creazione della tabella 'utenti' se non esiste già
 db.run(`CREATE TABLE IF NOT EXISTS utenti (
