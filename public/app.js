@@ -79,31 +79,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        body: JSON.stringify({ 
-                            email, 
-                            password 
-                        }),
+                        body: JSON.stringify({ email, password }),
                         mode: 'cors',
                         credentials: 'include'
+                    })
+                    .then(response => {
+                        console.log('Status:', response.status);
+                        console.log('Headers:', response.headers);
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error('Errore dettagliato:', error);
+                        console.error('Stack:', error.stack);
                     });
-    
-                    if (response.status === 401) {
-                        throw new Error('Credenziali non valide');
-                    }
-    
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Errore di autenticazione');
-                    }
-    
-                    const data = await response.json();
-                    console.log('Login riuscito:', data);
-    
-                } catch (error) {
-                    console.error('Errore di login:', error.message);
-                    alert('Errore durante il login: ' + error.message);
-                }
-            });
         }
     });
 
