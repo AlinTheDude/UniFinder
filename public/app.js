@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     preferenze: preferenze
                 });
     
-                fetch('http://localhost:3001/registrazione', {
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/registrazione', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include', // Aggiungi questa riga
+                    credentials: 'include',
                     body: JSON.stringify({ 
                         nome: name, 
                         email: email, 

@@ -14,6 +14,11 @@ const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
 const dbPath = path.join(__dirname, 'database.db');
 const config = require('./config');
+const allowedOrigins = [
+    'http://localhost:3000',
+    'https://glowing-guacamole-r47qvpjxj99fpvrr-3000.app.github.dev',
+    // Aggiungi altri domini se necessario
+];
 
 // MOCK DATABASE CONFIGURAZIONE
 //const mockdb = [
@@ -39,7 +44,16 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // Middleware per il parsing del JSON
 app.use(express.static('public'));
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: function(origin, callback) {
+        // Consenti richieste da origini non-browser (come Postman)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('github.dev')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Bloccato da CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
