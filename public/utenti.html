@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Utenti - UnFinder</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .btn-container {
+            margin-bottom: 20px;
+        }
+        #utentiTable {
+            margin-top: 20px;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Gestione Utenti</h1>
+        
+        <div class="btn-container d-flex justify-content-center gap-3">
+            <button id="mostraTuttiBtn" class="btn btn-primary">Mostra Tutti gli Utenti</button>
+            <button id="filtraUtentiBtn" class="btn btn-success">Filtra Utenti</button>
+        </div>
+        
+        <div id="filtriContainer" class="row mb-3" style="display: none;">
+            <div class="col-md-6">
+                <input type="text" id="filtroNome" class="form-control" placeholder="Filtra per nome">
+            </div>
+            <div class="col-md-6">
+                <input type="text" id="filtroEmail" class="form-control" placeholder="Filtra per email">
+            </div>
+            <div class="col-12 mt-2">
+                <button id="applicaFiltroBtn" class="btn btn-info w-100">Applica Filtro</button>
+            </div>
+        </div>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped" id="utentiTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Preferenze</th>
+                    </tr>
+                </thead>
+                <tbody id="utentiTableBody">
+                    <!-- I dati degli utenti verranno inseriti qui -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="messaggioNessunUtente" class="alert alert-info text-center" style="display: none;">
+            Nessun utente trovato con i filtri selezionati.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementi DOM
+            const mostraTuttiBtn = document.getElementById('mostraTuttiBtn');
+            const filtraUtentiBtn = document.getElementById('filtraUtentiBtn');
+            const filtriContainer = document.getElementById('filtriContainer');
+            const applicaFiltroBtn = document.getElementById('applicaFiltroBtn');
+            const filtroNome = document.getElementById('filtroNome');
+            const filtroEmail = document.getElementById('filtroEmail');
+            const utentiTableBody = document.getElementById('utentiTableBody');
+            const loader = document.getElementById('loader');
+            const messaggioNessunUtente = document.getElementById('messaggioNessunUtente');
+            
+            // Funzione per mostrare il loader
+            function mostraLoader() {
+                loader.style.display = 'block';
+                utentiTableBody.innerHTML = '';
+                messaggioNessunUtente.style.display = 'none';
+            }
+            
+            // Funzione per nascondere il loader
+            function nascondiLoader() {
+                loader.style.display = 'none';
+            }
+            
+            // Funzione per caricare tutti gli utenti
+            function caricaTuttiUtenti() {
+                mostraLoader();
+                
+                fetch('/utenti')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nel caricamento degli utenti');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        nascondiLoader();
+                        visualizzaUtenti(data);
+                    })
+                    .catch(error => {
+                        nascondiLoader();
+                        console.error('Errore:', error);
+                        alert('Si è verificato un errore durante il caricamento degli utenti.');
+                    });
+            }
+            
+            // Funzione per filtrare gli utenti
+            function filtraUtenti() {
+                mostraLoader();
+                
+                const nome = filtroNome.value.trim();
+                const email = filtroEmail.value.trim();
+                
+                // Se entrambi i campi sono vuoti, carica tutti gli utenti
+                if (!nome && !email) {
+                    caricaTuttiUtenti();
+                    return;
+                }
+                
+                fetch('/utenti')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nel caricamento degli utenti');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        nascondiLoader();
+                        
+                        // Filtra gli utenti lato client
+                        const utentiFiltrati = data.filter(utente => {
+                            const nomeMatch = !nome || utente.nome.toLowerCase().includes(nome.toLowerCase());
+                            const emailMatch = !email || utente.email.toLowerCase().includes(email.toLowerCase());
+                            return nomeMatch && emailMatch;
+                        });
+                        
+                        visualizzaUtenti(utentiFiltrati);
+                    })
+                    .catch(error => {
+                        nascondiLoader();
+                        console.error('Errore:', error);
+                        alert('Si è verificato un errore durante il filtraggio degli utenti.');
+                    });
+            }
+            
+            // Funzione per visualizzare gli utenti nella tabella
+            function visualizzaUtenti(utenti) {
+                utentiTableBody.innerHTML = '';
+                
+                if (utenti.length === 0) {
+                    messaggioNessunUtente.style.display = 'block';
+                    return;
+                }
+                
+                messaggioNessunUtente.style.display = 'none';
+                
+                utenti.forEach(utente => {
+                    const row = document.createElement('tr');
+
+                                        row.innerHTML = `
+<td>${utente.id}</td>
+                        <td>${utente.nome || '-'}</td>
+                        <td>${utente.email || '-'}</td>
+                        <td>${utente.preferenze || '-'}</td>
+                    `;
+                    
+                    utentiTableBody.appendChild(row);
+                });
+            }
+            
+            // Event listeners
+            mostraTuttiBtn.addEventListener('click', function() {
+                filtriContainer.style.display = 'none';
+                filtroNome.value = '';
+                filtroEmail.value = '';
+                caricaTuttiUtenti();
+            });
+            
+            filtraUtentiBtn.addEventListener('click', function() {
+                filtriContainer.style.display = filtriContainer.style.display === 'none' ? 'flex' : 'none';
+            });
+            
+            applicaFiltroBtn.addEventListener('click', function() {
+                filtraUtenti();
+            });
+            
+            // Gestisci anche il tasto Enter nei campi di filtro
+            filtroNome.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filtraUtenti();
+                }
+            });
+            
+            filtroEmail.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filtraUtenti();
+                }
+            });
+            
+            // Carica tutti gli utenti all'avvio
+            caricaTuttiUtenti();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

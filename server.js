@@ -360,18 +360,30 @@ app.get('/utente', (req, res) => {
 
 
 // Restituisce gli utenti con preferenze specifiche
-app.get('/utenti-filtrati', (req, res) => {
-    const query = `SELECT * FROM utenti WHERE preferenze LIKE '%Italia%' AND preferenze LIKE '%Informatica%'`;
-    db.all(query, [], (err, rows) => {
+app.get('/utenti/filtro', (req, res) => {
+    const { nome, email } = req.query;
+    let query = 'SELECT * FROM utenti WHERE 1=1';
+    let params = [];
+
+    if (nome) {
+        query += ' AND nome LIKE ?';
+        params.push(`%${nome}%`);
+    }
+    
+    if (email) {
+        query += ' AND email LIKE ?';
+        params.push(`%${email}%`);
+    }
+
+    db.all(query, params, (err, rows) => {
         if (err) {
-            console.error('Errore nel recupero degli utenti filtrati:', err.message);
-            res.status(500).json({ error: 'Errore nel recupero degli utenti filtrati' });
+            console.error('Errore nel filtraggio degli utenti:', err.message);
+            res.status(500).json({ error: 'Errore nel filtraggio degli utenti' });
         } else {
             res.json(rows);
         }
     });
 });
-
 
 // Gestione della chiusura del database alla chiusura del server
 process.on('SIGINT', () => {
