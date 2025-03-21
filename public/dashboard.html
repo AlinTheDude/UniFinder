@@ -4,80 +4,240 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - UniFinder</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+        }
+        
+        #dashboard-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px auto;
+            max-width: 900px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #4CAF50;
+            margin-right: 15px;
+        }
+        
+        .user-details h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        
+        .user-details p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .dashboard-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-logout {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .dashboard-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-section h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 8px;
+        }
+        
+        .university-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .university-card h4 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        
+        .university-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-label {
+            color: #666;
+        }
+        
+        .stats-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Navbar originale ma migliorata -->
     <header>
-        <nav class="navbar">
-            <div class="navbar-container">
-                <h1 class="navbar-logo">UniFinder</h1>
-                <ul class="navbar-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="profile.html">Profilo</a></li>
-                    <li><a href="chat.html">Chat Assistenza</a></li> <!-- Link alla chat -->
-                    <li><a href="ajax.html">AJAX</a></li>
-                    <li><a href="WebSocket.html">WebSocket</a></li>
-                    <li><a href="Swagger.html">API Docs</a></li>
-                    <li><a href="settings.html">Impostazioni</a></li>
-                    <li><a href="login.html">Logout</a></li>
-                    <li><a href="Privacy.html">Privacy</a></li>
-                    <li><a href="Terms.html">Termini e Condizioni</a></li>
-                </ul>
-                <div class="hamburger-menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>
-            </div>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#registrazione">Registrazione</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="ajax.html">AJAX</a></li>
+                <li><a href="WebSocket.html">WebSocket</a></li>
+                <li><a href="Swagger.html">API Docs</a></li>
+                <li><a href="chat.html">Chat Assistenza</a></li> <!-- Link alla chat -->
+                <li><a href="#ricerca-universita">Ricerca Università</a></li>
+                <li><a href="Privacy.html">Privacy</a></li>
+                <li><a href="Terms.html">Termini e Condizioni</a></li>
+            </ul>
         </nav>
     </header>
 
-    <!-- Contenuto principale della Dashboard -->
-    <div class="dashboard-container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <img src="Imgs/images.jpg" alt="Immagine Profilo" class="profile-picture">
-                <div class="profile-info">
-                    <h2 id="username">Nome Utente</h2>
-                    <p id="user-role">Studente</p>
+    <section id="dashboard-container">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar-large">
+                <div class="user-details">
+                    <h3>Benvenuto, <span id="username">Utente</span></h3>
+                    <p><span id="email">email@example.com</span></p>
                 </div>
             </div>
-
-            <!-- Dettagli del profilo -->
-            <div class="profile-details">
-                <h3>Dettagli del Profilo</h3>
-                <ul>
-                    <li><strong>Email:</strong> <span id="email">example@example.com</span></li>
-                </ul>
-
-                <div class="profile-actions">
-                    <a href="preferences.html">
-                        <button class="btn">Modifica Preferenze</button>
-                    </a>
-                    <a href="login.html">
-                        <button id="logoutButton" class="logout-btn">Logout</button>
-                    </a>
-                </div>
+            <div class="dashboard-actions">
+                <button class="dashboard-btn btn-edit">Modifica Profilo</button>
+                <button class="dashboard-btn btn-logout" id="logout-btn">Logout</button>
             </div>
         </div>
         
-        <!-- Sezione con statistiche o attività recenti -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <h3>Eventi Recenti</h3>
-                <p id="recent-events">Non ci sono eventi recenti.</p>
+        <div class="dashboard-content">
+            <div class="main-content">
+                <div class="dashboard-section">
+                    <h3>Le tue università preferite</h3>
+                    <div id="preferiti-container">
+                        <div class="university-card">
+                            <h4>Caricamento...</h4>
+                            <p>Stiamo recuperando le tue università preferite</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-section">
+                    <h3>Ricerche recenti</h3>
+                    <div id="ricerche-container">
+                        <div class="university-card">
+                            <h4>Università di Roma</h4>
+                            <p>Italia - Reputazione: 4.5/5</p>
+                            <p>Cercato il: 15/03/2024</p>
+                        </div>
+                        <div class="university-card">
+                            <h4>Harvard University</h4>
+                            <p>USA - Reputazione: 5/5</p>
+                            <p>Cercato il: 10/03/2024</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Università Preferite</h3>
-                <p id="favorite-universities">Nessuna università preferita.</p>
+            
+            <div class="sidebar">
+                <div class="dashboard-section">
+                    <h3>Le tue statistiche</h3>
+                    <div class="stats-item">
+                        <span class="stats-label">Data di registrazione</span>
+                        <span class="stats-value">01/03/2024</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Università preferite</span>
+                        <span class="stats-value">2</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Ricerche effettuate</span>
+                        <span class="stats-value">15</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Ultimo accesso</span>
+                        <span class="stats-value">Oggi</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-section">
+                    <h3>Consigli per te</h3>
+                    <p>In base alle tue preferenze, potresti essere interessato a queste università:</p>
+                    <div class="university-card">
+                        <h4>University of Cambridge</h4>
+                        <p>Regno Unito - Reputazione: 5/5</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </footer>
 
     <script src="dashboard.js"></script>
-    <script src="logout.js"></script>
-    
 </body>
-</html>
+</html

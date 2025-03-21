@@ -63,12 +63,38 @@ app.use(express.json());
 app.use(session({
     secret: 'unfinderSecretKey2024',
     resave: false,
-    saveUninitialized: false, // Cambia a false per evitare sessioni vuote
+    saveUninitialized: false,
     cookie: { 
-        secure: false, // Imposta su true se usi https
-        maxAge: 24 * 60 * 60 * 1000 // 24 ore
+        secure: process.env.NODE_ENV === 'production', // true in produzione, false in sviluppo
+        maxAge: 24 * 60 * 60 * 1000, // 24 ore
+        sameSite: 'lax'
     }
 }));
+
+// Middleware per verificare l'autenticazione
+function requireAuth(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.status(401).json({ error: 'Non autenticato' });
+    }
+}
+
+// Endpoint per verificare se l'utente è autenticato
+app.get('/check-auth', (req, res) => {
+    if (req.session.user) {
+        res.json({ 
+            authenticated: true, 
+            user: {
+                id: req.session.user.id,
+                nome: req.session.user.nome,
+                email: req.session.user.email
+            }
+        });
+    } else {
+        res.json({ authenticated: false });
+    }
+});
 
 app.use(passport.initialize());
 app.use(passport.session());

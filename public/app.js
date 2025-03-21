@@ -236,6 +236,222 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Enter') sendMessage();
     });
 
+
+    function checkUserLoggedIn() {
+        const userEmail = sessionStorage.getItem('userEmail');
+        
+        if (userEmail) {
+            // Utente loggato, recupera i dettagli
+            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${userEmail}`, {
+                credentials: 'include'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Utente non trovato');
+                }
+                return response.json();
+            })
+            .then(userData => {
+                // Aggiorna la navbar con le informazioni dell'utente
+                updateNavbarWithUserInfo(userData);
+            })
+            .catch(error => {
+                console.error('Errore nel recupero dei dati utente:', error);
+                // Verifica se c'è una sessione attiva sul server
+                checkServerSession();
+            });
+        } else {
+            // Verifica se c'è una sessione attiva sul server
+            checkServerSession();
+        }
+    }
+    
+    // Funzione per verificare la sessione sul server
+    function checkServerSession() {
+        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                // Sessione valida, salviamo l'email in sessionStorage e aggiorniamo la UI
+                sessionStorage.setItem('userEmail', data.user.email);
+                updateNavbarWithUserInfo(data.user);
+            } else {
+                // Nessuna sessione attiva, mostra i link di login/registrazione
+                updateNavbarForGuest();
+            }
+        })
+        .catch(error => {
+            console.error('Errore nella verifica della sessione:', error);
+            updateNavbarForGuest();
+        });
+    }
+
+    function updateNavbarWithUserInfo(userData) {
+        const navbar = document.querySelector('nav ul');
+        
+        if (navbar) {
+            // Cerca i link di login e registrazione
+            const loginLink = Array.from(navbar.querySelectorAll('li a')).find(a => a.textContent.includes('Login'));
+            const regLink = Array.from(navbar.querySelectorAll('li a')).find(a => a.textContent.includes('Registrazione'));
+            
+            // Controlla se esiste già l'elemento utente nella navbar
+            let userNavItem = document.getElementById('user-nav-item');
+            
+            if (!userNavItem) {
+                // Crea un nuovo elemento per la navbar
+                userNavItem = document.createElement('li');
+                userNavItem.id = 'user-nav-item';
+                userNavItem.className = 'user-profile';
+                
+                // Aggiungi l'elemento alla navbar
+                if (loginLink && loginLink.parentElement) {
+                    navbar.insertBefore(userNavItem, loginLink.parentElement);
+                } else {
+                    navbar.appendChild(userNavItem);
+                }
+            }
+            
+            // Aggiorna il contenuto dell'elemento
+            userNavItem.innerHTML = `
+                <div class="user-welcome">
+                    <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
+                    <span>Ciao, ${userData.nome || 'Utente'}</span>
+                </div>
+                <div class="user-dropdown">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="#" id="logout-link">Logout</a>
+                </div>
+            `;
+            
+            // Nascondi i link di login e registrazione
+            if (loginLink && loginLink.parentElement) {
+                loginLink.parentElement.style.display = 'none';
+            }
+            if (regLink && regLink.parentElement) {
+                regLink.parentElement.style.display = 'none';
+            }
+            
+            // Aggiungi evento di logout
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+            
+            // Aggiungi stile CSS inline
+            const style = document.createElement('style');
+            style.textContent = `
+                .user-profile {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                .user-welcome {
+                    display: flex;
+                    align-items: center;
+                    background-color: rgba(255, 255, 255, 0.2);
+                    padding: 5px 10px;
+                    border-radius: 20px;
+                    transition: background-color 0.3s;
+                }
+                .user-welcome:hover {
+                    background-color: rgba(255, 255, 255, 0.3);
+                }
+                .user-avatar {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    margin-right: 8px;
+                    border: 2px solid white;
+                }
+                .user-dropdown {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    background-color: white;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    display: none;
+                    z-index: 1000;
+                    min-width: 150px;
+                }
+                .user-profile:hover .user-dropdown {
+                    display: block;
+                }
+                .user-dropdown a {
+                    display: block;
+                    padding: 10px 15px;
+                    color: #333;
+                    text-decoration: none;
+                    transition: background-color 0.3s;
+                }
+                .user-dropdown a:hover {
+                    background-color: #f5f5f5;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Funzione per aggiornare la navbar per gli utenti non autenticati
+    function updateNavbarForGuest() {
+        // Rimuovi l'elemento utente se esiste
+        const userNavItem = document.getElementById('user-nav-item');
+        if (userNavItem) {
+            userNavItem.remove();
+        }
+        
+        // Mostra i link di login e registrazione
+        const navbar = document.querySelector('nav ul');
+        if (navbar) {
+            const loginLink = Array.from(navbar.querySelectorAll('li a')).find(a => a.textContent.includes('Login'));
+            const regLink = Array.from(navbar.querySelectorAll('li a')).find(a => a.textContent.includes('Registrazione'));
+            
+            if (loginLink && loginLink.parentElement) {
+                loginLink.parentElement.style.display = '';
+            }
+            if (regLink && regLink.parentElement) {
+                regLink.parentElement.style.display = '';
+            }
+        }
+    }
+    
+    // Funzione per effettuare il logout
+    function logout() {
+        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Pulisci i dati di sessione locali
+            sessionStorage.removeItem('userEmail');
+            
+            // Aggiorna la UI
+            updateNavbarForGuest();
+            
+            // Mostra un messaggio di logout
+            alert('Logout effettuato con successo');
+            
+            // Reindirizza alla homepage se siamo in dashboard
+            if (window.location.pathname.includes('dashboard.html')) {
+                window.location.href = 'index.html';
+            }
+        })
+        .catch(error => {
+            console.error('Errore durante il logout:', error);
+            alert('Si è verificato un errore durante il logout. Riprova.');
+        });
+    }
+
+    
+
     // Esegui la funzione handleDefaultFormEvents quando il DOM è completamente caricato
     handleDefaultFormEvents();
+    checkUserLoggedIn();
 });
