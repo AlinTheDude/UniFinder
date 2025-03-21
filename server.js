@@ -6,6 +6,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+let visitatoriOnline = 0;
 require('dotenv').config();
 const WebSocket = require('ws');
 const app = express();
@@ -302,25 +303,73 @@ app.post('/ricerca-universita', (req, res) => {
 });
 
 wss.on('connection', (ws) => {
-    console.log('Nuovo client connesso alla chat');
-
+    console.log('Nuovo client connesso');
+    
     // Quando il client invia un messaggio
     ws.on('message', (message) => {
-        console.log('Messaggio ricevuto dal client:', message);
-        
-        // Invia il messaggio a tutti i client connessi
-        wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
+        try {
+            const messaggio = JSON.parse(message.toString());
+            
+            // Gestisci i messaggi di connessione/disconnessione per il contatore visitatori
+            if (messaggio.tipo === 'connessione') {
+                visitatoriOnline++;
+                console.log(`Utente connesso. Visitatori online: ${visitatoriOnline}`);
+                // Invia l'aggiornamento del contatore a tutti i client
+                inviaConcatoreATutti();
+            } else if (messaggio.tipo === 'disconnessione') {
+                visitatoriOnline = Math.max(0, visitatoriOnline - 1);
+                console.log(`Utente disconnesso. Visitatori online: ${visitatoriOnline}`);
+                // Invia l'aggiornamento del contatore a tutti i client
+                inviaConcatoreATutti();
+            } else {
+                // Gestisci gli altri messaggi (come quelli della chat)
+                wss.clients.forEach((client) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(message.toString());
+                    }
+                });
             }
-        });
+        } catch (error) {
+            console.error('Errore nel parsing del messaggio WebSocket:', error);
+            // Se non è JSON, trattalo come messaggio normale (per compatibilità con codice esistente)
+            wss.clients.forEach((client) => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(message.toString());
+                }
+            });
+        }
     });
 
     // Quando il client si disconnette
     ws.on('close', () => {
-        console.log('Client disconnesso dalla chat');
+        console.log('Client disconnesso');
+        visitatoriOnline = Math.max(0, visitatoriOnline - 1);
+        // Invia l'aggiornamento del contatore a tutti i client
+        inviaConcatoreATutti();
     });
+    
+    // Invia il contatore attuale al nuovo client
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+            tipo: 'contatore-visitatori',
+            conteggio: visitatoriOnline
+        }));
+    }
 });
+
+// Funzione per inviare l'aggiornamento del contatore a tutti i client
+function inviaConcatoreATutti() {
+    const messaggioContatore = JSON.stringify({
+        tipo: 'contatore-visitatori',
+        conteggio: visitatoriOnline
+    });
+    
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(messaggioContatore);
+        }
+    });
+}
 
 app.get('/utenti', (req, res) => {
     const query = 'SELECT * FROM utenti';
