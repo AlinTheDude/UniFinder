@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+ <html lang="it">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Autenticazione Riuscita</title>
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             // Recupera l'email dall'URL
+             const urlParams = new URLSearchParams(window.location.search);
+             const email = urlParams.get('email');
+             
+             if (email) {
+                 // Salva l'email in sessionStorage
+                 sessionStorage.setItem('userEmail', email);
+                 console.log('Email salvata in sessionStorage:', email);
+                 
+                 // Reindirizza alla dashboard
+                 window.location.href = 'dashboard.html';
+             } else {
+                 console.error('Email non trovata nei parametri URL');
+                 window.location.href = 'login.html';
+             }
+         });
+     </script>
+ </head>
+ <body>
+     <div style="text-align: center; margin-top: 100px;">
+         <h1>Autenticazione in corso...</h1>
+         <p>Verrai reindirizzato automaticamente.</p>
+     </div>
+ </body>
+ </html>
