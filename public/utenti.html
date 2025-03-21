@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Utenti - UnFinder</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Gestione Utenti - UniFinder</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -13,32 +12,89 @@
             background-position: center; /* Centrare l'immagine */
             background-repeat: no-repeat; /* Non ripetere l'immagine */
         }
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
+        
+        #utenti-container {
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .btn-container {
-            margin-bottom: 20px;
-        }
-        #utentiTable {
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .button-container button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        #mostraTuttiBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        #filtraUtentiBtn {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        #filtriContainer {
+            margin-bottom: 15px;
+        }
+        
+        #filtriContainer input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        #applicaFiltroBtn {
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
         .loader {
             border: 5px solid #f3f3f3;
             border-top: 5px solid #3498db;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             animation: spin 2s linear infinite;
             margin: 20px auto;
             display: none;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -46,48 +102,62 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Gestione Utenti</h1>
+
+    <header>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#registrazione">Registrazione</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="utenti.html">Utenti</a></li>
+                <li><a href="chat.html">Chat Assistenza</a></li>
+                <li><a href="index.html#ricerca-universita">Ricerca Università</a></li>
+                <li><a href="Privacy.html">Privacy</a></li>
+                <li><a href="Terms.html">Termini e Condizioni</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Gestione Utenti -->
+    <section id="utenti-container">
+        <h2>Gestione Utenti</h2>
         
-        <div class="btn-container d-flex justify-content-center gap-3">
-            <button id="mostraTuttiBtn" class="btn btn-primary">Mostra Tutti gli Utenti</button>
-            <button id="filtraUtentiBtn" class="btn btn-success">Filtra Utenti</button>
+        <div class="button-container">
+            <button id="mostraTuttiBtn">Mostra Tutti gli Utenti</button>
+            <button id="filtraUtentiBtn">Filtra Utenti</button>
         </div>
         
-        <div id="filtriContainer" class="row mb-3" style="display: none;">
-            <div class="col-md-6">
-                <input type="text" id="filtroNome" class="form-control" placeholder="Filtra per nome">
-            </div>
-            <div class="col-md-6">
-                <input type="text" id="filtroEmail" class="form-control" placeholder="Filtra per email">
-            </div>
-            <div class="col-12 mt-2">
-                <button id="applicaFiltroBtn" class="btn btn-info w-100">Applica Filtro</button>
-            </div>
+        <div id="filtriContainer" style="display: none;">
+            <input type="text" id="filtroNome" placeholder="Filtra per nome">
+            <input type="text" id="filtroEmail" placeholder="Filtra per email">
+            <button id="applicaFiltroBtn">Applica Filtro</button>
         </div>
         
         <div class="loader" id="loader"></div>
         
-        <div class="table-responsive">
-            <table class="table table-striped" id="utentiTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Preferenze</th>
-                    </tr>
-                </thead>
-                <tbody id="utentiTableBody">
-                    <!-- I dati degli utenti verranno inseriti qui -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div id="messaggioNessunUtente" class="alert alert-info text-center" style="display: none;">
+        <div id="messaggioNessunUtente" style="display: none; text-align: center; margin: 20px 0; color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
             Nessun utente trovato con i filtri selezionati.
         </div>
-    </div>
+        
+        <table id="utentiTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Preferenze</th>
+                </tr>
+            </thead>
+            <tbody id="utentiTableBody">
+                <!-- I dati degli utenti verranno inseriti qui -->
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -161,8 +231,8 @@
                         
                         // Filtra gli utenti lato client
                         const utentiFiltrati = data.filter(utente => {
-                            const nomeMatch = !nome || utente.nome.toLowerCase().includes(nome.toLowerCase());
-                            const emailMatch = !email || utente.email.toLowerCase().includes(email.toLowerCase());
+                            const nomeMatch = !nome || (utente.nome && utente.nome.toLowerCase().includes(nome.toLowerCase()));
+                            const emailMatch = !email || (utente.email && utente.email.toLowerCase().includes(email.toLowerCase()));
                             return nomeMatch && emailMatch;
                         });
                         
@@ -188,9 +258,9 @@
                 
                 utenti.forEach(utente => {
                     const row = document.createElement('tr');
-
-                                        row.innerHTML = `
-<td>${utente.id}</td>
+                    
+                    row.innerHTML = `
+                        <td>${utente.id}</td>
                         <td>${utente.nome || '-'}</td>
                         <td>${utente.email || '-'}</td>
                         <td>${utente.preferenze || '-'}</td>
@@ -209,7 +279,7 @@
             });
             
             filtraUtentiBtn.addEventListener('click', function() {
-                filtriContainer.style.display = filtriContainer.style.display === 'none' ? 'flex' : 'none';
+                filtriContainer.style.display = filtriContainer.style.display === 'none' ? 'block' : 'none';
             });
             
             applicaFiltroBtn.addEventListener('click', function() {
@@ -233,6 +303,5 @@
             caricaTuttiUtenti();
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
