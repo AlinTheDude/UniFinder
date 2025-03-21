@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - UniFinder</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+        }
+        #api-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 50px auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .api-box {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .api-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .api-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: #45a049;
+        }
+        
+        .endpoint {
+            background-color: #e9f7ef;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .get {
+            background-color: #61affe;
+        }
+        
+        .post {
+            background-color: #49cc90;
+        }
+        
+        .put {
+            background-color: #fca130;
+        }
+        
+        .delete {
+            background-color: #f93e3e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#registrazione">Registrazione</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="utenti.html">Utenti</a></li>
+                <li><a href="WebSocket.html">WebSocket</a></li>
+                <li><a href="Swagger.html">API Docs</a></li>
+                <li><a href="chat.html">Chat Assistenza</a></li>
+                <li><a href="index.html#ricerca-universita">Ricerca Università</a></li>
+                <li><a href="Privacy.html">Privacy</a></li>
+                <li><a href="Terms.html">Termini e Condizioni</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- API Documentation Section -->
+    <section id="api-container">
+        <h2>Documentazione API UniFinder</h2>
+        
+        <div class="api-box">
+            <div class="api-title">Benvenuto nella documentazione delle API</div>
+            <div class="api-description">
+                Questa pagina fornisce l'accesso alla documentazione interattiva delle API di UniFinder. 
+                Utilizzando Swagger UI, puoi esplorare, testare e comprendere tutte le API disponibili nel sistema.
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span> /utenti
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span> /registrazione
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span> /login
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span> /ricerca-universita
+            </div>
+            
+            <a href="/api-docs" class="button">Apri Documentazione Swagger</a>
+        </div>
+        
+        <div class="api-box">
+            <div class="api-title">Cos'è Swagger?</div>
+            <div class="api-description">
+                Swagger è uno strumento che permette di documentare e testare le API in modo interattivo. 
+                Con Swagger UI puoi:
+                <ul>
+                    <li>Visualizzare tutti gli endpoint disponibili</li>
+                    <li>Comprendere i parametri richiesti e i formati di risposta</li>
+                    <li>Testare le API direttamente dall'interfaccia</li>
+                    <li>Esplorare i modelli di dati utilizzati nel sistema</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reindirizza automaticamente alla documentazione Swagger dopo 5 secondi
+            setTimeout(function() {
+                const swaggerLink = document.querySelector('.button');
+                // Aggiungi una classe per evidenziare il pulsante prima del reindirizzamento
+                swaggerLink.style.backgroundColor = '#ff9800';
+                swaggerLink.textContent = 'Reindirizzamento in corso...';
+                
+                // Reindirizza dopo un breve ritardo per mostrare l'animazione
+                setTimeout(function() {
+                    window.location.href = '/api-docs';
+                }, 1000);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
