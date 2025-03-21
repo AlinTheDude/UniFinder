@@ -83,6 +83,43 @@ passport.deserializeUser((id, done) => {
     });
 });
 
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'UniFinder API',
+        version: '1.0.0',
+        description: 'API per la gestione di UniFinder',
+        contact: {
+          name: 'Sviluppatore UniFinder',
+          email: 'info@unifinder.it'
+        }
+      },
+      servers: [
+        {
+          url: 'http://localhost:3001',
+          description: 'Server di sviluppo'
+        },
+        {
+          url: 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev',
+          description: 'Server GitHub Codespaces'
+        }
+      ]
+    },
+    apis: ['./server.js'] // file che contengono le annotazioni Swagger
+  };
+  
+  const swaggerSpec = swaggerJsdoc(swaggerOptions);
+  
+  // Rotta per la documentazione Swagger
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  
+  // Endpoint per il file swagger.json
+  app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
+
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -198,6 +235,44 @@ db.run(`CREATE TABLE IF NOT EXISTS universita (
     }
 });
 
+/**
+ * @swagger
+ * /registrazione:
+ *   post:
+ *     summary: Registra un nuovo utente
+ *     description: Crea un nuovo utente nel sistema
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nome
+ *               - email
+ *               - password
+ *             properties:
+ *               nome:
+ *                 type: string
+ *                 description: Nome dell'utente
+ *               email:
+ *                 type: string
+ *                 description: Email dell'utente
+ *               password:
+ *                 type: string
+ *                 description: Password dell'utente
+ *               preferenze:
+ *                 type: string
+ *                 description: Preferenze dell'utente
+ *     responses:
+ *       200:
+ *         description: Registrazione completata con successo
+ *       400:
+ *         description: Errore nei dati inviati
+ *       500:
+ *         description: Errore del server
+ */
+
 // Endpoint per la registrazione
 app.post('/registrazione', (req, res) => {
     console.log('1. Richiesta di registrazione ricevuta:', req.body);
@@ -232,6 +307,37 @@ app.post('/registrazione', (req, res) => {
     );
 });
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Effettua il login di un utente
+ *     description: Autentica un utente nel sistema
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email dell'utente
+ *               password:
+ *                 type: string
+ *                 description: Password dell'utente
+ *     responses:
+ *       200:
+ *         description: Login riuscito
+ *       401:
+ *         description: Credenziali non valide
+ *       500:
+ *         description: Errore del server
+ */
+
 // Endpoint per il login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -260,6 +366,45 @@ app.post('/login', (req, res) => {
         res.json({ message: 'Login riuscito', user: row });
     });
 })
+
+/**
+ * @swagger
+ * /ricerca-universita:
+ *   post:
+ *     summary: Ricerca università
+ *     description: Cerca università in base ai criteri specificati
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paese:
+ *                 type: string
+ *                 description: Paese dell'università
+ *               indirizzo:
+ *                 type: string
+ *                 description: Indirizzo dell'università
+ *               tasseMassime:
+ *                 type: number
+ *                 description: Tasse massime
+ *               borse_di_studio:
+ *                 type: string
+ *                 description: Disponibilità di borse di studio
+ *               offerta_formativa:
+ *                 type: string
+ *                 description: Offerta formativa
+ *               reputazioneMinima:
+ *                 type: number
+ *                 description: Reputazione minima
+ *     responses:
+ *       200:
+ *         description: Risultati della ricerca
+ *       500:
+ *         description: Errore del server
+ */
+
 
 // Endpoint per la ricerca università
 app.post('/ricerca-universita', (req, res) => {
@@ -403,6 +548,38 @@ function inviaConcatoreATutti() {
         }
     });
 }
+
+/**
+ * @swagger
+ * /utenti:
+ *   get:
+ *     summary: Recupera tutti gli utenti
+ *     description: Restituisce un array di tutti gli utenti registrati nel sistema
+ *     responses:
+ *       200:
+ *         description: Un array di utenti
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID dell'utente
+ *                   nome:
+ *                     type: string
+ *                     description: Nome dell'utente
+ *                   email:
+ *                     type: string
+ *                     description: Email dell'utente
+ *                   preferenze:
+ *                     type: string
+ *                     description: Preferenze dell'utente
+ *       500:
+ *         description: Errore del server
+ */
 
 app.get('/utenti', (req, res) => {
     const query = 'SELECT * FROM utenti';
