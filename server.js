@@ -7,6 +7,7 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 let visitatoriOnline = 0;
+const clientAttivi = new Map();
 require('dotenv').config();
 const WebSocket = require('ws');
 const app = express();
@@ -303,26 +304,31 @@ app.post('/ricerca-universita', (req, res) => {
 });
 
 wss.on('connection', (ws) => {
-    console.log('Nuovo client connesso');
+    // Assegna un ID univoco a ogni connessione
+    const clientId = Date.now() + Math.random().toString(36).substr(2, 9);
+    clientAttivi.set(clientId, ws);
+    
+    console.log(`Nuovo client connesso (ID: ${clientId}). Totale connessioni: ${clientAttivi.size}`);
+    visitatoriOnline = clientAttivi.size;
+    
+    // Invia l'aggiornamento del contatore a tutti
+    inviaConcatoreATutti();
+    
+    // Imposta un ping periodico per verificare se il client è ancora connesso
+    ws.isAlive = true;
+    ws.on('pong', () => {
+        ws.isAlive = true;
+    });
     
     // Quando il client invia un messaggio
     ws.on('message', (message) => {
         try {
             const messaggio = JSON.parse(message.toString());
             
-            // Gestisci i messaggi di connessione/disconnessione per il contatore visitatori
-            if (messaggio.tipo === 'connessione') {
-                visitatoriOnline++;
-                console.log(`Utente connesso. Visitatori online: ${visitatoriOnline}`);
-                // Invia l'aggiornamento del contatore a tutti i client
-                inviaConcatoreATutti();
-            } else if (messaggio.tipo === 'disconnessione') {
-                visitatoriOnline = Math.max(0, visitatoriOnline - 1);
-                console.log(`Utente disconnesso. Visitatori online: ${visitatoriOnline}`);
-                // Invia l'aggiornamento del contatore a tutti i client
-                inviaConcatoreATutti();
-            } else {
-                // Gestisci gli altri messaggi (come quelli della chat)
+            // Gestisci solo i messaggi di tipo chat, ignora connessione/disconnessione
+            // perché ora gestiamo quelli automaticamente
+            if (messaggio.tipo !== 'connessione' && messaggio.tipo !== 'disconnessione') {
+                // Inoltra il messaggio agli altri client (per la chat)
                 wss.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(message.toString());
@@ -331,7 +337,7 @@ wss.on('connection', (ws) => {
             }
         } catch (error) {
             console.error('Errore nel parsing del messaggio WebSocket:', error);
-            // Se non è JSON, trattalo come messaggio normale (per compatibilità con codice esistente)
+            // Se non è JSON, trattalo come messaggio normale
             wss.clients.forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(message.toString());
@@ -342,9 +348,9 @@ wss.on('connection', (ws) => {
 
     // Quando il client si disconnette
     ws.on('close', () => {
-        console.log('Client disconnesso');
-        visitatoriOnline = Math.max(0, visitatoriOnline - 1);
-        // Invia l'aggiornamento del contatore a tutti i client
+        console.log(`Client disconnesso (ID: ${clientId})`);
+        clientAttivi.delete(clientId);
+        visitatoriOnline = clientAttivi.size;
         inviaConcatoreATutti();
     });
     
@@ -355,6 +361,33 @@ wss.on('connection', (ws) => {
             conteggio: visitatoriOnline
         }));
     }
+});
+
+// Imposta un intervallo per verificare periodicamente se i client sono ancora connessi
+const intervalloVerifica = setInterval(() => {
+    let clientDisconnessi = 0;
+    
+    wss.clients.forEach((ws) => {
+        if (ws.isAlive === false) {
+            clientDisconnessi++;
+            return ws.terminate(); // Termina la connessione se non risponde
+        }
+        
+        ws.isAlive = false;
+        ws.ping(() => {});
+    });
+    
+    if (clientDisconnessi > 0) {
+        console.log(`Rimosse ${clientDisconnessi} connessioni inattive`);
+        // Aggiorna il contatore solo se abbiamo rimosso client
+        visitatoriOnline = clientAttivi.size;
+        inviaConcatoreATutti();
+    }
+}, 30000); // Verifica ogni 30 secondi
+
+// Pulisci l'intervallo quando il server viene chiuso
+wss.on('close', () => {
+    clearInterval(intervalloVerifica);
 });
 
 // Funzione per inviare l'aggiornamento del contatore a tutti i client

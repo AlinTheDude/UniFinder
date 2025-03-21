@@ -115,72 +115,69 @@
             
             // Configura WebSocket
             const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${wsProtocol}//${window.location.host}`;
+const wsUrl = `${wsProtocol}//${window.location.host}`;
             let socket;
-            let tentativi = 0;
-            const maxTentativi = 5;
+           let tentativi = 0;
+const maxTentativi = 5;
             
             // Funzione per stabilire la connessione WebSocket
             function connetti() {
-                socket = new WebSocket(wsUrl);
-                
-                // Quando la connessione WebSocket è aperta
-                socket.onopen = function() {
-                    console.log('Connessione WebSocket stabilita');
-                    tentativi = 0;
-                    statoConnessione.textContent = 'Connesso al server';
-                    statoConnessione.className = 'stato-connessione connesso';
-                    
-                    // Invia un messaggio per notificare la connessione
-                    socket.send(JSON.stringify({
-                        tipo: 'connessione',
-                        pagina: 'visitatori'
-                    }));
-                };
-                
-                // Quando si riceve un messaggio dal server
-                socket.onmessage = function(event) {
-                    try {
-                        const messaggio = JSON.parse(event.data);
-                        
-                        // Se il messaggio contiene il conteggio dei visitatori, aggiorna il contatore
-                        if (messaggio.tipo === 'contatore-visitatori') {
-                            contatoreVisitatori.textContent = messaggio.conteggio;
-                            // Aggiungi un'animazione per evidenziare il cambiamento
-                            contatoreVisitatori.style.transition = 'color 0.3s ease';
-                            contatoreVisitatori.style.color = '#ff9800';
-                            setTimeout(() => {
-                                contatoreVisitatori.style.color = '#4CAF50';
-                            }, 300);
-                        }
-                    } catch (error) {
-                        console.error('Errore nel parsing del messaggio WebSocket:', error);
-                    }
-                };
-                
-                // Quando si chiude la connessione
-                socket.onclose = function() {
-                    console.log('Connessione WebSocket chiusa');
-                    statoConnessione.textContent = 'Disconnesso dal server. Tentativo di riconnessione...';
-                    statoConnessione.className = 'stato-connessione disconnesso';
-                    
-                    // Riprova a connettersi dopo un po' di tempo, ma limita i tentativi
-                    if (tentativi < maxTentativi) {
-                        tentativi++;
-                        setTimeout(connetti, 5000); // Riprova dopo 5 secondi
-                    } else {
-                        statoConnessione.textContent = 'Impossibile connettersi al server. Ricarica la pagina per riprovare.';
-                    }
-                };
-                socket.onerror = function(error) {
-                    console.error('Errore WebSocket:', error);
-                    statoConnessione.textContent = 'Errore di connessione al server';
-                    statoConnessione.className = 'stato-connessione disconnesso';
-                };
-            }
+    socket = new WebSocket(wsUrl);
+    
+    // Quando la connessione WebSocket è aperta
+    socket.onopen = function() {
+        console.log('Connessione WebSocket stabilita');
+        tentativi = 0;
+        statoConnessione.textContent = 'Connesso al server';
+        statoConnessione.className = 'stato-connessione connesso';
+    };
+    
+    // Quando si riceve un messaggio dal server
+    socket.onmessage = function(event) {
+        try {
+            const messaggio = JSON.parse(event.data);
             
-            // Avvia la connessione WebSocket
-            connetti();
+            // Se il messaggio contiene il conteggio dei visitatori, aggiorna il contatore
+            if (messaggio.tipo === 'contatore-visitatori') {
+                contatoreVisitatori.textContent = messaggio.conteggio;
+                // Aggiungi un'animazione per evidenziare il cambiamento
+                contatoreVisitatori.style.transition = 'color 0.3s ease';
+                contatoreVisitatori.style.color = '#ff9800';
+                setTimeout(() => {
+                    contatoreVisitatori.style.color = '#4CAF50';
+                }, 300);
+            }
+        } catch (error) {
+            console.error('Errore nel parsing del messaggio WebSocket:', error);
+        }
+    };
+    
+    // Quando si chiude la connessione
+    socket.onclose = function() {
+        console.log('Connessione WebSocket chiusa');
+        statoConnessione.textContent = 'Disconnesso dal server. Tentativo di riconnessione...';
+        statoConnessione.className = 'stato-connessione disconnesso';
+        
+        // Riprova a connettersi dopo un po' di tempo, ma limita i tentativi
+        if (tentativi < maxTentativi) {
+            tentativi++;
+            setTimeout(connetti, 5000); // Riprova dopo 5 secondi
+        } else {
+            statoConnessione.textContent = 'Impossibile connettersi al server. Ricarica la pagina per riprovare.';
+        }
+    };
+    
+    // Quando si verifica un errore
+    socket.onerror = function(error) {
+        console.error('Errore WebSocket:', error);
+        statoConnessione.textContent = 'Errore di connessione al server';
+        statoConnessione.className = 'stato-connessione disconnesso';
+    };
+}
+
+// Avvia la connessione WebSocket
+connetti();
+
             
             // Invia un messaggio di disconnessione quando l'utente lascia la pagina
             window.addEventListener('beforeunload', function() {
