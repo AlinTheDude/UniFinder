@@ -84,17 +84,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     isAdminMode = !isAdminMode;
                     
                     if (isAdminMode) {
-                        const securityCode = document.getElementById('securityCode').value.trim();
+                        // Passa a modalità admin
+                        loginHeader.classList.add('admin-mode');
+                        toggleMode.textContent = 'Torna al login utente';
+                        headerTitle.innerHTML = '<span class="admin-badge"><i class="fas fa-shield-alt"></i> Area Riservata</span>Accesso Amministratore';
+                        headerDesc.textContent = 'Inserisci le credenziali di amministrazione';
+                        submitBtn.textContent = 'Accedi come Amministratore';
                         
-                        // Credenziali admin predefinite
-                        if (email === 'admin' && password === 'Admin123!' && securityCode === 'UniFinder2024') {
-                            // Login admin riuscito
-                            localStorage.setItem('adminLoggedIn', 'true');
-                            alert('Login amministratore effettuato con successo!');
-                            window.location.href = 'admin-dashboard.html'; // Reindirizza alla dashboard admin
-                        } else {
-                            alert('Credenziali amministratore non valide. Riprova.');
-                        }
+                        // Cambia l'etichetta da "Email" a "Username"
+                        document.querySelector('label[for="loginEmail"]').textContent = 'Username';
+                        
+                        // Mostra campi admin
+                        adminFields.forEach(field => field.style.display = 'block');
                     } else {
                         // Torna a modalità utente
                         loginHeader.classList.remove('admin-mode');
@@ -116,6 +117,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
+
+                if (isAdminMode) {
+                    const securityCode = document.getElementById('securityCode').value.trim();
+                    
+                    // Credenziali admin predefinite
+                    if (email === 'admin' && password === 'Admin123!' && securityCode === 'UniFinder2024') {
+                        // Login admin riuscito
+                        localStorage.setItem('adminLoggedIn', 'true');
+                        alert('Login amministratore effettuato con successo!');
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        alert('Credenziali amministratore non valide. Riprova.');
+                    }
+                } else {
+                    // Codice esistente per il login utente normale
+                    console.log("Tentativo di login con:", { email, password });
+                }
                 
                 console.log("Tentativo di login con:", { email, password });
                 
