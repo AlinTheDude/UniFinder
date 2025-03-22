@@ -3,129 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Accedi - UniFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
-        }
-        
-        #login-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            margin: 50px auto;
-            max-width: 500px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .google-login {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            flex-direction: column;
         }
         
-        .google-btn {
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
             text-decoration: none;
-            color: #333;
-        }
-        
-        .google-btn:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .google-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-        
-        .or-divider {
             display: flex;
             align-items: center;
-            text-align: center;
-            margin: 20px 0;
         }
         
-        .or-divider::before,
-        .or-divider::after {
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Login container */
+        .login-container {
+            max-width: 450px;
+            margin: 60px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .login-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            outline: none;
+        }
+        
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-family: inherit;
+        }
+        
+        .form-submit:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray);
+        }
+        
+        .form-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .form-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .social-login {
+            margin-top: 30px;
+        }
+        
+        .social-login-divider {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-login-divider::before,
+        .social-login-divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #ccc;
+            height: 1px;
+            background-color: var(--light-gray);
         }
         
-        .or-divider span {
-            padding: 0 10px;
-            color: #666;
+        .social-login-text {
+            padding: 0 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--light-gray);
+            background-color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: inherit;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        
+        .social-btn:hover {
+            background-color: #f8fafc;
+            border-color: var(--gray);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .social-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .google-btn i {
+            color: #ea4335;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            
+            .login-container {
+                margin: 40px 20px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#registrazione">Registrazione</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="ajax.html">AJAX</a></li>
-                <li><a href="WebSocket.html">WebSocket</a></li>
-                <li><a href="Swagger.html">API Docs</a></li>
-                <li><a href="chat.html">Chat Assistenza</a></li>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-                <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="login-container">
-        <h2>Accedi al tuo account</h2>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
         
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="loginEmail">Email</label>
-                <input type="email" id="loginEmail" placeholder="Inserisci la tua email" required>
-            </div>
-            <div class="form-group">
-                <label for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" placeholder="Inserisci la tua password" required>
-            </div>
-            <button type="submit" class="btn-primary">Accedi</button>
-        </form>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li><a href="index.html#features" class="nav-link">Funzionalità</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
+        </ul>
         
-        <div class="or-divider">
-            <span>oppure</span>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Accedi al tuo account</h2>
+            <p>Inserisci le tue credenziali per accedere a UniFinder</p>
         </div>
         
-        <div class="google-login">
-            <a href="/auth/google" class="google-btn">
-                <img src="Imgs/google_icon.png" alt="Google" class="google-icon">
-                Accedi con Google
-            </a>
+        <div class="login-form">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail" class="form-label">Email</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="Inserisci la tua email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Inserisci la tua password" required>
+                </div>
+                
+                <button type="submit" class="form-submit">Accedi</button>
+            </form>
+            
+            <div class="social-login">
+                <div class="social-login-divider">
+                    <span class="social-login-text">Oppure</span>
+                </div>
+                
+                <a href="/auth/google" class="social-btn google-btn">
+                    <i class="fab fa-google"></i> Continua con Google
+                </a>
+            </div>
+            
+            <div class="form-footer">
+                Non hai un account? <a href="index.html#registration" class="form-link">Registrati</a>
+            </div>
         </div>
-        
-        <p class="text-center mt-3">
-            Non hai un account? <a href="index.html#registrazione">Registrati qui</a>
-        </p>
-    </section>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
     </footer>
-
     <script src="app.js"></script>
 </body>
 </html>
