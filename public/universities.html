@@ -11,6 +11,7 @@
             background-size: cover; /* Coprire l'intera area */
             background-position: center; /* Centrare l'immagine */
             background-repeat: no-repeat; /* Non ripetere l'immagine */
+            background-attachment: fixed; /* Mantiene lo sfondo fisso durante lo scroll */
         }
         
         /* Stili per l'elemento utente nella navbar */
@@ -121,11 +122,11 @@
         
         /* Stili specifici per la pagina di ricerca università */
         #ricerca-universita {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
             padding: 30px;
             margin: 50px auto;
-            max-width: 800px;
+            max-width: 1200px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
@@ -134,111 +135,32 @@
             margin-top: 0;
             margin-bottom: 20px;
             text-align: center;
+            font-size: 28px;
         }
         
         .search-form {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: flex-end;
             margin-bottom: 30px;
+            background-color: #f5f8fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .form-group {
-            display: flex;
-            flex-direction: column;
+            flex: 1;
+            margin-right: 15px;
         }
         
         .form-group label {
+            display: block;
             margin-bottom: 8px;
             font-weight: bold;
             color: #333;
         }
         
-        .form-group input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        .search-btn {
-            background-color: #003366;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .search-btn:hover {
-            background-color: #002244;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-            display: none;
-        }
-        
-        .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .results {
-            margin-top: 30px;
-        }
-        
-        .university-card {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-            position: relative;
-        }
-        
-        .university-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .university-card h3 {
-            color: #003366;
-            margin-top: 0;
-            padding-right: 30px; /* Spazio per il pulsante preferiti */
-        }
-        
-        .university-info {
-            margin-bottom: 5px;
-        }
-        
-        .favorite-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            color: #ccc;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .favorite-btn:hover {
-            color: #f8c537;
-        }
-        
-        .favorite-btn.active {
-            color: #f8c537;
-        }
         .country-select {
             padding: 12px;
             border: 1px solid #ddd;
@@ -248,25 +170,240 @@
             background-color: white;
         }
         
+        .search-btn {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 48px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-btn:hover {
+            background-color: #002244;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .search-btn i {
+            margin-left: 8px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .loading i {
+            font-size: 36px;
+            color: #003366;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .results h3 {
+            color: #003366;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
         .result-count {
             margin-bottom: 15px;
             font-weight: bold;
             color: #003366;
+            font-size: 18px;
         }
         
         .save-all-btn {
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border-radius: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             cursor: pointer;
             display: none;
+            transition: all 0.3s;
+            font-weight: bold;
         }
         
         .save-all-btn:hover {
             background-color: #3e8e41;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .save-all-btn i {
+            margin-left: 8px;
+        }
+        
+        /* Stile per la griglia di università */
+        .universities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        /* Stile per le card delle università */
+        .university-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .university-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: rgba(0,51,102,0.2);
+        }
+        
+        .university-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #003366, #0066cc);
+        }
+        
+        .university-card h3 {
+            color: #003366;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            line-height: 1.4;
+            padding-right: 30px;
+            flex-grow: 1;
+        }
+        
+        .university-info {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .university-info strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .university-info a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .university-info a:hover {
+            color: #003366;
+            text-decoration: underline;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 2;
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.2);
+            color: #f8c537;
+        }
+        
+        .favorite-btn.active {
+            color: #f8c537;
+            text-shadow: 0 0 5px rgba(248, 197, 55, 0.5);
+        }
+        
+        /* Media queries per la responsività */
+        @media (max-width: 1200px) {
+            .universities-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .universities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .form-group {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .universities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            #ricerca-universita {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+        
+        /* Stile per il messaggio toast */
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: toastIn 0.3s forwards, toastOut 0.3s forwards 2.7s;
+        }
+        
+        @keyframes toastIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(20px); }
         }
     </style>
 </head>
@@ -322,23 +459,24 @@
             </div>
             <button id="searchBtn" class="search-btn">Cerca Università <i class="fas fa-search"></i></button>
         </div>
-
+    
         <div class="loading" id="loading">
-            <i class="fas fa-spinner fa-spin"></i> Ricerca in corso...
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Ricerca in corso...</p>
         </div>
-
+    
         <div class="results" id="results">
             <h3>Risultati della ricerca</h3>
             <div class="result-count" id="resultCount"></div>
             <button id="saveAllBtn" class="save-all-btn">Salva tutte le università <i class="fas fa-bookmark"></i></button>
-            <div id="universitiesList"></div>
+            <div id="universitiesList" class="universities-grid"></div>
         </div>
     </section>
-
+    
     <footer>
         <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
     </footer>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Aggiungi Font Awesome se non è già presente
@@ -369,6 +507,13 @@
             
             // Gestione della ricerca
             searchBtn.addEventListener('click', searchUniversities);
+            
+            // Ricerca anche premendo Invio nel menu a tendina
+            countrySelect.addEventListener('change', function() {
+                if (this.value) {
+                    searchUniversities();
+                }
+            });
             
             // Gestione del salvataggio di tutte le università
             saveAllBtn.addEventListener('click', saveAllUniversities);
@@ -430,189 +575,184 @@
                     
                     // Verifica se l'università è nei preferiti
                     const isFavorite = favoriteUniversities.some(fav => 
-            fav.name === uni.name && fav.country === uni.country
-        );
-        
-        // Prepara il contenuto HTML della card
-        card.innerHTML = `
-            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
-                <i class="fas fa-star"></i>
-            </button>
-            <h3>${uni.name}</h3>
-            <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
-            ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
-            <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
-            <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
-        `;
-        
-        resultsContainer.appendChild(card);
-        
-        // Aggiungi evento per il pulsante preferiti
-        const favBtn = card.querySelector('.favorite-btn');
-        favBtn.addEventListener('click', function() {
-            toggleFavorite(uni);
-            this.classList.toggle('active');
-        });
-    });
-}
-
-function toggleFavorite(university) {
-    // Cerca l'università nei preferiti
-    const index = favoriteUniversities.findIndex(uni => 
-        uni.name === university.name && uni.country === university.country
-    );
-    
-    if (index === -1) {
-        // Aggiungi ai preferiti
-        favoriteUniversities.push(university);
-        showMessage(`"${university.name}" aggiunta ai preferiti!`);
-    } else {
-        // Rimuovi dai preferiti
-        favoriteUniversities.splice(index, 1);
-        showMessage(`"${university.name}" rimossa dai preferiti!`);
-    }
-    
-    // Salva i preferiti
-    saveFavorites();
-}
-
-function saveAllUniversities() {
-    // Ottieni tutte le università visualizzate
-    const cards = document.querySelectorAll('.university-card');
-    let count = 0;
-    
-    cards.forEach(card => {
-        const button = card.querySelector('.favorite-btn');
-        if (!button.classList.contains('active')) {
-            // Simula il click sul pulsante dei preferiti
-            button.click();
-            count++;
-        }
-    });
-    
-    if (count > 0) {
-        showMessage(`Aggiunte ${count} università ai preferiti!`);
-    } else {
-        showMessage('Tutte le università sono già nei preferiti!');
-    }
-}
-
-function saveFavorites() {
-    // Salva i preferiti nel localStorage
-    localStorage.setItem('favoriteUniversities', JSON.stringify(favoriteUniversities));
-}
-
-function loadFavorites() {
-    // Carica i preferiti dal localStorage
-    const saved = localStorage.getItem('favoriteUniversities');
-    if (saved) {
-        favoriteUniversities = JSON.parse(saved);
-    }
-}
-
-function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-}
-
-function showMessage(message) {
-    // Crea un elemento per il messaggio
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message';
-    messageElement.textContent = message;
-    messageElement.style.position = 'fixed';
-    messageElement.style.bottom = '20px';
-    messageElement.style.right = '20px';
-    messageElement.style.backgroundColor = '#4CAF50';
-    messageElement.style.color = 'white';
-    messageElement.style.padding = '10px 20px';
-    messageElement.style.borderRadius = '5px';
-    messageElement.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-    messageElement.style.zIndex = '9999';
-    
-    document.body.appendChild(messageElement);
-    
-    // Rimuovi il messaggio dopo 3 secondi
-    setTimeout(() => {
-        messageElement.style.opacity = '0';
-        messageElement.style.transition = 'opacity 0.5s';
-        setTimeout(() => {
-            document.body.removeChild(messageElement);
-        }, 500);
-    }, 3000);
-}
-
-// Funzione per verificare l'autenticazione dell'utente
-function checkUserAuthentication() {
-    // Prima controlla sessionStorage
-    const userEmail = sessionStorage.getItem('userEmail');
-    
-    if (userEmail) {
-        // Utente già autenticato in sessionStorage
-        fetchUserData(userEmail);
-    } else {
-        // Controlla se esiste una sessione sul server
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.authenticated) {
-                // Utente autenticato tramite sessione
-                sessionStorage.setItem('userEmail', data.user.email);
-                updateUIForLoggedInUser(data.user);
+                        fav.name === uni.name && fav.country === uni.country
+                    );
+                    
+                    // Prepara il contenuto HTML della card
+                    card.innerHTML = `
+                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <h3>${uni.name}</h3>
+                        <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
+                        ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
+                        <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
+                        <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
+                    `;
+                    
+                    resultsContainer.appendChild(card);
+                    
+                    // Aggiungi evento per il pulsante preferiti
+                    const favBtn = card.querySelector('.favorite-btn');
+                    favBtn.addEventListener('click', function() {
+                        toggleFavorite(uni);
+                        this.classList.toggle('active');
+                    });
+                });
             }
-        })
-        .catch(error => {
-            console.error('Errore nella verifica dell\'autenticazione:', error);
-        });
-    }
-}
+            
+            function toggleFavorite(university) {
+                // Cerca l'università nei preferiti
+                const index = favoriteUniversities.findIndex(uni => 
+                    uni.name === university.name && uni.country === university.country
+                );
+                
+                if (index === -1) {
+                    // Aggiungi ai preferiti
+                    favoriteUniversities.push(university);
+                    showToast(`"${university.name}" aggiunta ai preferiti!`);
+                } else {
+                    // Rimuovi dai preferiti
+                    favoriteUniversities.splice(index, 1);
+                    showToast(`"${university.name}" rimossa dai preferiti!`);
+                }
+                
+                // Salva i preferiti
+                saveFavorites();
+            }
+            
+            function saveAllUniversities() {
+                // Ottieni tutte le università visualizzate
+                const cards = document.querySelectorAll('.university-card');
+                let count = 0;
+                
+                cards.forEach(card => {
+                    const button = card.querySelector('.favorite-btn');
+                    if (!button.classList.contains('active')) {
+                        // Simula il click sul pulsante dei preferiti
+                        button.click();
+                        count++;
+                    }
+                });
+                
+                if (count > 0) {
+                    showToast(`Aggiunte ${count} università ai preferiti!`);
+                } else {
+                    showToast('Tutte le università sono già nei preferiti!');
+                }
+            }
 
-// Funzione per recuperare i dati dell'utente
-function fetchUserData(email) {
-    fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
-        credentials: 'include'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Utente non trovato');
-        }
-        return response.json();
-    })
-    .then(userData => {
-        updateUIForLoggedInUser(userData);
-    })
-    .catch(error => {
-        console.error('Errore nel recupero dei dati utente:', error);
-        // Rimuovi l'email dalla sessione se non è valida
-        sessionStorage.removeItem('userEmail');
-    });
-}
-
-// Funzione per aggiornare l'interfaccia per utenti loggati
-function updateUIForLoggedInUser(user) {
-    const navbar = document.querySelector('nav');
-    
-    // Nascondi i link di login e registrazione
-    document.getElementById('login-link').style.display = 'none';
-    document.getElementById('reg-link').style.display = 'none';
-    
-    // Verifica se l'elemento utente esiste già
-    let userNavItem = document.getElementById('user-nav-item');
-    
-    if (!userNavItem) {
-        // Crea l'elemento utente
-        userNavItem = document.createElement('li');
-        userNavItem.id = 'user-nav-item';
-        userNavItem.className = 'user-nav-item';
-        
-        // Aggiungi l'elemento direttamente alla navbar (non all'ul)
-        navbar.appendChild(userNavItem);
-        
-        // Aggiungi il contenuto HTML con icone Font Awesome
-        userNavItem.innerHTML = `
-            <div class="user-welcome">
+            function saveFavorites() {
+                // Salva i preferiti nel localStorage
+                localStorage.setItem('favoriteUniversities', JSON.stringify(favoriteUniversities));
+            }
+            
+            function loadFavorites() {
+                // Carica i preferiti dal localStorage
+                const saved = localStorage.getItem('favoriteUniversities');
+                if (saved) {
+                    favoriteUniversities = JSON.parse(saved);
+                }
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            function showToast(message) {
+                // Rimuovi messaggi toast esistenti
+                const existingToasts = document.querySelectorAll('.toast-message');
+                existingToasts.forEach(toast => {
+                    document.body.removeChild(toast);
+                });
+                
+                // Crea un nuovo elemento toast
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                // Rimuovi il toast dopo l'animazione (3 secondi)
+                setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
+                }, 3000);
+            }
+            
+            // Funzione per verificare l'autenticazione dell'utente
+            function checkUserAuthentication() {
+                // Prima controlla sessionStorage
+                const userEmail = sessionStorage.getItem('userEmail');
+                
+                if (userEmail) {
+                    // Utente già autenticato in sessionStorage
+                    fetchUserData(userEmail);
+                } else {
+                    // Controlla se esiste una sessione sul server
+                    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+                        credentials: 'include'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.authenticated) {
+                            // Utente autenticato tramite sessione
+                            sessionStorage.setItem('userEmail', data.user.email);
+                            updateUIForLoggedInUser(data.user);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore nella verifica dell\'autenticazione:', error);
+                    });
+                }
+            }
+            
+            // Funzione per recuperare i dati dell'utente
+            function fetchUserData(email) {
+                fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Utente non trovato');
+                    }
+                    return response.json();
+                })
+                .then(userData => {
+                    updateUIForLoggedInUser(userData);
+                })
+                .catch(error => {
+                    console.error('Errore nel recupero dei dati utente:', error);
+                    // Rimuovi l'email dalla sessione se non è valida
+                    sessionStorage.removeItem('userEmail');
+                });
+            }
+            
+            // Funzione per aggiornare l'interfaccia per utenti loggati
+            function updateUIForLoggedInUser(user) {
+                const navbar = document.querySelector('nav');
+                
+                // Nascondi i link di login e registrazione
+                document.getElementById('login-link').style.display = 'none';
+                document.getElementById('reg-link').style.display = 'none';
+                
+                // Verifica se l'elemento utente esiste già
+                let userNavItem = document.getElementById('user-nav-item');
+                
+                if (!userNavItem) {
+                    // Crea l'elemento utente
+                    userNavItem = document.createElement('li');
+                    userNavItem.id = 'user-nav-item';
+                    userNavItem.className = 'user-nav-item';
+                    
+                    // Aggiungi l'elemento direttamente alla navbar (non all'ul)
+                    navbar.appendChild(userNavItem);
+                    
+                    // Aggiungi il contenuto HTML con icone Font Awesome
+                    userNavItem.innerHTML = `
+                        <div class="user-welcome">
                             <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
                             <span>Ciao, ${user.nome || 'Utente'}</span>
                         </div>
@@ -654,11 +794,11 @@ function updateUIForLoggedInUser(user) {
                     document.getElementById('reg-link').style.display = '';
                     
                     // Mostra un messaggio di logout
-                    alert('Logout effettuato con successo');
+                    showToast('Logout effettuato con successo');
                 })
                 .catch(error => {
                     console.error('Errore durante il logout:', error);
-                    alert('Si è verificato un errore durante il logout. Riprova.');
+                    showToast('Si è verificato un errore durante il logout. Riprova.');
                 });
             }
         });
