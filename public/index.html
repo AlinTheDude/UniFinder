@@ -816,10 +816,14 @@
         <ul class="nav-menu" id="navMenu">
             <li><a href="index.html" class="nav-link active">Home</a></li>
             <li><a href="universities.html" class="nav-link">Università</a></li>
-            <li><a href="#features" class="nav-link">Funzionalità</a></li>
-            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li id="reg-link"><a href="#registration" class="nav-link">Registrazione</a></li>
+            <li id="login-link"><a href="login.html" class="nav-link">Login</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
             <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
-            <li id="login-link"><a href="#registration" class="nav-link">Accedi</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
         </ul>
         
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1072,35 +1076,48 @@
             
             // Funzione per aggiornare l'interfaccia per utenti loggati
             function updateUIForLoggedInUser(user) {
-    const navbar = document.querySelector('nav');
-    
     // Nascondi i link di login e registrazione
     document.getElementById('login-link').style.display = 'none';
     document.getElementById('reg-link').style.display = 'none';
     
     // Verifica se l'elemento utente esiste già
-    let userNavItem = document.getElementById('user-nav-item');
+    let userMenu = document.querySelector('.user-menu');
     
-    if (!userNavItem) {
-        // Crea l'elemento utente
-        userNavItem = document.createElement('li');
-        userNavItem.id = 'user-nav-item';
-        userNavItem.className = 'user-nav-item';
+    if (!userMenu) {
+        // Crea l'elemento menu utente
+        userMenu = document.createElement('li');
+        userMenu.className = 'user-menu';
         
-        // Aggiungi l'elemento direttamente alla navbar (non all'ul)
-        navbar.appendChild(userNavItem);
+        // Inseriscilo nel menu di navigazione
+        document.getElementById('navMenu').appendChild(userMenu);
         
-        // Aggiungi il contenuto HTML con icone Font Awesome
-        userNavItem.innerHTML = `
-            <div class="user-welcome">
+        // Aggiungi il contenuto HTML
+        userMenu.innerHTML = `
+            <div class="user-menu-btn">
                 <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
-                <span>Ciao, ${user.nome || 'Utente'}</span>
+                <span class="user-name">Ciao, ${user.nome || 'Utente'}</span>
             </div>
             <div class="user-dropdown">
-                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="dashboard.html#profile"><i class="fas fa-user-circle"></i> Profilo</a>
-                <a href="dashboard.html#favorites"><i class="fas fa-heart"></i> Preferiti</a>
-                <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <div class="user-dropdown-header">
+                    <h4>${user.nome || 'Utente'}</h4>
+                    <p>${user.email}</p>
+                </div>
+                <div class="user-dropdown-links">
+                    <a href="dashboard.html" class="user-dropdown-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="dashboard.html#profile" class="user-dropdown-link">
+                        <i class="fas fa-user-circle"></i> Profilo
+                    </a>
+                    <a href="dashboard.html#favorites" class="user-dropdown-link">
+                        <i class="fas fa-heart"></i> Preferiti
+                    </a>
+                </div>
+                <div class="user-dropdown-footer">
+                    <a href="#" id="logout-link" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
             </div>
         `;
         
@@ -1109,14 +1126,6 @@
             e.preventDefault();
             logoutUser();
         });
-    }
-    
-    // Aggiungi Font Awesome se non è già presente
-    if (!document.querySelector('link[href*="font-awesome"]')) {
-        const fontAwesome = document.createElement('link');
-        fontAwesome.rel = 'stylesheet';
-        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-        document.head.appendChild(fontAwesome);
     }
 }
             
