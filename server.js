@@ -805,6 +805,27 @@ app.post('/admin/login', (req, res) => {
     }
 });
 
+app.post('/admin/login', (req, res) => {
+    const { username, password, securityCode } = req.body;
+    
+    if (username === 'admin' && password === 'Admin123!' && securityCode === 'UniFinder2024') {
+        req.session.user = {
+            id: 0, // ID speciale per admin
+            nome: 'Amministratore',
+            email: 'admin',
+            isAdmin: true
+        };
+        
+        res.json({ success: true, message: 'Login amministratore riuscito' });
+    } else {
+        res.status(401).json({ success: false, message: 'Credenziali amministratore non valide' });
+    }
+});
+
+app.get('/admin/test', (req, res) => {
+    res.json({ message: 'Test endpoint funzionante', session: req.session });
+});
+
 // Endpoint per ottenere statistiche (solo admin)
 app.get('/admin/statistiche', requireAdmin, (req, res) => {
     // Ottieni il conteggio degli utenti
