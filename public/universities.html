@@ -1,41 +1,138 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFinder - Ricerca Università</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Ricerca Università - UniFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
-        body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
-            background-attachment: fixed; /* Mantiene lo sfondo fisso durante lo scroll */
-        }
-        
-        /* Stili per l'elemento utente nella navbar */
-        .user-nav-item {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            z-index: 1000;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
-        .user-welcome {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f1f5f9;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
             display: flex;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.25);
-            padding: 8px 15px;
-            border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .user-welcome:hover {
-            background-color: rgba(255, 255, 255, 0.35);
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* User menu */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-menu-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(37, 99, 235, 0.1);
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .user-menu-btn:hover {
+            background-color: rgba(37, 99, 235, 0.15);
             transform: translateY(-2px);
         }
 
@@ -43,533 +140,693 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            margin-right: 10px;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            border: 2px solid var(--primary);
         }
 
-        .user-welcome span {
+        .user-name {
+            color: var(--primary);
             font-weight: 500;
-            color: white;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .user-dropdown {
             position: absolute;
-            top: calc(100% + 5px);
+            top: calc(100% + 10px);
             right: 0;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            display: none;
-            z-index: 1000;
-            min-width: 180px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
             overflow: hidden;
-            animation: fadeIn 0.2s ease-out;
+            z-index: 1000;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .user-menu:hover .user-dropdown,
+        .user-dropdown:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
-        .user-nav-item:hover .user-dropdown {
-            display: block;
+        .user-dropdown-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            text-align: center;
         }
 
-        .user-dropdown a {
-            display: block;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        .user-dropdown a:last-child {
-            border-bottom: none;
+        .user-dropdown-header h4 {
+            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 5px;
         }
 
-        .user-dropdown a:hover {
-            background-color: #f8f8f8;
+        .user-dropdown-header p {
+            color: var(--gray);
+            font-size: 0.875rem;
         }
 
-        .user-dropdown a i {
-            margin-right: 8px;
-            color: #4CAF50;
+        .user-dropdown-links {
+            padding: 10px 0;
+        }
+
+        .user-dropdown-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: var(--dark);
+    text-decoration: none; 
+    transition: all 0.2s ease;
+}
+
+        .user-dropdown-link:hover {
+            background-color: rgba(37, 99, 235, 0.05);
+            color: var(--primary);
+
+        }
+
+        .user-dropdown-link i {
             width: 20px;
-            text-align: center;
+            margin-right: 10px;
+            color: var(--primary);
         }
 
-        /* Modifiche alla navbar per adattarsi al nuovo elemento utente */
-        nav {
-            position: relative; /* Assicura che gli elementi posizionati assoluti siano relativi alla navbar */
+        .user-dropdown-footer {
+            padding: 10px 15px;
+            border-top: 1px solid var(--light-gray);
         }
 
-        /* Stile per il menu utente quando è mobile */
-        @media (max-width: 768px) {
-            .user-nav-item {
-                position: static;
-                margin-left: auto;
-            }
-            
-            .user-dropdown {
-                position: absolute;
-                top: 100%;
-                right: 10px;
-                width: 200px;
-            }
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            color: var(--danger);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
-        
-        /* Stili specifici per la pagina di ricerca università */
-        #ricerca-universita {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            padding: 30px;
-            margin: 50px auto;
+
+        .logout-btn:hover {
+            color: #b91c1c;
+        }
+
+        .logout-btn i {
+            margin-right: 10px;
+        }
+
+        /* Main container */
+        .main-container {
             max-width: 1200px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
         }
-        
-        #ricerca-universita h2 {
-            color: #003366;
-            margin-top: 0;
-            margin-bottom: 20px;
+
+        .page-header {
+            margin-bottom: 30px;
             text-align: center;
-            font-size: 28px;
         }
-        
-        /* Modifica: form di ricerca in colonna invece che in riga */
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Search section */
+        .search-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
         .search-form {
             display: flex;
-            flex-direction: column; /* Cambiato da row a column */
-            margin-bottom: 30px;
-            background-color: #f5f8fa;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            flex-direction: column;
+            gap: 20px;
         }
-        
+
         .form-group {
-            margin-bottom: 15px; /* Aggiunto margine sotto */
-            width: 100%; /* Occupa tutta la larghezza */
+            margin-bottom: 5px;
         }
-        
-        .form-group label {
+
+        .form-label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
+            font-weight: 500;
+            color: var(--dark);
         }
-        
-        .country-select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+
+        .form-select {
             width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
             background-color: white;
+            color: var(--dark);
+            cursor: pointer;
         }
-        
+
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            outline: none;
+        }
+
         .search-btn {
-            background-color: #003366;
+            padding: 14px;
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-family: inherit;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%; /* Occupa tutta la larghezza */
         }
-        
+
         .search-btn:hover {
-            background-color: #002244;
+            background-color: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
-        
+
         .search-btn i {
-            margin-left: 8px;
+            margin-right: 8px;
         }
-        
-        .loading {
-            text-align: center;
-            padding: 30px;
-            display: none;
+
+        /* Results section */
+        .results-section {
+            margin-top: 20px;
         }
-        
-        .loading i {
-            font-size: 36px;
-            color: #003366;
-        }
-        
-        .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 15px;
-            border-radius: 5px;
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            display: none;
-            text-align: center;
         }
-        
-        .results {
-            margin-top: 30px;
+
+        .results-count {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
         }
-        
-        .results h3 {
-            color: #003366;
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
-        .result-count {
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #003366;
-            font-size: 18px;
-        }
-        
+
         .save-all-btn {
-            background-color: #4CAF50;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--secondary);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            display: none;
-            transition: all 0.3s;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
-        
+
         .save-all-btn:hover {
-            background-color: #3e8e41;
+            background-color: #0d9488;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
         }
-        
+
         .save-all-btn i {
-            margin-left: 8px;
+            margin-right: 8px;
         }
-        
-        /* Stile per la griglia di università */
+
         .universities-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
         }
-        
-        /* Stile per le card delle università */
+
         .university-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f8fa 100%);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05);
+            height: 100%;
         }
-        
+
         .university-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-color: rgba(0,51,102,0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        
-        .university-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #003366, #0066cc);
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 20px;
+            color: white;
+            position: relative;
         }
-        
-        .university-card h3 {
-            color: #003366;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            font-size: 18px;
-            line-height: 1.4;
-            padding-right: 30px;
-            flex-grow: 1;
-        }
-        
-        .university-info {
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #555;
-        }
-        
-        .university-info strong {
-            color: #333;
+
+        .card-title {
+            font-size: 1.2rem;
             font-weight: 600;
+            margin-right: 30px;
+            line-height: 1.4;
         }
-        
-        .university-info a {
-            color: #0066cc;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .university-info a:hover {
-            color: #003366;
-            text-decoration: underline;
-        }
-        
+
         .favorite-btn {
             position: absolute;
             top: 15px;
             right: 15px;
             background: none;
             border: none;
-            font-size: 20px;
-            color: #ccc;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             z-index: 2;
         }
-        
+
         .favorite-btn:hover {
             transform: scale(1.2);
-            color: #f8c537;
+            color: var(--accent);
         }
-        
+
         .favorite-btn.active {
-            color: #f8c537;
-            text-shadow: 0 0 5px rgba(248, 197, 55, 0.5);
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
         }
-        
-        /* Media queries per la responsività */
-        @media (max-width: 1200px) {
-            .universities-grid {
-                grid-template-columns: repeat(3, 1fr);
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .university-info {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .university-info i {
+            width: 20px;
+            margin-right: 10px;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .university-info-content {
+            flex: 1;
+        }
+
+        .university-info-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+        }
+
+        .university-info-value {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .university-info-value a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .university-info-value a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Loading indicator */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(37, 99, 235, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
         }
-        
-        @media (max-width: 900px) {
-            .universities-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+
+        .loading-text {
+            color: var(--gray);
+            font-weight: 500;
         }
-        
-        @media (max-width: 600px) {
-            .universities-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            #ricerca-universita {
-                padding: 20px;
-                margin: 20px;
-            }
+
+        /* Error message */
+        .error-message {
+            display: none;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
         }
-        
-        /* Stile per il messaggio toast */
-        .toast-message {
+
+        /* Toast notification */
+        .toast {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 9999;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            max-width: 300px;
+            z-index: 1000;
             opacity: 0;
             transform: translateY(20px);
             animation: toastIn 0.3s forwards, toastOut 0.3s forwards 2.7s;
         }
-        
-        @keyframes toastIn {
-            to { opacity: 1; transform: translateY(0); }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
         }
-        
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: var(--success);
+        }
+
+        .toast.error i {
+            color: var(--danger);
+        }
+
+        .toast-message {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        @keyframes toastIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @keyframes toastOut {
-            to { opacity: 0; transform: translateY(20px); }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .universities-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
 
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul id="main-nav">
-                <li><a href="index.html">Home</a></li>
-                <li id="reg-link"><a href="index.html#registrazione">Registrazione</a></li>
-                <li id="login-link"><a href="login.html">Login</a></li>
-                <li><a href="ajax.html">AJAX</a></li>
-                <li><a href="WebSocket.html">WebSocket</a></li>
-                <li><a href="Swagger.html">API Docs</a></li>
-                <li><a href="chat.html">Chat Assistenza</a></li>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-                <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni</a></li>
-            </ul>
-        </nav>
-    </header>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link active">Università</a></li>
+            <li><a href="index.html#features" class="nav-link">Funzionalità</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
+        </ul>
 
-    <!-- Ricerca Università -->
-    <section id="ricerca-universita">
-        <h2>Ricerca Università per Paese</h2>
-        
-        <div class="error-message" id="errorMessage"></div>
-        
-        <div class="search-form">
-            <div class="form-group">
-                <label for="country">Seleziona il Paese</label>
-                <select id="country" class="country-select">
-                    <option value="">Seleziona un paese...</option>
-                    <option value="Italy">Italia</option>
-                    <option value="United States">Stati Uniti</option>
-                    <option value="United Kingdom">Regno Unito</option>
-                    <option value="France">Francia</option>
-                    <option value="Germany">Germania</option>
-                    <option value="Spain">Spagna</option>
-                    <option value="Japan">Giappone</option>
-                    <option value="China">Cina</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Brazil">Brasile</option>
-                    <option value="India">India</option>
-                    <option value="Russia">Russia</option>
-                    <option value="South Korea">Corea del Sud</option>
-                    <option value="Netherlands">Paesi Bassi</option>
-                    <option value="Switzerland">Svizzera</option>
-                    <option value="Sweden">Svezia</option>
-            </select>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="page-header">
+            <h1>Ricerca Università per Paese</h1>
+            <p>Esplora il nostro database globale di università e scopri le opportunità di studio in tutto il mondo</p>
         </div>
-        <button id="searchBtn" class="search-btn">Cerca Università <i class="fas fa-search"></i></button>
+
+        <div class="search-section">
+            <div class="search-form">
+                <div class="form-group">
+                    <label for="country" class="form-label">Seleziona un paese</label>
+                    <select id="country" class="form-select">
+                        <option value="">Seleziona un paese...</option>
+                        <option value="Italy">Italia</option>
+                        <option value="United States">Stati Uniti</option>
+                        <option value="United Kingdom">Regno Unito</option>
+                        <option value="France">Francia</option>
+                        <option value="Germany">Germania</option>
+                        <option value="Spain">Spagna</option>
+                        <option value="Japan">Giappone</option>
+                        <option value="China">Cina</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Brazil">Brasile</option>
+                        <option value="India">India</option>
+                        <option value="Russia">Russia</option>
+                        <option value="South Korea">Corea del Sud</option>
+                        <option value="Netherlands">Paesi Bassi</option>
+                        <option value="Switzerland">Svizzera</option>
+                        <option value="Sweden">Svezia</option>
+                    </select>
+                </div>
+
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-search"></i> Cerca Università
+                </button>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="loading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Ricerca in corso...</div>
+        </div>
+
+        <div id="results" class="results-section">
+            <div class="results-header">
+                <div id="resultCount" class="results-count"></div>
+                <button id="saveAllBtn" class="save-all-btn" style="display: none;">
+                    <i class="fas fa-bookmark"></i> Salva tutte le università
+                </button>
+            </div>
+
+            <div id="universitiesList" class="universities-grid"></div>
+        </div>
     </div>
 
-    <div class="loading" id="loading">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Ricerca in corso...</p>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
+    </footer>
 
-    <div class="results" id="results">
-        <h3>Risultati della ricerca</h3>
-        <div class="result-count" id="resultCount"></div>
-        <button id="saveAllBtn" class="save-all-btn">Salva tutte le università <i class="fas fa-bookmark"></i></button>
-        <div id="universitiesList" class="universities-grid"></div>
-    </div>
-</section>
 
-<footer>
-    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-</footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Aggiungi Font Awesome se non è già presente
-        if (!document.querySelector('link[href*="font-awesome"]')) {
-            const fontAwesome = document.createElement('link');
-            fontAwesome.rel = 'stylesheet';
-            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-            document.head.appendChild(fontAwesome);
-        }
-        
-        // Verifica se l'utente è già loggato
-        checkUserAuthentication();
-        
-        // Elementi DOM per la ricerca
-        const searchBtn = document.getElementById('searchBtn');
-        const countrySelect = document.getElementById('country');
-        const resultsContainer = document.getElementById('universitiesList');
-        const loadingIndicator = document.getElementById('loading');
-        const errorMessage = document.getElementById('errorMessage');
-        const resultCount = document.getElementById('resultCount');
-        const saveAllBtn = document.getElementById('saveAllBtn');
-        
-        // Array per memorizzare le università preferite
-        let favoriteUniversities = [];
-        
-        // Carica le università preferite da localStorage
-        loadFavorites();
-        
-        // Gestione della ricerca
-        searchBtn.addEventListener('click', searchUniversities);
-        
-        // RIMOSSO: Non eseguiamo più la ricerca automatica quando cambia il paese
-        // countrySelect.addEventListener('change', function() {
-        //     if (this.value) {
-        //         searchUniversities();
-        //     }
-        // });
-        
-        // Gestione del salvataggio di tutte le università
-        saveAllBtn.addEventListener('click', saveAllUniversities);
-        
-        function searchUniversities() {
-            const country = countrySelect.value;
-            
-            // Verifica se è stato selezionato un paese
-            if (!country) {
-                showError('Seleziona un paese per iniziare la ricerca');
-                return;
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Aggiungi Font Awesome se non è già presente
+            if (!document.querySelector('link[href*="font-awesome"]')) {
+                const fontAwesome = document.createElement('link');
+                fontAwesome.rel = 'stylesheet';
+                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+                document.head.appendChild(fontAwesome);
             }
-            
-            // Mostra indicatore di caricamento
-            loadingIndicator.style.display = 'block';
-            resultsContainer.innerHTML = '';
-            errorMessage.style.display = 'none';
-            saveAllBtn.style.display = 'none';
-            
-            // Effettua la richiesta API
-            fetch(`/api/universities?country=${encodeURIComponent(country)}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Errore nella risposta del server');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    loadingIndicator.style.display = 'none';
-                    
-                    if (data.length === 0) {
-                        resultsContainer.innerHTML = '<p>Nessuna università trovata per il paese selezionato.</p>';
-                        resultCount.textContent = '';
-                        return;
-                    }
-                    
-                    // Aggiorna il conteggio dei risultati
-                    resultCount.textContent = `Trovate ${data.length} università in ${country}`;
-                    
-                    // Mostra il pulsante per salvare tutte le università
-                    saveAllBtn.style.display = 'block';
-                    
-                    // Visualizza i risultati
-                    displayResults(data);
-                })
-                .catch(error => {
-                    loadingIndicator.style.display = 'none';
-                    showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
-                    console.error('Errore:', error);
-                });
-        }
-        
-        function displayResults(universities) {
-            resultsContainer.innerHTML = '';
-            
-            universities.forEach(uni => {
-                const card = document.createElement('div');
-                card.className = 'university-card';
-                
-                // Verifica se l'università è nei preferiti
-                const isFavorite = favoriteUniversities.some(fav => 
-                    fav.name === uni.name && fav.country === uni.country
-                );
-                
-                // Prepara il contenuto HTML della card
-                card.innerHTML = `
+
+            // Verifica se l'utente è già loggato
+            checkUserAuthentication();
+
+            // Elementi DOM per la ricerca
+            const searchBtn = document.getElementById('searchBtn');
+            const countrySelect = document.getElementById('country');
+            const resultsContainer = document.getElementById('universitiesList');
+            const loadingIndicator = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultCount = document.getElementById('resultCount');
+            const saveAllBtn = document.getElementById('saveAllBtn');
+
+            // Array per memorizzare le università preferite
+            let favoriteUniversities = [];
+
+            // Carica le università preferite da localStorage
+            loadFavorites();
+
+            // Gestione della ricerca
+            searchBtn.addEventListener('click', searchUniversities);
+
+            // RIMOSSO: Non eseguiamo più la ricerca automatica quando cambia il paese
+            // countrySelect.addEventListener('change', function() {
+            //     if (this.value) {
+            //         searchUniversities();
+            //     }
+            // });
+
+            // Gestione del salvataggio di tutte le università
+            saveAllBtn.addEventListener('click', saveAllUniversities);
+
+            function searchUniversities() {
+                const country = countrySelect.value;
+
+                // Verifica se è stato selezionato un paese
+                if (!country) {
+                    showError('Seleziona un paese per iniziare la ricerca');
+                    return;
+                }
+
+                // Mostra indicatore di caricamento
+                loadingIndicator.style.display = 'block';
+                resultsContainer.innerHTML = '';
+                errorMessage.style.display = 'none';
+                saveAllBtn.style.display = 'none';
+
+                // Effettua la richiesta API
+                fetch(`/api/universities?country=${encodeURIComponent(country)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nella risposta del server');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        loadingIndicator.style.display = 'none';
+
+                        if (data.length === 0) {
+                            resultsContainer.innerHTML = '<p>Nessuna università trovata per il paese selezionato.</p>';
+                            resultCount.textContent = '';
+                            return;
+                        }
+
+                        // Aggiorna il conteggio dei risultati
+                        resultCount.textContent = `Trovate ${data.length} università in ${country}`;
+
+                        // Mostra il pulsante per salvare tutte le università
+                        saveAllBtn.style.display = 'block';
+
+                        // Visualizza i risultati
+                        displayResults(data);
+                    })
+                    .catch(error => {
+                        loadingIndicator.style.display = 'none';
+                        showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
+                        console.error('Errore:', error);
+                    });
+            }
+
+            function displayResults(universities) {
+                resultsContainer.innerHTML = '';
+
+                universities.forEach(uni => {
+                    const card = document.createElement('div');
+                    card.className = 'university-card';
+
+                    // Verifica se l'università è nei preferiti
+                    const isFavorite = favoriteUniversities.some(fav =>
+                        fav.name === uni.name && fav.country === uni.country
+                    );
+
+                    // Prepara il contenuto HTML della card
+                    card.innerHTML = `
                     <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
                         <i class="fas fa-star"></i>
                     </button>
@@ -579,63 +836,63 @@
                     <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
                     <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
                 `;
-                
-                resultsContainer.appendChild(card);
-                
-                // Aggiungi evento per il pulsante preferiti
-                const favBtn = card.querySelector('.favorite-btn');
-                favBtn.addEventListener('click', function() {
-                    toggleFavorite(uni);
-                    this.classList.toggle('active');
+
+                    resultsContainer.appendChild(card);
+
+                    // Aggiungi evento per il pulsante preferiti
+                    const favBtn = card.querySelector('.favorite-btn');
+                    favBtn.addEventListener('click', function () {
+                        toggleFavorite(uni);
+                        this.classList.toggle('active');
+                    });
                 });
-            });
-        }
-        
-        function toggleFavorite(university) {
-            // Cerca l'università nei preferiti
-            const index = favoriteUniversities.findIndex(uni => 
-                uni.name === university.name && uni.country === university.country
-            );
-            
-            if (index === -1) {
-                // Aggiungi ai preferiti
-                favoriteUniversities.push(university);
-                showToast(`"${university.name}" aggiunta ai preferiti!`);
-            } else {
-                // Rimuovi dai preferiti
-                favoriteUniversities.splice(index, 1);
-                showToast(`"${university.name}" rimossa dai preferiti!`);
             }
-            
-            // Salva i preferiti
-            saveFavorites();
-        }
-        
-        function saveAllUniversities() {
-            // Ottieni tutte le università visualizzate
-            const cards = document.querySelectorAll('.university-card');
-            let count = 0;
-            
-            cards.forEach(card => {
-                const button = card.querySelector('.favorite-btn');
-                if (!button.classList.contains('active')) {
-                    // Simula il click sul pulsante dei preferiti
-                    button.click();
-                    count++;
+
+            function toggleFavorite(university) {
+                // Cerca l'università nei preferiti
+                const index = favoriteUniversities.findIndex(uni =>
+                    uni.name === university.name && uni.country === university.country
+                );
+
+                if (index === -1) {
+                    // Aggiungi ai preferiti
+                    favoriteUniversities.push(university);
+                    showToast(`"${university.name}" aggiunta ai preferiti!`);
+                } else {
+                    // Rimuovi dai preferiti
+                    favoriteUniversities.splice(index, 1);
+                    showToast(`"${university.name}" rimossa dai preferiti!`);
                 }
-            });
-            
-            if (count > 0) {
-                showToast(`Aggiunte ${count} università ai preferiti!`);
-            } else {
-                showToast('Tutte le università sono già nei preferiti!');
+
+                // Salva i preferiti
+                saveFavorites();
             }
-        }
-        function saveFavorites() {
+
+            function saveAllUniversities() {
+                // Ottieni tutte le università visualizzate
+                const cards = document.querySelectorAll('.university-card');
+                let count = 0;
+
+                cards.forEach(card => {
+                    const button = card.querySelector('.favorite-btn');
+                    if (!button.classList.contains('active')) {
+                        // Simula il click sul pulsante dei preferiti
+                        button.click();
+                        count++;
+                    }
+                });
+
+                if (count > 0) {
+                    showToast(`Aggiunte ${count} università ai preferiti!`);
+                } else {
+                    showToast('Tutte le università sono già nei preferiti!');
+                }
+            }
+            function saveFavorites() {
                 // Salva i preferiti nel localStorage
                 localStorage.setItem('favoriteUniversities', JSON.stringify(favoriteUniversities));
             }
-            
+
             function loadFavorites() {
                 // Carica i preferiti dal localStorage
                 const saved = localStorage.getItem('favoriteUniversities');
@@ -643,26 +900,26 @@
                     favoriteUniversities = JSON.parse(saved);
                 }
             }
-            
+
             function showError(message) {
                 errorMessage.textContent = message;
                 errorMessage.style.display = 'block';
             }
-            
+
             function showToast(message) {
                 // Rimuovi messaggi toast esistenti
                 const existingToasts = document.querySelectorAll('.toast-message');
                 existingToasts.forEach(toast => {
                     document.body.removeChild(toast);
                 });
-                
+
                 // Crea un nuovo elemento toast
                 const toast = document.createElement('div');
                 toast.className = 'toast-message';
                 toast.textContent = message;
-                
+
                 document.body.appendChild(toast);
-                
+
                 // Rimuovi il toast dopo l'animazione (3 secondi)
                 setTimeout(() => {
                     if (document.body.contains(toast)) {
@@ -670,12 +927,12 @@
                     }
                 }, 3000);
             }
-            
+
             // Funzione per verificare l'autenticazione dell'utente
             function checkUserAuthentication() {
                 // Prima controlla sessionStorage
                 const userEmail = sessionStorage.getItem('userEmail');
-                
+
                 if (userEmail) {
                     // Utente già autenticato in sessionStorage
                     fetchUserData(userEmail);
@@ -684,61 +941,61 @@
                     fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
                         credentials: 'include'
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.authenticated) {
-                            // Utente autenticato tramite sessione
-                            sessionStorage.setItem('userEmail', data.user.email);
-                            updateUIForLoggedInUser(data.user);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Errore nella verifica dell\'autenticazione:', error);
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.authenticated) {
+                                // Utente autenticato tramite sessione
+                                sessionStorage.setItem('userEmail', data.user.email);
+                                updateUIForLoggedInUser(data.user);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Errore nella verifica dell\'autenticazione:', error);
+                        });
                 }
             }
-            
+
             // Funzione per recuperare i dati dell'utente
             function fetchUserData(email) {
                 fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
                     credentials: 'include'
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Utente non trovato');
-                    }
-                    return response.json();
-                })
-                .then(userData => {
-                    updateUIForLoggedInUser(userData);
-                })
-                .catch(error => {
-                    console.error('Errore nel recupero dei dati utente:', error);
-                    // Rimuovi l'email dalla sessione se non è valida
-                    sessionStorage.removeItem('userEmail');
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Utente non trovato');
+                        }
+                        return response.json();
+                    })
+                    .then(userData => {
+                        updateUIForLoggedInUser(userData);
+                    })
+                    .catch(error => {
+                        console.error('Errore nel recupero dei dati utente:', error);
+                        // Rimuovi l'email dalla sessione se non è valida
+                        sessionStorage.removeItem('userEmail');
+                    });
             }
-            
+
             // Funzione per aggiornare l'interfaccia per utenti loggati
             function updateUIForLoggedInUser(user) {
                 const navbar = document.querySelector('nav');
-                
+
                 // Nascondi i link di login e registrazione
                 document.getElementById('login-link').style.display = 'none';
                 document.getElementById('reg-link').style.display = 'none';
-                
+
                 // Verifica se l'elemento utente esiste già
                 let userNavItem = document.getElementById('user-nav-item');
-                
+
                 if (!userNavItem) {
                     // Crea l'elemento utente
                     userNavItem = document.createElement('li');
                     userNavItem.id = 'user-nav-item';
                     userNavItem.className = 'user-nav-item';
-                    
+
                     // Aggiungi l'elemento direttamente alla navbar (non all'ul)
                     navbar.appendChild(userNavItem);
-                    
+
                     // Aggiungi il contenuto HTML con icone Font Awesome
                     userNavItem.innerHTML = `
                         <div class="user-welcome">
@@ -752,45 +1009,46 @@
                             <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     `;
-                    
+
                     // Aggiungi l'evento di logout
-                    document.getElementById('logout-link').addEventListener('click', function(e) {
+                    document.getElementById('logout-link').addEventListener('click', function (e) {
                         e.preventDefault();
                         logoutUser();
                     });
                 }
             }
-            
+
             // Funzione per gestire il logout
             function logoutUser() {
                 fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
                     method: 'POST',
                     credentials: 'include'
                 })
-                .then(response => response.json())
-                .then(data => {
-                    // Rimuovi l'email dalla sessione
-                    sessionStorage.removeItem('userEmail');
-                    
-                    // Aggiorna l'interfaccia
-                    const userNavItem = document.getElementById('user-nav-item');
-                    if (userNavItem) {
-                        userNavItem.remove();
-                    }
-                    
-                    // Mostra nuovamente i link di login e registrazione
-                    document.getElementById('login-link').style.display = '';
-                    document.getElementById('reg-link').style.display = '';
-                    
-                    // Mostra un messaggio di logout
-                    showToast('Logout effettuato con successo');
-                })
-                .catch(error => {
-                    console.error('Errore durante il logout:', error);
-                    showToast('Si è verificato un errore durante il logout. Riprova.');
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        // Rimuovi l'email dalla sessione
+                        sessionStorage.removeItem('userEmail');
+
+                        // Aggiorna l'interfaccia
+                        const userNavItem = document.getElementById('user-nav-item');
+                        if (userNavItem) {
+                            userNavItem.remove();
+                        }
+
+                        // Mostra nuovamente i link di login e registrazione
+                        document.getElementById('login-link').style.display = '';
+                        document.getElementById('reg-link').style.display = '';
+
+                        // Mostra un messaggio di logout
+                        showToast('Logout effettuato con successo');
+                    })
+                    .catch(error => {
+                        console.error('Errore durante il logout:', error);
+                        showToast('Si è verificato un errore durante il logout. Riprova.');
+                    });
             }
         });
     </script>
 </body>
+
 </html>
