@@ -673,15 +673,15 @@ app.get('/utenti/filtro', (req, res) => {
 
 app.get('/api/universities', async (req, res) => {
     try {
-      const { name, country } = req.query;
-      let url = process.env.UNIVERSITY_API_URL;
+      const { country } = req.query;
       
-      // Costruisci i parametri di query in base ai filtri forniti
-      const params = {};
-      if (name) params.name = name;
-      if (country) params.country = country;
+      if (!country) {
+        return res.status(400).json({ error: 'È necessario specificare un paese per la ricerca' });
+      }
       
-      const response = await axios.get(url, { params });
+      const url = process.env.UNIVERSITY_API_URL || 'http://universities.hipolabs.com/search';
+      
+      const response = await axios.get(url, { params: { country } });
       res.json(response.data);
     } catch (error) {
       console.error('Errore nel recupero delle università:', error);

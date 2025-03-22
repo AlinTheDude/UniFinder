@@ -202,6 +202,7 @@
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.2s;
+            position: relative;
         }
         
         .university-card:hover {
@@ -212,239 +213,406 @@
         .university-card h3 {
             color: #003366;
             margin-top: 0;
+            padding-right: 30px; /* Spazio per il pulsante preferiti */
         }
         
         .university-info {
             margin-bottom: 5px;
         }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .favorite-btn:hover {
+            color: #f8c537;
+        }
+        
+        .favorite-btn.active {
+            color: #f8c537;
+        }
+        .country-select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            background-color: white;
+        }
+        
+        .result-count {
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #003366;
+        }
+        
+        .save-all-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .save-all-btn:hover {
+            background-color: #3e8e41;
+        }
     </style>
 </head>
 <body>
+
     <header>
         <nav>
             <h1>UniFinder</h1>
             <ul id="main-nav">
-            <li><a href="index.html">Home</a></li>
-            <li id="reg-link"><a href="index.html#registrazione">Registrazione</a></li>
-            <li id="login-link"><a href="login.html">Login</a></li>
-            <li><a href="ajax.html">AJAX</a></li>
-            <li><a href="WebSocket.html">WebSocket</a></li>
-            <li><a href="Swagger.html">API Docs</a></li>
-            <li><a href="chat.html">Chat Assistenza</a></li>
-            <li><a href="universities.html" class="active">Ricerca Università</a></li>
-            <li><a href="Privacy.html">Privacy</a></li>
-            <li><a href="Terms.html">Termini e Condizioni</a></li>
-        </ul>
-    </nav>
-</header>
+                <li><a href="index.html">Home</a></li>
+                <li id="reg-link"><a href="index.html#registrazione">Registrazione</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li><a href="ajax.html">AJAX</a></li>
+                <li><a href="WebSocket.html">WebSocket</a></li>
+                <li><a href="Swagger.html">API Docs</a></li>
+                <li><a href="chat.html">Chat Assistenza</a></li>
+                <li><a href="universities.html" class="active">Ricerca Università</a></li>
+                <li><a href="Privacy.html">Privacy</a></li>
+                <li><a href="Terms.html">Termini e Condizioni</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<!-- Ricerca Università -->
-<section id="ricerca-universita">
-    <h2>Ricerca Università Globale</h2>
-    
-    <div class="error-message" id="errorMessage"></div>
-    
-    <div class="search-form">
-        <div class="form-group">
-            <label for="universityName">Nome Università</label>
-            <input type="text" id="universityName" placeholder="Es. Harvard, Oxford, La Sapienza...">
+    <!-- Ricerca Università -->
+    <section id="ricerca-universita">
+        <h2>Ricerca Università per Paese</h2>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div class="search-form">
+            <div class="form-group">
+                <label for="country">Seleziona il Paese</label>
+                <select id="country" class="country-select">
+                    <option value="">Seleziona un paese...</option>
+                    <option value="Italy">Italia</option>
+                    <option value="United States">Stati Uniti</option>
+                    <option value="United Kingdom">Regno Unito</option>
+                    <option value="France">Francia</option>
+                    <option value="Germany">Germania</option>
+                    <option value="Spain">Spagna</option>
+                    <option value="Japan">Giappone</option>
+                    <option value="China">Cina</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Brazil">Brasile</option>
+                    <option value="India">India</option>
+                    <option value="Russia">Russia</option>
+                    <option value="South Korea">Corea del Sud</option>
+                    <option value="Netherlands">Paesi Bassi</option>
+                    <option value="Switzerland">Svizzera</option>
+                    <option value="Sweden">Svezia</option>
+                </select>
+            </div>
+            <button id="searchBtn" class="search-btn">Cerca Università <i class="fas fa-search"></i></button>
         </div>
-        <div class="form-group">
-            <label for="country">Paese</label>
-            <input type="text" id="country" placeholder="Es. Italy, United States, United Kingdom...">
+
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i> Ricerca in corso...
         </div>
-        <button id="searchBtn" class="search-btn">Cerca <i class="fas fa-search"></i></button>
-    </div>
 
-    <div class="loading" id="loading">
-        <i class="fas fa-spinner fa-spin"></i> Ricerca in corso...
-    </div>
+        <div class="results" id="results">
+            <h3>Risultati della ricerca</h3>
+            <div class="result-count" id="resultCount"></div>
+            <button id="saveAllBtn" class="save-all-btn">Salva tutte le università <i class="fas fa-bookmark"></i></button>
+            <div id="universitiesList"></div>
+        </div>
+    </section>
 
-    <div class="results" id="results">
-        <h3>Risultati della ricerca</h3>
-        <div id="universitiesList"></div>
-    </div>
-</section>
+    <footer>
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </footer>
 
-<footer>
-    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-</footer>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Aggiungi Font Awesome se non è già presente
-        if (!document.querySelector('link[href*="font-awesome"]')) {
-            const fontAwesome = document.createElement('link');
-            fontAwesome.rel = 'stylesheet';
-            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-            document.head.appendChild(fontAwesome);
-        }
-        
-        // Verifica se l'utente è già loggato
-        checkUserAuthentication();
-        
-        // Elementi DOM per la ricerca
-        const searchBtn = document.getElementById('searchBtn');
-        const universityNameInput = document.getElementById('universityName');
-        const countryInput = document.getElementById('country');
-        const resultsContainer = document.getElementById('universitiesList');
-        const loadingIndicator = document.getElementById('loading');
-        const errorMessage = document.getElementById('errorMessage');
-        
-        // Gestione della ricerca
-        searchBtn.addEventListener('click', searchUniversities);
-        
-        // Ricerca anche premendo Invio nei campi di input
-        universityNameInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchUniversities();
-        });
-        
-        countryInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchUniversities();
-        });
-        
-        function searchUniversities() {
-            const name = universityNameInput.value.trim();
-            const country = countryInput.value.trim();
-            
-            // Verifica se almeno un campo è compilato
-            if (!name && !country) {
-                showError('Inserisci almeno un criterio di ricerca');
-                return;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aggiungi Font Awesome se non è già presente
+            if (!document.querySelector('link[href*="font-awesome"]')) {
+                const fontAwesome = document.createElement('link');
+                fontAwesome.rel = 'stylesheet';
+                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+                document.head.appendChild(fontAwesome);
             }
             
-            // Mostra indicatore di caricamento
-            loadingIndicator.style.display = 'block';
-            resultsContainer.innerHTML = '';
-            errorMessage.style.display = 'none';
+            // Verifica se l'utente è già loggato
+            checkUserAuthentication();
             
-            // Costruisci l'URL con i parametri di query
-            let url = '/api/universities?';
-            if (name) url += `name=${encodeURIComponent(name)}&`;
-            if (country) url += `country=${encodeURIComponent(country)}`;
+            // Elementi DOM per la ricerca
+            const searchBtn = document.getElementById('searchBtn');
+            const countrySelect = document.getElementById('country');
+            const resultsContainer = document.getElementById('universitiesList');
+            const loadingIndicator = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultCount = document.getElementById('resultCount');
+            const saveAllBtn = document.getElementById('saveAllBtn');
             
-            // Effettua la richiesta API
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Errore nella risposta del server');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    loadingIndicator.style.display = 'none';
-                    
-                    if (data.length === 0) {
-                        resultsContainer.innerHTML = '<p>Nessuna università trovata con i criteri specificati.</p>';
-                        return;
-                    }
-                    
-                    // Visualizza i risultati
-                    displayResults(data);
-                })
-                .catch(error => {
-                    loadingIndicator.style.display = 'none';
-                    showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
-                    console.error('Errore:', error);
-                });
-        }
-        
-        function displayResults(universities) {
-            resultsContainer.innerHTML = '';
+            // Array per memorizzare le università preferite
+            let favoriteUniversities = [];
             
-            universities.forEach(uni => {
-                const card = document.createElement('div');
-                card.className = 'university-card';
+            // Carica le università preferite da localStorage
+            loadFavorites();
+            
+            // Gestione della ricerca
+            searchBtn.addEventListener('click', searchUniversities);
+            
+            // Gestione del salvataggio di tutte le università
+            saveAllBtn.addEventListener('click', saveAllUniversities);
+            
+            function searchUniversities() {
+                const country = countrySelect.value;
                 
-                // Prepara il contenuto HTML della card
-                card.innerHTML = `
-                    <h3>${uni.name}</h3>
-                    <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
-                    ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
-                    <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
-                    <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
-                `;
-                
-                resultsContainer.appendChild(card);
-            });
-        }
-        
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-        }
-        
-        // Funzione per verificare l'autenticazione dell'utente
-        function checkUserAuthentication() {
-            // Prima controlla sessionStorage
-            const userEmail = sessionStorage.getItem('userEmail');
-            
-            if (userEmail) {
-                // Utente già autenticato in sessionStorage
-                fetchUserData(userEmail);
-            } else {
-                // Controlla se esiste una sessione sul server
-                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
-                    credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.authenticated) {
-                        // Utente autenticato tramite sessione
-                        sessionStorage.setItem('userEmail', data.user.email);
-                        updateUIForLoggedInUser(data.user);
-                    }
-                })
-                .catch(error => {
-                    console.error('Errore nella verifica dell\'autenticazione:', error);
-                });
-            }
-        }
-        
-        // Funzione per recuperare i dati dell'utente
-        function fetchUserData(email) {
-            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
-                credentials: 'include'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Utente non trovato');
+                // Verifica se è stato selezionato un paese
+                if (!country) {
+                    showError('Seleziona un paese per iniziare la ricerca');
+                    return;
                 }
-                return response.json();
-            })
-            .then(userData => {
-                updateUIForLoggedInUser(userData);
-                })
-                .catch(error => {
-                    console.error('Errore nel recupero dei dati utente:', error);
-                    // Rimuovi l'email dalla sessione se non è valida
-                    sessionStorage.removeItem('userEmail');
-                });
+                
+                // Mostra indicatore di caricamento
+                loadingIndicator.style.display = 'block';
+                resultsContainer.innerHTML = '';
+                errorMessage.style.display = 'none';
+                saveAllBtn.style.display = 'none';
+                
+                // Effettua la richiesta API
+                fetch(`/api/universities?country=${encodeURIComponent(country)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nella risposta del server');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        loadingIndicator.style.display = 'none';
+                        
+                        if (data.length === 0) {
+                            resultsContainer.innerHTML = '<p>Nessuna università trovata per il paese selezionato.</p>';
+                            resultCount.textContent = '';
+                            return;
+                        }
+                        
+                        // Aggiorna il conteggio dei risultati
+                        resultCount.textContent = `Trovate ${data.length} università in ${country}`;
+                        
+                        // Mostra il pulsante per salvare tutte le università
+                        saveAllBtn.style.display = 'block';
+                        
+                        // Visualizza i risultati
+                        displayResults(data);
+                    })
+                    .catch(error => {
+                        loadingIndicator.style.display = 'none';
+                        showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
+                        console.error('Errore:', error);
+                    });
             }
             
-            // Funzione per aggiornare l'interfaccia per utenti loggati
-            function updateUIForLoggedInUser(user) {
-                const navbar = document.querySelector('nav');
+            function displayResults(universities) {
+                resultsContainer.innerHTML = '';
                 
-                // Nascondi i link di login e registrazione
-                document.getElementById('login-link').style.display = 'none';
-                document.getElementById('reg-link').style.display = 'none';
-                
-                // Verifica se l'elemento utente esiste già
-                let userNavItem = document.getElementById('user-nav-item');
-                
-                if (!userNavItem) {
-                    // Crea l'elemento utente
-                    userNavItem = document.createElement('li');
-                    userNavItem.id = 'user-nav-item';
-                    userNavItem.className = 'user-nav-item';
+                universities.forEach(uni => {
+                    const card = document.createElement('div');
+                    card.className = 'university-card';
                     
-                    // Aggiungi l'elemento direttamente alla navbar (non all'ul)
-                    navbar.appendChild(userNavItem);
-                    
-                    // Aggiungi il contenuto HTML con icone Font Awesome
-                    userNavItem.innerHTML = `
-                        <div class="user-welcome">
+                    // Verifica se l'università è nei preferiti
+                    const isFavorite = favoriteUniversities.some(fav => 
+            fav.name === uni.name && fav.country === uni.country
+        );
+        
+        // Prepara il contenuto HTML della card
+        card.innerHTML = `
+            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
+                <i class="fas fa-star"></i>
+            </button>
+            <h3>${uni.name}</h3>
+            <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
+            ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
+            <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
+            <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
+        `;
+        
+        resultsContainer.appendChild(card);
+        
+        // Aggiungi evento per il pulsante preferiti
+        const favBtn = card.querySelector('.favorite-btn');
+        favBtn.addEventListener('click', function() {
+            toggleFavorite(uni);
+            this.classList.toggle('active');
+        });
+    });
+}
+
+function toggleFavorite(university) {
+    // Cerca l'università nei preferiti
+    const index = favoriteUniversities.findIndex(uni => 
+        uni.name === university.name && uni.country === university.country
+    );
+    
+    if (index === -1) {
+        // Aggiungi ai preferiti
+        favoriteUniversities.push(university);
+        showMessage(`"${university.name}" aggiunta ai preferiti!`);
+    } else {
+        // Rimuovi dai preferiti
+        favoriteUniversities.splice(index, 1);
+        showMessage(`"${university.name}" rimossa dai preferiti!`);
+    }
+    
+    // Salva i preferiti
+    saveFavorites();
+}
+
+function saveAllUniversities() {
+    // Ottieni tutte le università visualizzate
+    const cards = document.querySelectorAll('.university-card');
+    let count = 0;
+    
+    cards.forEach(card => {
+        const button = card.querySelector('.favorite-btn');
+        if (!button.classList.contains('active')) {
+            // Simula il click sul pulsante dei preferiti
+            button.click();
+            count++;
+        }
+    });
+    
+    if (count > 0) {
+        showMessage(`Aggiunte ${count} università ai preferiti!`);
+    } else {
+        showMessage('Tutte le università sono già nei preferiti!');
+    }
+}
+
+function saveFavorites() {
+    // Salva i preferiti nel localStorage
+    localStorage.setItem('favoriteUniversities', JSON.stringify(favoriteUniversities));
+}
+
+function loadFavorites() {
+    // Carica i preferiti dal localStorage
+    const saved = localStorage.getItem('favoriteUniversities');
+    if (saved) {
+        favoriteUniversities = JSON.parse(saved);
+    }
+}
+
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+}
+
+function showMessage(message) {
+    // Crea un elemento per il messaggio
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    messageElement.textContent = message;
+    messageElement.style.position = 'fixed';
+    messageElement.style.bottom = '20px';
+    messageElement.style.right = '20px';
+    messageElement.style.backgroundColor = '#4CAF50';
+    messageElement.style.color = 'white';
+    messageElement.style.padding = '10px 20px';
+    messageElement.style.borderRadius = '5px';
+    messageElement.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+    messageElement.style.zIndex = '9999';
+    
+    document.body.appendChild(messageElement);
+    
+    // Rimuovi il messaggio dopo 3 secondi
+    setTimeout(() => {
+        messageElement.style.opacity = '0';
+        messageElement.style.transition = 'opacity 0.5s';
+        setTimeout(() => {
+            document.body.removeChild(messageElement);
+        }, 500);
+    }, 3000);
+}
+
+// Funzione per verificare l'autenticazione dell'utente
+function checkUserAuthentication() {
+    // Prima controlla sessionStorage
+    const userEmail = sessionStorage.getItem('userEmail');
+    
+    if (userEmail) {
+        // Utente già autenticato in sessionStorage
+        fetchUserData(userEmail);
+    } else {
+        // Controlla se esiste una sessione sul server
+        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                // Utente autenticato tramite sessione
+                sessionStorage.setItem('userEmail', data.user.email);
+                updateUIForLoggedInUser(data.user);
+            }
+        })
+        .catch(error => {
+            console.error('Errore nella verifica dell\'autenticazione:', error);
+        });
+    }
+}
+
+// Funzione per recuperare i dati dell'utente
+function fetchUserData(email) {
+    fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Utente non trovato');
+        }
+        return response.json();
+    })
+    .then(userData => {
+        updateUIForLoggedInUser(userData);
+    })
+    .catch(error => {
+        console.error('Errore nel recupero dei dati utente:', error);
+        // Rimuovi l'email dalla sessione se non è valida
+        sessionStorage.removeItem('userEmail');
+    });
+}
+
+// Funzione per aggiornare l'interfaccia per utenti loggati
+function updateUIForLoggedInUser(user) {
+    const navbar = document.querySelector('nav');
+    
+    // Nascondi i link di login e registrazione
+    document.getElementById('login-link').style.display = 'none';
+    document.getElementById('reg-link').style.display = 'none';
+    
+    // Verifica se l'elemento utente esiste già
+    let userNavItem = document.getElementById('user-nav-item');
+    
+    if (!userNavItem) {
+        // Crea l'elemento utente
+        userNavItem = document.createElement('li');
+        userNavItem.id = 'user-nav-item';
+        userNavItem.className = 'user-nav-item';
+        
+        // Aggiungi l'elemento direttamente alla navbar (non all'ul)
+        navbar.appendChild(userNavItem);
+        
+        // Aggiungi il contenuto HTML con icone Font Awesome
+        userNavItem.innerHTML = `
+            <div class="user-welcome">
                             <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
                             <span>Ciao, ${user.nome || 'Utente'}</span>
                         </div>
