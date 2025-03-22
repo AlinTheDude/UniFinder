@@ -33,12 +33,27 @@
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
-            background-color: #f1f5f9;
             background-image: url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(241, 245, 249, 0.85);
+            z-index: -1;
         }
 
         /* Navbar */
@@ -135,6 +150,7 @@
         .user-menu-btn:hover {
             background-color: rgba(37, 99, 235, 0.15);
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.1);
         }
 
         .user-avatar {
@@ -195,18 +211,17 @@
         }
 
         .user-dropdown-link {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    color: var(--dark);
-    text-decoration: none; 
-    transition: all 0.2s ease;
-}
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: var(--dark);
+            text-decoration: none; 
+            transition: all 0.2s ease;
+        }
 
         .user-dropdown-link:hover {
             background-color: rgba(37, 99, 235, 0.05);
             color: var(--primary);
-
         }
 
         .user-dropdown-link i {
@@ -236,25 +251,35 @@
         .logout-btn i {
             margin-right: 10px;
         }
-
-        /* Main container */
-        .main-container {
+         /* Main container */
+         .main-container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
             flex: 1;
+            position: relative;
+            z-index: 1;
         }
 
         .page-header {
             margin-bottom: 30px;
             text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
         }
 
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--primary-dark);
             margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .page-header p {
@@ -265,16 +290,17 @@
 
         /* Search section */
         .search-section {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 40px;
+            border-top: 4px solid var(--primary);
         }
 
         .search-form {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
@@ -300,6 +326,7 @@
             background-color: white;
             color: var(--dark);
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03) inset;
         }
 
         .form-select:focus {
@@ -310,7 +337,7 @@
 
         .search-btn {
             padding: 14px;
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
             border-radius: 8px;
@@ -322,16 +349,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            grid-column: 1 / -1;
         }
 
         .search-btn:hover {
-            background-color: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
         }
 
         .search-btn i {
             margin-right: 8px;
+            font-size: 1.1rem;
         }
 
         /* Results section */
@@ -344,6 +373,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .results-count {
@@ -351,12 +384,16 @@
             color: var(--dark);
             font-size: 1.1rem;
         }
+        
+        .results-count span {
+            color: var(--primary);
+        }
 
         .save-all-btn {
             display: flex;
             align-items: center;
             padding: 10px 15px;
-            background-color: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), #0d9488);
             color: white;
             border: none;
             border-radius: 8px;
@@ -365,12 +402,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: inherit;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);
         }
 
         .save-all-btn:hover {
-            background-color: #0d9488;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.25);
         }
 
         .save-all-btn i {
@@ -379,7 +416,7 @@
 
         .universities-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
         }
 
@@ -387,17 +424,18 @@
             background-color: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
             display: flex;
             flex-direction: column;
             height: 100%;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .university-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
         }
 
         .card-header {
@@ -412,6 +450,7 @@
             font-weight: 600;
             margin-right: 30px;
             line-height: 1.4;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .favorite-btn {
@@ -435,11 +474,18 @@
         .favorite-btn.active {
             color: var(--accent);
             text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            animation: pulse 1.5s infinite;
         }
-
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
         .card-body {
             padding: 20px;
             flex-grow: 1;
+            background-color: white;
         }
 
         .university-info {
@@ -453,6 +499,7 @@
             margin-right: 10px;
             color: var(--primary);
             margin-top: 4px;
+            font-size: 1.1rem;
         }
 
         .university-info-content {
@@ -471,114 +518,139 @@
             font-size: 0.9rem;
         }
 
-        .university-info-value a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .university-info-value a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        /* Loading indicator */
-        .loading-container {
-            display: none;
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(37, 99, 235, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loading-text {
-            color: var(--gray);
-            font-weight: 500;
-        }
-
-        /* Error message */
-        .error-message {
-            display: none;
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: white;
-            border-radius: 8px;
-            padding: 15px 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .university-rating {
             display: flex;
             align-items: center;
-            max-width: 300px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: toastIn 0.3s forwards, toastOut 0.3s forwards 2.7s;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--light-gray);
         }
 
-        .toast.success {
-            border-left: 4px solid var(--success);
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+            margin-right: 8px;
         }
 
-        .toast.error {
-            border-left: 4px solid var(--danger);
+        .rating-stars i {
+            color: var(--accent);
         }
 
-        .toast i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-
-        .toast.success i {
-            color: var(--success);
-        }
-
-        .toast.error i {
-            color: var(--danger);
-        }
-
-        .toast-message {
+        .rating-value {
+            font-weight: 600;
             color: var(--dark);
+        }
+
+        .rating-count {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-left: 5px;
+        }
+
+        .card-footer {
+            padding: 15px 20px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-details-btn {
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        @keyframes toastIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .view-details-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
         }
 
-        @keyframes toastOut {
-            to {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+        .save-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background-color: rgba(37, 99, 235, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.1);
+        }
+
+        .save-btn i {
+            margin-right: 8px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 8px;
+        }
+
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.15);
+        }
+
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination-btn.prev,
+        .pagination-btn.next {
+            width: auto;
+            padding: 0 15px;
+        }
+
+        .pagination-btn.prev i,
+        .pagination-btn.next i {
+            margin-right: 5px;
+        }
+
+        .pagination-btn.next i {
+            margin-right: 0;
+            margin-left: 5px;
         }
 
         /* Footer */
@@ -623,105 +695,213 @@
                 z-index: 1001;
             }
 
-            .page-header h1 {
-                font-size: 2rem;
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
             }
 
             .universities-grid {
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Loading animation */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--light-gray);
+            border-bottom-color: var(--primary);
+            border-radius: 50%;
+            display: block;
+            margin: 30px auto;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 15px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            color: var(--gray);
+            max-width: 500px;
+            margin: 0 auto 15px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <a href="index.html" class="logo">
-            <i class="fas fa-university"></i>UniFinder
-        </a>
-        
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="index.html" class="nav-link active">Home</a></li>
-            <li><a href="universities.html" class="nav-link">Università</a></li>
-            <li id="reg-link"><a href="index.html" class="nav-link">Registrazione</a></li>
-            <li id="login-link"><a href="login.html" class="nav-link">Login</a></li>
-            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
-            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
-            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
-            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
-            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
-            <li><a href="Terms.html" class="nav-link">Termini</a></li>
-        </ul>
-        
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </nav>
+    <div id="app">
+        <!-- Navbar -->
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <i class="fas fa-university"></i>UniFinder
+            </a>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <div class="page-header">
-            <h1>Ricerca Università per Paese</h1>
-            <p>Esplora il nostro database globale di università e scopri le opportunità di studio in tutto il mondo</p>
-        </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="universities.html" class="nav-link active">Università</a></li>
+                <li><a href="index.html" class="nav-link">Registrazione</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+                <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+                <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+                <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+                <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+                <li><a href="Terms.html" class="nav-link">Termini</a></li>
+            </ul>
 
-        <div class="search-section">
-            <div class="search-form">
-                <div class="form-group">
-                    <label for="country" class="form-label">Seleziona un paese</label>
-                    <select id="country" class="form-select">
-                        <option value="">Seleziona un paese...</option>
-                        <option value="Italy">Italia</option>
-                        <option value="United States">Stati Uniti</option>
-                        <option value="United Kingdom">Regno Unito</option>
-                        <option value="France">Francia</option>
-                        <option value="Germany">Germania</option>
-                        <option value="Spain">Spagna</option>
-                        <option value="Japan">Giappone</option>
-                        <option value="China">Cina</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Brazil">Brasile</option>
-                        <option value="India">India</option>
-                        <option value="Russia">Russia</option>
-                        <option value="South Korea">Corea del Sud</option>
-                        <option value="Netherlands">Paesi Bassi</option>
-                        <option value="Switzerland">Svizzera</option>
-                        <option value="Sweden">Svezia</option>
-                    </select>
+            <div class="user-menu">
+                <div class="user-menu-btn">
+                    <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
+                    <span class="user-name">Marco</span>
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-dropdown-header">
+                        <h4>Marco Rossi</h4>
+                        <p>marco.rossi@gmail.com</p>
+                    </div>
+                    <div class="user-dropdown-links">
+                        <a href="dashboard.html" class="user-dropdown-link">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                        <a href="#" class="user-dropdown-link">
+                            <i class="fas fa-user-edit"></i> Modifica Profilo
+                        </a>
+                        <a href="#" class="user-dropdown-link">
+                            <i class="fas fa-heart"></i> Università Preferite
+                        </a>
+                        <a href="#" class="user-dropdown-link">
+                            <i class="fas fa-cog"></i> Impostazioni
+                        </a>
+                    </div>
+                    <div class="user-dropdown-footer">
+                        <a href="#" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <div class="page-header">
+                <h1>Trova la tua università ideale</h1>
+                <p>Esplora migliaia di università in tutto il mondo e trova quella perfetta per il tuo percorso accademico</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <form class="search-form" id="searchForm">
+                    <div class="form-group">
+                        <label for="country" class="form-label">Paese</label>
+                        <select id="country" class="form-select">
+                            <option value="">Tutti i paesi</option>
+                            <option value="it">Italia</option>
+                            <option value="uk">Regno Unito</option>
+                            <option value="us">Stati Uniti</option>
+                            <option value="de">Germania</option>
+                            <option value="fr">Francia</option>
+                            <option value="es">Spagna</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="field" class="form-label">Campo di studio</label>
+                        <select id="field" class="form-select">
+                            <option value="">Tutti i campi</option>
+                            <option value="cs">Informatica</option>
+                            <option value="eng">Ingegneria</option>
+                            <option value="med">Medicina</option>
+                            <option value="law">Giurisprudenza</option>
+                            <option value="bus">Economia e Business</option>
+                            <option value="arts">Arte e Design</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level" class="form-label">Livello di studio</label>
+                        <select id="level" class="form-select">
+                            <option value="">Tutti i livelli</option>
+                            <option value="bachelor">Laurea Triennale</option>
+                            <option value="master">Laurea Magistrale</option>
+                            <option value="phd">Dottorato</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i> Cerca Università
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <div class="results-count">Risultati trovati: <span id="resultCount">0</span></div>
+                    <button class="save-all-btn" id="saveAllBtn">
+                        <i class="fas fa-bookmark"></i> Salva tutti i risultati
+                    </button>
                 </div>
 
-                <button id="searchBtn" class="search-btn">
-                    <i class="fas fa-search"></i> Cerca Università
-                </button>
+                <div class="universities-grid" id="universitiesGrid">
+                    <!-- University cards will be added here dynamically -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be added here dynamically -->
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loader" id="loader" style="display: none;"></div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Nessun risultato trovato</h3>
+                <p>Prova a modificare i filtri di ricerca o cerca con termini diversi.</p>
             </div>
         </div>
 
-        <div id="errorMessage" class="error-message"></div>
-        <div id="loading" class="loading-container">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">Ricerca in corso...</div>
-        </div>
-
-        <div id="results" class="results-section">
-            <div class="results-header">
-                <div id="resultCount" class="results-count"></div>
-                <button id="saveAllBtn" class="save-all-btn" style="display: none;">
-                    <i class="fas fa-bookmark"></i> Salva tutte le università
-                </button>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
             </div>
-
-            <div id="universitiesList" class="universities-grid"></div>
-        </div>
+        </footer>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-        </div>
-    </footer>
 
 
 
