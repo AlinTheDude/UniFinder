@@ -138,10 +138,10 @@
             font-size: 28px;
         }
         
+        /* Modifica: form di ricerca in colonna invece che in riga */
         .search-form {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+            flex-direction: column; /* Cambiato da row a column */
             margin-bottom: 30px;
             background-color: #f5f8fa;
             padding: 20px;
@@ -150,8 +150,8 @@
         }
         
         .form-group {
-            flex: 1;
-            margin-right: 15px;
+            margin-bottom: 15px; /* Aggiunto margine sotto */
+            width: 100%; /* Occupa tutta la larghezza */
         }
         
         .form-group label {
@@ -179,9 +179,10 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            height: 48px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            width: 100%; /* Occupa tutta la larghezza */
         }
         
         .search-btn:hover {
@@ -224,7 +225,6 @@
             margin-bottom: 20px;
             font-size: 22px;
         }
-        
         .result-count {
             margin-bottom: 15px;
             font-weight: bold;
@@ -359,16 +359,6 @@
             .universities-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .search-form {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .form-group {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
         }
         
         @media (max-width: 600px) {
@@ -455,194 +445,193 @@
                     <option value="Netherlands">Paesi Bassi</option>
                     <option value="Switzerland">Svizzera</option>
                     <option value="Sweden">Svezia</option>
-                </select>
-            </div>
-            <button id="searchBtn" class="search-btn">Cerca Università <i class="fas fa-search"></i></button>
+            </select>
         </div>
-    
-        <div class="loading" id="loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Ricerca in corso...</p>
-        </div>
-    
-        <div class="results" id="results">
-            <h3>Risultati della ricerca</h3>
-            <div class="result-count" id="resultCount"></div>
-            <button id="saveAllBtn" class="save-all-btn">Salva tutte le università <i class="fas fa-bookmark"></i></button>
-            <div id="universitiesList" class="universities-grid"></div>
-        </div>
-    </section>
-    
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-    </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aggiungi Font Awesome se non è già presente
-            if (!document.querySelector('link[href*="font-awesome"]')) {
-                const fontAwesome = document.createElement('link');
-                fontAwesome.rel = 'stylesheet';
-                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-                document.head.appendChild(fontAwesome);
+        <button id="searchBtn" class="search-btn">Cerca Università <i class="fas fa-search"></i></button>
+    </div>
+
+    <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Ricerca in corso...</p>
+    </div>
+
+    <div class="results" id="results">
+        <h3>Risultati della ricerca</h3>
+        <div class="result-count" id="resultCount"></div>
+        <button id="saveAllBtn" class="save-all-btn">Salva tutte le università <i class="fas fa-bookmark"></i></button>
+        <div id="universitiesList" class="universities-grid"></div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Aggiungi Font Awesome se non è già presente
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            const fontAwesome = document.createElement('link');
+            fontAwesome.rel = 'stylesheet';
+            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+            document.head.appendChild(fontAwesome);
+        }
+        
+        // Verifica se l'utente è già loggato
+        checkUserAuthentication();
+        
+        // Elementi DOM per la ricerca
+        const searchBtn = document.getElementById('searchBtn');
+        const countrySelect = document.getElementById('country');
+        const resultsContainer = document.getElementById('universitiesList');
+        const loadingIndicator = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const resultCount = document.getElementById('resultCount');
+        const saveAllBtn = document.getElementById('saveAllBtn');
+        
+        // Array per memorizzare le università preferite
+        let favoriteUniversities = [];
+        
+        // Carica le università preferite da localStorage
+        loadFavorites();
+        
+        // Gestione della ricerca
+        searchBtn.addEventListener('click', searchUniversities);
+        
+        // RIMOSSO: Non eseguiamo più la ricerca automatica quando cambia il paese
+        // countrySelect.addEventListener('change', function() {
+        //     if (this.value) {
+        //         searchUniversities();
+        //     }
+        // });
+        
+        // Gestione del salvataggio di tutte le università
+        saveAllBtn.addEventListener('click', saveAllUniversities);
+        
+        function searchUniversities() {
+            const country = countrySelect.value;
+            
+            // Verifica se è stato selezionato un paese
+            if (!country) {
+                showError('Seleziona un paese per iniziare la ricerca');
+                return;
             }
             
-            // Verifica se l'utente è già loggato
-            checkUserAuthentication();
+            // Mostra indicatore di caricamento
+            loadingIndicator.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            errorMessage.style.display = 'none';
+            saveAllBtn.style.display = 'none';
             
-            // Elementi DOM per la ricerca
-            const searchBtn = document.getElementById('searchBtn');
-            const countrySelect = document.getElementById('country');
-            const resultsContainer = document.getElementById('universitiesList');
-            const loadingIndicator = document.getElementById('loading');
-            const errorMessage = document.getElementById('errorMessage');
-            const resultCount = document.getElementById('resultCount');
-            const saveAllBtn = document.getElementById('saveAllBtn');
+            // Effettua la richiesta API
+            fetch(`/api/universities?country=${encodeURIComponent(country)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella risposta del server');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingIndicator.style.display = 'none';
+                    
+                    if (data.length === 0) {
+                        resultsContainer.innerHTML = '<p>Nessuna università trovata per il paese selezionato.</p>';
+                        resultCount.textContent = '';
+                        return;
+                    }
+                    
+                    // Aggiorna il conteggio dei risultati
+                    resultCount.textContent = `Trovate ${data.length} università in ${country}`;
+                    
+                    // Mostra il pulsante per salvare tutte le università
+                    saveAllBtn.style.display = 'block';
+                    
+                    // Visualizza i risultati
+                    displayResults(data);
+                })
+                .catch(error => {
+                    loadingIndicator.style.display = 'none';
+                    showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
+                    console.error('Errore:', error);
+                });
+        }
+        
+        function displayResults(universities) {
+            resultsContainer.innerHTML = '';
             
-            // Array per memorizzare le università preferite
-            let favoriteUniversities = [];
+            universities.forEach(uni => {
+                const card = document.createElement('div');
+                card.className = 'university-card';
+                
+                // Verifica se l'università è nei preferiti
+                const isFavorite = favoriteUniversities.some(fav => 
+                    fav.name === uni.name && fav.country === uni.country
+                );
+                
+                // Prepara il contenuto HTML della card
+                card.innerHTML = `
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
+                        <i class="fas fa-star"></i>
+                    </button>
+                    <h3>${uni.name}</h3>
+                    <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
+                    ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
+                    <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
+                    <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
+                `;
+                
+                resultsContainer.appendChild(card);
+                
+                // Aggiungi evento per il pulsante preferiti
+                const favBtn = card.querySelector('.favorite-btn');
+                favBtn.addEventListener('click', function() {
+                    toggleFavorite(uni);
+                    this.classList.toggle('active');
+                });
+            });
+        }
+        
+        function toggleFavorite(university) {
+            // Cerca l'università nei preferiti
+            const index = favoriteUniversities.findIndex(uni => 
+                uni.name === university.name && uni.country === university.country
+            );
             
-            // Carica le università preferite da localStorage
-            loadFavorites();
+            if (index === -1) {
+                // Aggiungi ai preferiti
+                favoriteUniversities.push(university);
+                showToast(`"${university.name}" aggiunta ai preferiti!`);
+            } else {
+                // Rimuovi dai preferiti
+                favoriteUniversities.splice(index, 1);
+                showToast(`"${university.name}" rimossa dai preferiti!`);
+            }
             
-            // Gestione della ricerca
-            searchBtn.addEventListener('click', searchUniversities);
+            // Salva i preferiti
+            saveFavorites();
+        }
+        
+        function saveAllUniversities() {
+            // Ottieni tutte le università visualizzate
+            const cards = document.querySelectorAll('.university-card');
+            let count = 0;
             
-            // Ricerca anche premendo Invio nel menu a tendina
-            countrySelect.addEventListener('change', function() {
-                if (this.value) {
-                    searchUniversities();
+            cards.forEach(card => {
+                const button = card.querySelector('.favorite-btn');
+                if (!button.classList.contains('active')) {
+                    // Simula il click sul pulsante dei preferiti
+                    button.click();
+                    count++;
                 }
             });
             
-            // Gestione del salvataggio di tutte le università
-            saveAllBtn.addEventListener('click', saveAllUniversities);
-            
-            function searchUniversities() {
-                const country = countrySelect.value;
-                
-                // Verifica se è stato selezionato un paese
-                if (!country) {
-                    showError('Seleziona un paese per iniziare la ricerca');
-                    return;
-                }
-                
-                // Mostra indicatore di caricamento
-                loadingIndicator.style.display = 'block';
-                resultsContainer.innerHTML = '';
-                errorMessage.style.display = 'none';
-                saveAllBtn.style.display = 'none';
-                
-                // Effettua la richiesta API
-                fetch(`/api/universities?country=${encodeURIComponent(country)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Errore nella risposta del server');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        loadingIndicator.style.display = 'none';
-                        
-                        if (data.length === 0) {
-                            resultsContainer.innerHTML = '<p>Nessuna università trovata per il paese selezionato.</p>';
-                            resultCount.textContent = '';
-                            return;
-                        }
-                        
-                        // Aggiorna il conteggio dei risultati
-                        resultCount.textContent = `Trovate ${data.length} università in ${country}`;
-                        
-                        // Mostra il pulsante per salvare tutte le università
-                        saveAllBtn.style.display = 'block';
-                        
-                        // Visualizza i risultati
-                        displayResults(data);
-                    })
-                    .catch(error => {
-                        loadingIndicator.style.display = 'none';
-                        showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
-                        console.error('Errore:', error);
-                    });
+            if (count > 0) {
+                showToast(`Aggiunte ${count} università ai preferiti!`);
+            } else {
+                showToast('Tutte le università sono già nei preferiti!');
             }
-            
-            function displayResults(universities) {
-                resultsContainer.innerHTML = '';
-                
-                universities.forEach(uni => {
-                    const card = document.createElement('div');
-                    card.className = 'university-card';
-                    
-                    // Verifica se l'università è nei preferiti
-                    const isFavorite = favoriteUniversities.some(fav => 
-                        fav.name === uni.name && fav.country === uni.country
-                    );
-                    
-                    // Prepara il contenuto HTML della card
-                    card.innerHTML = `
-                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-id="${uni.name}">
-                            <i class="fas fa-star"></i>
-                        </button>
-                        <h3>${uni.name}</h3>
-                        <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
-                        ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
-                        <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
-                        <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
-                    `;
-                    
-                    resultsContainer.appendChild(card);
-                    
-                    // Aggiungi evento per il pulsante preferiti
-                    const favBtn = card.querySelector('.favorite-btn');
-                    favBtn.addEventListener('click', function() {
-                        toggleFavorite(uni);
-                        this.classList.toggle('active');
-                    });
-                });
-            }
-            
-            function toggleFavorite(university) {
-                // Cerca l'università nei preferiti
-                const index = favoriteUniversities.findIndex(uni => 
-                    uni.name === university.name && uni.country === university.country
-                );
-                
-                if (index === -1) {
-                    // Aggiungi ai preferiti
-                    favoriteUniversities.push(university);
-                    showToast(`"${university.name}" aggiunta ai preferiti!`);
-                } else {
-                    // Rimuovi dai preferiti
-                    favoriteUniversities.splice(index, 1);
-                    showToast(`"${university.name}" rimossa dai preferiti!`);
-                }
-                
-                // Salva i preferiti
-                saveFavorites();
-            }
-            
-            function saveAllUniversities() {
-                // Ottieni tutte le università visualizzate
-                const cards = document.querySelectorAll('.university-card');
-                let count = 0;
-                
-                cards.forEach(card => {
-                    const button = card.querySelector('.favorite-btn');
-                    if (!button.classList.contains('active')) {
-                        // Simula il click sul pulsante dei preferiti
-                        button.click();
-                        count++;
-                    }
-                });
-                
-                if (count > 0) {
-                    showToast(`Aggiunte ${count} università ai preferiti!`);
-                } else {
-                    showToast('Tutte le università sono già nei preferiti!');
-                }
-            }
-
-            function saveFavorites() {
+        }
+        function saveFavorites() {
                 // Salva i preferiti nel localStorage
                 localStorage.setItem('favoriteUniversities', JSON.stringify(favoriteUniversities));
             }
