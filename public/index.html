@@ -1131,33 +1131,65 @@
             
             // Funzione per gestire il logout
             function logoutUser() {
-                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Rimuovi l'email dalla sessione
-                    sessionStorage.removeItem('userEmail');
-                    
-                    // Aggiorna l'interfaccia
-                    const userNavItem = document.getElementById('user-nav-item');
-                    if (userNavItem) {
-                        userNavItem.remove();
-                    }
-                    
-                    // Mostra nuovamente i link di login e registrazione
-                    document.getElementById('login-link').style.display = '';
-                    document.getElementById('reg-link').style.display = '';
-                    
-                    // Mostra un messaggio di logout
-                    alert('Logout effettuato con successo');
-                })
-                .catch(error => {
-                    console.error('Errore durante il logout:', error);
-                    alert('Si è verificato un errore durante il logout. Riprova.');
-                });
-            }
+    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+        method: 'POST',
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Rimuovi l'email dalla sessione
+        sessionStorage.removeItem('userEmail');
+        
+        // Rimuovi l'elemento del menu utente
+        const userMenu = document.querySelector('.user-menu');
+        if (userMenu) {
+            userMenu.remove();
+        }
+        
+        // Mostra nuovamente i link di login e registrazione
+        document.getElementById('login-link').style.display = '';
+        document.getElementById('reg-link').style.display = '';
+        
+        // Mostra un messaggio di logout
+        showToast('Logout effettuato con successo', 'success');
+    })
+    .catch(error => {
+        console.error('Errore durante il logout:', error);
+        showToast('Si è verificato un errore durante il logout. Riprova.', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    // Rimuovi toast esistenti
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => {
+        document.body.removeChild(toast);
+    });
+    
+    // Crea un nuovo toast
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    // Icona in base al tipo
+    const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
+    
+    // Contenuto del toast
+    toast.innerHTML = `
+        <i class="fas fa-${icon}"></i>
+        <span class="toast-message">${message}</span>
+    `;
+    
+    // Aggiungi il toast al documento
+    document.body.appendChild(toast);
+    
+    // Rimuovi automaticamente dopo l'animazione (3 secondi)
+    setTimeout(() => {
+        if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+        }
+    }, 3000);
+}
+
         });
     </script>
 </body>
