@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Amministratore - UniFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --admin: #7c3aed;
+            --admin-dark: #6d28d9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .admin-badge {
+            background-color: var(--admin);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--admin);
+        }
+        
+        .logout-btn {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        /* Main content */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--admin);
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .management-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .section-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-icon {
+            font-size: 1.5rem;
+            color: var(--admin);
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .action-btn {
+            background-color: var(--admin);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--admin-dark);
+        }
+        
+        .user-list, .university-list {
+            margin-top: 15px;
+        }
+        
+        .user-item, .university-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-item:last-child, .university-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-detail {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .edit-btn, .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .edit-btn {
+            color: var(--primary);
+        }
+        
+        .delete-btn {
+            color: var(--danger);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .stats-grid, .management-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+            
+            .nav-menu {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+            <span class="admin-badge">Admin</span>
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="#" class="nav-link active">Dashboard</a></li>
+            <li><a href="#" class="nav-link">Utenti</a></li>
+            <li><a href="#" class="nav-link">Università</a></li>
+            <li><a href="#" class="nav-link">Impostazioni</a></li>
+            <li><button id="logoutBtn" class="logout-btn">Logout</button></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Dashboard Amministratore</h1>
+            <p>Benvenuto nel pannello di controllo di UniFinder</p>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-title">Utenti Totali</div>
+                <div class="stat-value">152</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="stat-title">Università</div>
+                <div class="stat-value">87</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="stat-title">Ricerche Oggi</div>
+                <div class="stat-value">43</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-title">Messaggi Assistenza</div>
+                <div class="stat-value">12</div>
+            </div>
+        </div>
+        
+        <!-- Management Sections -->
+        <div class="management-sections">
+            <!-- User Management -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="section-title">Gestione Utenti</div>
+                </div>
+                
+                <p>Gestisci gli account utente, modifica i permessi e monitora l'attività.</p>
+                
+                <div class="user-list">
+                    <div class="user-item">
+                        <div class="item-info">
+                            <div class="item-name">Mario Rossi</div>
+                            <div class="item-detail">mario.rossi@example.com</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="user-item">
+                        <div class="item-info">
+                            <div class="item-name">Laura Bianchi</div>
+                            <div class="item-detail">laura.b@example.com</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#" class="action-btn">Visualizza tutti gli utenti</a>
+            </div>
+            
+            <!-- University Management -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="section-title">Gestione Università</div>
+                </div>
+                
+                <p>Aggiungi, modifica o rimuovi università dal database di UniFinder.</p>
+                
+                <div class="university-list">
+                    <div class="university-item">
+                        <div class="item-info">
+                            <div class="item-name">Università di Roma</div>
+                            <div class="item-detail">Italia • Reputazione: 4.8</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="university-item">
+                        <div class="item-info">
+                            <div class="item-name">Cambridge University</div>
+                            <div class="item-detail">Regno Unito • Reputazione: 4.9</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#" class="action-btn">Gestisci università</a>
+            </div>
+            
+            <!-- Content Management -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="section-title">Contenuti</div>
+                </div>
+                <p>Gestisci i contenuti del sito, aggiorna le pagine informative e le FAQ.</p>
+                
+                <div class="content-actions">
+                    <a href="#" class="action-btn">Modifica contenuti</a>
+                </div>
+            </div>
+            
+            <!-- Analytics -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="section-title">Statistiche</div>
+                </div>
+                
+                <p>Visualizza le statistiche di utilizzo, le metriche di conversione e i report analitici.</p>
+                
+                <div class="content-actions">
+                    <a href="#" class="action-btn">Visualizza statistiche</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
+    </footer>
+
+    <script>
+        // Verifica se l'utente è un amministratore
+        document.addEventListener('DOMContentLoaded', function() {
+    // Verifica se l'utente è autenticato come admin
+    if (!localStorage.getItem('adminLoggedIn')) {
+        alert('Accesso non autorizzato. Effettua il login come amministratore.');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Carica gli utenti dal database
+    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti', {
+        credentials: 'include',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Errore nel caricamento degli utenti');
+        return response.json();
+    })
+    .then(data => {
+        populateUserTable(data.utenti);
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        document.getElementById('userTable').innerHTML = 
+            '<tr><td colspan="5" class="text-center">Errore nel caricamento degli utenti</td></tr>';
+    });
+});
+
+// Funzione per popolare la tabella utenti
+function populateUserTable(utenti) {
+    const tableBody = document.getElementById('userTableBody');
+    tableBody.innerHTML = '';
+    
+    utenti.forEach(utente => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${utente.id}</td>
+            <td>${utente.nome}</td>
+            <td>${utente.email}</td>
+            <td>${utente.preferenze || '-'}</td>
+            <td>
+                <button class="edit-btn" data-id="${utente.id}"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" data-id="${utente.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Aggiungi event listener per i pulsanti di modifica ed eliminazione
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');
+            editUser(userId);
+        });
+    });
+    
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');
+            if (confirm('Sei sicuro di voler eliminare questo utente?')) {
+                deleteUser(userId);
+            }
+        });
+    });
+}
+    </script>
+</body>
+</html>
