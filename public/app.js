@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     e.preventDefault();
                     isAdminMode = !isAdminMode;
                     
+                    const emailInput = document.getElementById('loginEmail');
+                    
                     if (isAdminMode) {
                         // Passa a modalità admin
                         loginHeader.classList.add('admin-mode');
@@ -93,6 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Cambia l'etichetta da "Email" a "Username"
                         document.querySelector('label[for="loginEmail"]').textContent = 'Username';
+                        
+                        // Cambia il tipo di input da "email" a "text"
+                        emailInput.type = 'text';
+                        emailInput.placeholder = 'Inserisci username amministratore';
                         
                         // Mostra campi admin
                         adminFields.forEach(field => field.style.display = 'block');
@@ -106,6 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Ripristina l'etichetta "Email"
                         document.querySelector('label[for="loginEmail"]').textContent = 'Email';
+                        
+                        // Ripristina il tipo di input a "email"
+                        emailInput.type = 'email';
+                        emailInput.placeholder = 'Inserisci la tua email';
                         
                         // Nascondi campi admin
                         adminFields.forEach(field => field.style.display = 'none');
