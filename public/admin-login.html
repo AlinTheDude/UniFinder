@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi - UniFinder</title>
+    <title>Admin Login - UniFinder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('Imgs/cambridge.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('Imgs/cambridge.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -124,7 +124,7 @@
         }
         
         .login-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(135deg, var(--admin), var(--admin-dark));
             color: white;
             padding: 30px;
             text-align: center;
@@ -167,8 +167,8 @@
         }
         
         .form-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            border-color: var(--admin);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
             outline: none;
         }
         
@@ -179,7 +179,7 @@
         .form-submit {
             width: 100%;
             padding: 14px;
-            background-color: var(--primary);
+            background-color: var(--admin);
             color: white;
             border: none;
             border-radius: 8px;
@@ -192,9 +192,9 @@
         }
         
         .form-submit:hover {
-            background-color: var(--primary-dark);
+            background-color: var(--admin-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
         }
         
         .form-footer {
@@ -204,73 +204,26 @@
         }
         
         .form-link {
-            color: var(--primary);
+            color: var(--admin);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s ease;
         }
         
         .form-link:hover {
-            color: var(--primary-dark);
+            color: var(--admin-dark);
             text-decoration: underline;
         }
         
-        .social-login {
-            margin-top: 30px;
-        }
-        
-        .social-login-divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .social-login-divider::before,
-        .social-login-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: var(--light-gray);
-        }
-        
-        .social-login-text {
-            padding: 0 15px;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--light-gray);
-            background-color: white;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            font-family: inherit;
-            text-decoration: none;
-            color: var(--dark);
-        }
-        
-        .social-btn:hover {
-            background-color: #f8fafc;
-            border-color: var(--gray);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .social-btn i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .google-btn i {
-            color: #ea4335;
+        .admin-badge {
+            display: inline-block;
+            background: var(--admin);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
         
         /* Footer */
@@ -318,41 +271,6 @@
             .login-container {
                 margin: 40px 20px;
             }
-
-            .login-header.admin-mode {
-    background: linear-gradient(135deg, var(--admin), var(--admin-dark));
-}
-
-.admin-mode .form-input:focus {
-    border-color: var(--admin);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
-}
-
-.admin-mode .form-submit {
-    background-color: var(--admin);
-}
-
-.admin-mode .form-submit:hover {
-    background-color: var(--admin-dark);
-    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
-}
-
-.admin-badge {
-    display: inline-block;
-    background: var(--admin);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.toggle-mode {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-}
         }
     </style>
 </head>
@@ -364,7 +282,7 @@
         </a>
         
         <ul class="nav-menu" id="navMenu">
-            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="index.html" class="nav-link">Home</a></li>
             <li><a href="universities.html" class="nav-link">Università</a></li>
             <li id="reg-link"><a href="index.html" class="nav-link">Registrazione</a></li>
             <li id="login-link"><a href="login.html" class="nav-link">Login</a></li>
@@ -384,47 +302,33 @@
     <!-- Login Container -->
     <div class="login-container">
         <div class="login-header">
-            <h2>Accedi al tuo account</h2>
-            <p>Inserisci le tue credenziali per accedere a UniFinder</p>
+            <span class="admin-badge"><i class="fas fa-shield-alt"></i> Area Riservata</span>
+            <h2>Accesso Amministratore</h2>
+            <p>Inserisci le credenziali di amministrazione per accedere al pannello di controllo</p>
         </div>
         
         <div class="login-form">
-            <form id="loginForm">
+            <form id="adminLoginForm">
                 <div class="form-group">
-                    <label for="loginEmail" class="form-label">Email</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="Inserisci la tua email" required>
+                    <label for="adminUsername" class="form-label">Username</label>
+                    <input type="text" id="adminUsername" class="form-input" placeholder="Inserisci username amministratore" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Inserisci la tua password" required>
-                </div>
-
-                <div class="form-group admin-field" style="display: none;">
-                    <label for="securityCode" class="form-label">Codice di sicurezza</label>
-                    <input type="text" id="securityCode" class="form-input" placeholder="Inserisci il codice di sicurezza">
+                    <label for="adminPassword" class="form-label">Password</label>
+                    <input type="password" id="adminPassword" class="form-input" placeholder="Inserisci password amministratore" required>
                 </div>
                 
-                <button type="submit" class="form-submit">Accedi</button>
+                <div class="form-group">
+                    <label for="adminCode" class="form-label">Codice di sicurezza</label>
+                    <input type="text" id="adminCode" class="form-input" placeholder="Inserisci il codice di sicurezza" required>
+                </div>
+                
+                <button type="submit" class="form-submit">Accedi come Amministratore</button>
             </form>
-
-            <div class="toggle-mode">
-                <a href="#" id="toggleMode">Accedi come amministratore</a>
-            </div>
-        </form>
-            
-            <div class="social-login">
-                <div class="social-login-divider">
-                    <span class="social-login-text">Oppure</span>
-                </div>
-                
-                <a href="/auth/google" class="social-btn google-btn">
-                    <i class="fab fa-google"></i> Continua con Google
-                </a>
-            </div>
             
             <div class="form-footer">
-                Non hai un account? <a href="index.html#registration" class="form-link">Registrati</a>
+                <a href="login.html" class="form-link">Torna al login utente</a>
             </div>
         </div>
     </div>
@@ -435,6 +339,55 @@
             <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
         </div>
     </footer>
-    <script src="app.js"></script>
+
+    <script>
+        // Toggle mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Admin login form submission
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        
+        adminLoginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const securityCode = document.getElementById('adminCode').value;
+            
+            // Credenziali predefinite per l'amministratore
+            const adminCredentials = {
+                username: "admin",
+                password: "Admin123!",
+                securityCode: "UniFinder2024"
+            };
+            
+            if (username === adminCredentials.username && 
+                password === adminCredentials.password && 
+                securityCode === adminCredentials.securityCode) {
+                
+                // Salva lo stato di login dell'admin
+                localStorage.setItem('adminLoggedIn', 'true');
+                
+                // Reindirizza alla dashboard amministrativa
+                alert('Login amministratore effettuato con successo!');
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                alert('Credenziali amministratore non valide. Riprova.');
+            }
+        });
+    </script>
 </body>
 </html>

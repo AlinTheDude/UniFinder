@@ -68,7 +68,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Gestione del login
     waitForElement('#loginForm', () => {
         const loginForm = document.getElementById('loginForm');
+        const toggleMode = document.getElementById('toggleMode');
+
         if (loginForm) {
+            let isAdminMode = false;
+            if (toggleMode) {
+                const loginHeader = document.querySelector('.login-header');
+                const adminFields = document.querySelectorAll('.admin-field');
+                const headerTitle = document.querySelector('.login-header h2');
+                const headerDesc = document.querySelector('.login-header p');
+                const submitBtn = document.querySelector('.form-submit');
+                
+                toggleMode.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    isAdminMode = !isAdminMode;
+                    
+                    if (isAdminMode) {
+                        // Passa a modalità admin
+                        loginHeader.classList.add('admin-mode');
+                        toggleMode.textContent = 'Torna al login utente';
+                        headerTitle.innerHTML = '<span class="admin-badge"><i class="fas fa-shield-alt"></i> Area Riservata</span>Accesso Amministratore';
+                        headerDesc.textContent = 'Inserisci le credenziali di amministrazione';
+                        submitBtn.textContent = 'Accedi come Amministratore';
+                        
+                        // Mostra campi admin
+                        adminFields.forEach(field => field.style.display = 'block');
+                    } else {
+                        // Torna a modalità utente
+                        loginHeader.classList.remove('admin-mode');
+                        toggleMode.textContent = 'Accedi come amministratore';
+                        headerTitle.textContent = 'Accedi al tuo account';
+                        headerDesc.textContent = 'Inserisci le tue credenziali per accedere a UniFinder';
+                        submitBtn.textContent = 'Accedi';
+                        
+                        // Nascondi campi admin
+                        adminFields.forEach(field => field.style.display = 'none');
+                    }
+                });
+            }
             loginForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 
