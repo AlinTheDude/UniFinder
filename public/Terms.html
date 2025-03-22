@@ -4,53 +4,377 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termini d'uso - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
             background-image: url('Imgs/cambridge.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Terms Container */
+        #terms {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+        }
+        
+        #terms h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        #terms h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        
+        #terms p {
+            font-size: 1.05rem;
+            color: var(--gray);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        #terms ol {
+            counter-reset: terms-counter;
+            padding-left: 0;
+        }
+        
+        #terms li {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 60px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--light-gray);
+            counter-increment: terms-counter;
+            font-size: 1.05rem;
+        }
+        
+        #terms li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        #terms li::before {
+            content: counter(terms-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 40px 0 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .highlight-box {
+            background-color: rgba(37, 99, 235, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .highlight-box h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+            text-align: left;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            
+            #terms {
+                margin: 20px;
+                padding: 25px;
+            }
+            
+            #terms h2 {
+                font-size: 1.8rem;
+            }
+            
+            #terms li {
+                padding-left: 50px;
+            }
         }
     </style>
 </head>
 <body>
-
-<header>
-    <nav>
-        <h1>UniFinder</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#registrazione">Registrazione</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="ajax.html">AJAX</a></li>
-            <li><a href="WebSocket.html">WebSocket</a></li>
-            <li><a href="Swagger.html">API Docs</a></li>
-            <li><a href="chat.html">Chat Assistenza</a>
-            <li><a href="universities.html" class="active">Ricerca Università</a></li>
-            <li><a href="Privacy.html">Privacy</a></li>
-            <li><a href="Terms.html">Termini e Condizioni</a></li>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li><a href="index.html" class="nav-link">Registrazione</a></li>
+            <li><a href="login.html" class="nav-link">Login</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link active">Termini</a></li>
         </ul>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
-</header>
 
-<section id="terms">
-    <h2>Termini d'uso di UniFinder</h2>
-    <p>Questo documento stabilisce i termini e le condizioni per l'utilizzo del servizio UniFinder.</p>
-    <ol>
-        <li>Accesso al servizio: L'utente può accedere al servizio UniFinder dopo aver effettuato la registrazione o il login.</li>
-        <li>Ricerca università: L'utente può utilizzare il servizio per cercare informazioni su università e corsi di studio.</li>
-        <li>Responsabilità: UniFinder non è responsabile per eventuali errori o danni derivanti dall'uso del servizio.</li>
-        <li>Proprietà intellettuale: Tutti i contenuti sono proprietà di UniFinder.</li>
-        <li>Modifica dei termini: UniFinder può modificare i termini di servizio in qualsiasi momento.</li>
-    </ol>
-</section>
+    <!-- Terms Section -->
+    <section id="terms">
+        <h2>Termini d'uso di UniFinder</h2>
+        <p>Questo documento stabilisce i termini e le condizioni per l'utilizzo del servizio UniFinder. Leggere attentamente prima di utilizzare la piattaforma.</p>
+        
+        <div class="highlight-box">
+            <h3>Ultimo aggiornamento: 15 Marzo 2024</h3>
+            <p>Utilizzando UniFinder, l'utente accetta automaticamente i seguenti termini e condizioni nella loro interezza.</p>
+        </div>
+        
+        <div class="section-title">Condizioni generali</div>
+        
+        <ol>
+            <li>
+                <strong>Accesso al servizio:</strong> L'utente può accedere al servizio UniFinder dopo aver effettuato la registrazione o il login. UniFinder si riserva il diritto di rifiutare l'accesso al servizio a qualsiasi utente, per qualsiasi motivo, in qualsiasi momento, senza preavviso.
+            </li>
+            
+            <li>
+                <strong>Ricerca università:</strong> L'utente può utilizzare il servizio per cercare informazioni su università e corsi di studio. Le informazioni fornite sono a scopo informativo e non costituiscono consulenza professionale. UniFinder si impegna a fornire informazioni accurate, ma non garantisce la completezza, l'accuratezza o l'attualità delle informazioni.
+            </li>
+            
+            <li>
+                <strong>Responsabilità:</strong> UniFinder non è responsabile per eventuali errori o danni derivanti dall'uso del servizio. L'utente accetta di utilizzare il servizio a proprio rischio. In nessun caso UniFinder sarà responsabile per danni diretti, indiretti, incidentali, speciali o consequenziali derivanti dall'uso o dall'impossibilità di utilizzare il servizio.
+            </li>
+            
+            <li>
+                <strong>Proprietà intellettuale:</strong> Tutti i contenuti sono proprietà di UniFinder o dei suoi partner e sono protetti dalle leggi sul copyright e sulla proprietà intellettuale. L'utente non può riprodurre, distribuire, modificare, visualizzare pubblicamente, eseguire pubblicamente, ripubblicare, scaricare, memorizzare o trasmettere qualsiasi materiale dal sito UniFinder senza autorizzazione scritta.
+            </li>
+            
+            <li>
+                <strong>Modifica dei termini:</strong> UniFinder può modificare i termini di servizio in qualsiasi momento. Le modifiche entrano in vigore immediatamente dopo la pubblicazione sul sito. L'utente accetta di rivedere periodicamente i termini di servizio. L'uso continuato del servizio dopo la modifica dei termini costituisce accettazione delle modifiche.
+            </li>
+        </ol>
+        
+        <div class="section-title">Utilizzo dell'account</div>
+        
+        <div class="highlight-box">
+            <h3>Sicurezza dell'account</h3>
+            <p>L'utente è responsabile della sicurezza del proprio account e della password. UniFinder non sarà responsabile per perdite o danni derivanti dalla mancata protezione delle credenziali di accesso.</p>
+        </div>
+        
+        <p style="text-align: center; margin-top: 30px;">
+            Per qualsiasi domanda relativa ai termini di servizio, contattare il nostro supporto tramite la <a href="chat.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">chat di assistenza</a>.
+        </p>
+    </section>
 
-<footer>
-    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
+    </footer>
 
-<script src="app.js" defer></script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione menu mobile
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                
+                // Cambia l'icona del menu
+                const icon = this.querySelector('i');
+                if (navMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

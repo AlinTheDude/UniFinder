@@ -4,52 +4,412 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
             background-image: url('Imgs/cambridge.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Privacy Container */
+        #privacy {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+        }
+        
+        #privacy h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        #privacy h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        #privacy p {
+            font-size: 1.05rem;
+            color: var(--gray);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        #privacy ol {
+            counter-reset: privacy-counter;
+            padding-left: 0;
+        }
+        
+        #privacy li {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 60px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--light-gray);
+            counter-increment: privacy-counter;
+            font-size: 1.05rem;
+        }
+        
+        #privacy li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        #privacy li::before {
+            content: counter(privacy-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 40px 0 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .privacy-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .privacy-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .privacy-card h3 i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .privacy-card p {
+            margin-bottom: 0;
+            text-align: left;
+        }
+        
+        .privacy-card ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .privacy-card li {
+            margin-bottom: 8px;
+            padding-left: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .privacy-card li::before {
+            display: none;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            
+            #privacy {
+                margin: 20px;
+                padding: 25px;
+            }
+            
+            #privacy h2 {
+                font-size: 1.8rem;
+            }
+            
+            #privacy li {
+                padding-left: 50px;
+            }
         }
     </style>
 </head>
 <body>
-
-<header>
-    <nav>
-        <h1>UniFinder</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#registrazione">Registrazione</a></li>
-            <li><a href="ajax.html">AJAX</a></li>
-            <li><a href="WebSocket.html">WebSocket</a></li>
-            <li><a href="Swagger.html">API Docs</a></li>
-            <li><a href="chat.html">Chat Assistenza</a>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-            <li><a href="Privacy.html">Privacy</a></li>
-            <li><a href="Terms.html">Termini e Condizioni</a></li>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li><a href="index.html" class="nav-link">Registrazione</a></li>
+            <li><a href="login.html" class="nav-link">Login</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Privacy.html" class="nav-link active">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
         </ul>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
-</header>
 
-<section id="privacy">
-    <h2>Informativa sulla privacy di UniFinder</h2>
-    <p>Questa informativa sulla privacy descrive come UniFinder gestisce e protegge le informazioni personali degli utenti.</p>
-    <ol>
-        <li>Raccolta di dati: UniFinder raccolta solo le informazioni necessarie per fornire il servizio.</li>
-        <li>Utilizzo dei dati: I dati raccolti vengono utilizzati esclusivamente per migliorare l'esperienza dell'utente.</li>
-        <li>Sicurezza: UniFinder prende misure per proteggere i dati degli utenti da accessi non autorizzati.</li>
-        <li>Diritti dell'utente: L'utente ha diritto di accedere, modificare o cancellare le proprie informazioni personali.</li>
-        <li>Modifica della politica: UniFinder può modificare questa politica di privacy in qualsiasi momento.</li>
-    </ol>
-</section>
+    <!-- Privacy Section -->
+    <section id="privacy">
+        <h2>Informativa sulla privacy di UniFinder</h2>
+        <p>Questa informativa sulla privacy descrive come UniFinder gestisce e protegge le informazioni personali degli utenti. La tua privacy è importante per noi.</p>
+        
+        <div class="privacy-card">
+            <h3><i class="fas fa-shield-alt"></i> Il nostro impegno</h3>
+            <p>UniFinder si impegna a proteggere la tua privacy e a garantire che le tue informazioni personali siano trattate in modo sicuro e responsabile. Abbiamo implementato misure tecniche e organizzative per proteggere i tuoi dati.</p>
+        </div>
+        
+        <div class="section-title">Politiche sulla privacy</div>
+        
+        <ol>
+            <li>
+                <strong>Raccolta di dati:</strong> UniFinder raccoglie solo le informazioni necessarie per fornire il servizio. Queste possono includere nome, indirizzo email, preferenze accademiche e dati di navigazione. Non raccogliamo mai informazioni sensibili come dati bancari o documenti d'identità senza esplicito consenso.
+            </li>
+            
+            <li>
+                <strong>Utilizzo dei dati:</strong> I dati raccolti vengono utilizzati esclusivamente per migliorare l'esperienza dell'utente. Utilizziamo le tue informazioni per personalizzare i risultati di ricerca, fornire consigli pertinenti sulle università e migliorare continuamente la nostra piattaforma. Non vendiamo mai i tuoi dati a terze parti.
+            </li>
+            
+            <li>
+                <strong>Sicurezza:</strong> UniFinder prende misure per proteggere i dati degli utenti da accessi non autorizzati. Utilizziamo protocolli di crittografia avanzati, firewall e regolari controlli di sicurezza per garantire che i tuoi dati rimangano al sicuro. Tutti i dati sensibili sono archiviati in forma crittografata sui nostri server.
+            </li>
+            
+            <li>
+                <strong>Diritti dell'utente:</strong> L'utente ha diritto di accedere, modificare o cancellare le proprie informazioni personali. Puoi richiedere una copia di tutti i dati che abbiamo su di te, modificarli o richiederne la cancellazione completa in qualsiasi momento attraverso il tuo profilo o contattando il nostro team di supporto.
+            </li>
+            
+            <li>
+                <strong>Modifica della politica:</strong> UniFinder può modificare questa politica di privacy in qualsiasi momento. Ti informeremo di eventuali modifiche significative via email o attraverso notifiche sulla piattaforma. Ti incoraggiamo a rivedere periodicamente questa pagina per rimanere aggiornato sulle nostre pratiche di privacy.
+            </li>
+        </ol>
+        
+        <div class="section-title">Cookie e tecnologie di tracciamento</div>
+        
+        <div class="privacy-card">
+            <h3><i class="fas fa-cookie-bite"></i> Utilizzo dei cookie</h3>
+            <p>UniFinder utilizza cookie e tecnologie simili per migliorare la tua esperienza sulla nostra piattaforma. I cookie sono piccoli file di testo che vengono memorizzati sul tuo dispositivo quando visiti il nostro sito.</p>
+            <ul>
+                <li><strong>Cookie essenziali:</strong> Necessari per il funzionamento del sito</li>
+                <li><strong>Cookie di preferenza:</strong> Ricordano le tue impostazioni e scelte</li>
+                <li><strong>Cookie analitici:</strong> Ci aiutano a capire come utilizzi il sito</li>
+                <li><strong>Cookie di marketing:</strong> Utilizzati per personalizzare gli annunci (puoi disattivarli)</li>
+            </ul>
+        </div>
+        
+        <div class="privacy-card">
+            <h3><i class="fas fa-user-shield"></i> Protezione dei minori</h3>
+            <p>UniFinder non raccoglie consapevolmente informazioni personali da minori di 16 anni senza il consenso dei genitori. Se ritieni che abbiamo raccolto informazioni da un minore, contattaci immediatamente e rimuoveremo tali informazioni dai nostri sistemi.</p>
+        </div>
+        
+        <p style="text-align: center; margin-top: 30px;">
+            Per qualsiasi domanda relativa alla nostra politica sulla privacy, contattare il nostro responsabile della protezione dei dati all'indirizzo <a href="mailto:privacy@unifinder.it" style="color: var(--primary); text-decoration: none; font-weight: 500;">privacy@unifinder.it</a>.
+        </p>
+    </section>
 
-<footer>
-    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
+    </footer>
 
-<script src="app.js" defer></script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione menu mobile
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                
+                // Cambia l'icona del menu
+                const icon = this.querySelector('i');
+                if (navMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
