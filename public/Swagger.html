@@ -4,158 +4,342 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
-        }
-        #api-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            margin: 50px auto;
-            max-width: 800px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        .api-box {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .api-title {
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
             font-size: 1.5rem;
-            color: #333;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* API Documentation Container */
+        .api-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            flex: 1;
+            padding-bottom: 30px;
+        }
+        
+        .api-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .api-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
             margin-bottom: 15px;
         }
         
-        .api-description {
+        .api-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .api-content {
+            padding: 30px;
+        }
+        
+        /* Swagger UI Container */
+        #swagger-ui {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* Info Section */
+        .info-section {
+            margin-bottom: 40px;
+            padding: 0 15px;
+        }
+        
+        .info-section h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .info-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .info-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
             margin-bottom: 20px;
-            line-height: 1.6;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
         }
         
-        .button {
-            display: inline-block;
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 24px;
-            text-decoration: none;
+        .info-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .info-card p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .info-card ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card li {
+            margin-bottom: 8px;
+        }
+        
+        .info-card code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
             border-radius: 4px;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        .button:hover {
-            background-color: #45a049;
-        }
-        
-        .endpoint {
-            background-color: #e9f7ef;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
             font-family: monospace;
+            color: var(--primary-dark);
         }
         
-        .method {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
             color: white;
-            font-weight: bold;
-            margin-right: 10px;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
         }
         
-        .get {
-            background-color: #61affe;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .post {
-            background-color: #49cc90;
-        }
-        
-        .put {
-            background-color: #fca130;
-        }
-        
-        .delete {
-            background-color: #f93e3e;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            
+            .api-container {
+                margin: 20px;
+            }
+            
+            .api-header {
+                padding: 30px 20px;
+            }
+            
+            .api-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .api-content {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#registrazione">Registrazione</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="utenti.html">Utenti</a></li>
-                <li><a href="WebSocket.html">WebSocket</a></li>
-                <li><a href="Swagger.html">API Docs</a></li>
-                <li><a href="chat.html">Chat Assistenza</a></li>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-                <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- API Documentation Section -->
-    <section id="api-container">
-        <h2>Documentazione API UniFinder</h2>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
         
-        <div class="api-box">
-            <div class="api-title">Benvenuto nella documentazione delle API</div>
-            <div class="api-description">
-                Questa pagina fornisce l'accesso alla documentazione interattiva delle API di UniFinder. 
-                Utilizzando Swagger UI, puoi esplorare, testare e comprendere tutte le API disponibili nel sistema.
-            </div>
-            
-            <div class="endpoint">
-                <span class="method get">GET</span> /utenti
-            </div>
-            <div class="endpoint">
-                <span class="method post">POST</span> /registrazione
-            </div>
-            <div class="endpoint">
-                <span class="method post">POST</span> /login
-            </div>
-            <div class="endpoint">
-                <span class="method post">POST</span> /ricerca-universita
-            </div>
-            
-            <a href="/api-docs" class="button">Apri Documentazione Swagger</a>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li id="reg-link"><a href="index.html" class="nav-link">Registrazione</a></li>
+            <li id="login-link"><a href="login.html" class="nav-link">Login</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="Swagger.html" class="nav-link active">API Docs</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
+        </ul>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- API Documentation Container -->
+    <div class="api-container">
+        <div class="api-header">
+            <h2>Documentazione API</h2>
+            <p>Esplora le interfacce di programmazione di UniFinder per integrare i nostri servizi nelle tue applicazioni</p>
         </div>
         
-        <div class="api-box">
-            <div class="api-title">Cos'è Swagger?</div>
-            <div class="api-description">
-                Swagger è uno strumento che permette di documentare e testare le API in modo interattivo. 
-                Con Swagger UI puoi:
-                <ul>
-                    <li>Visualizzare tutti gli endpoint disponibili</li>
-                    <li>Comprendere i parametri richiesti e i formati di risposta</li>
-                    <li>Testare le API direttamente dall'interfaccia</li>
-                    <li>Esplorare i modelli di dati utilizzati nel sistema</li>
-                </ul>
+        <div class="api-content">
+            <div class="info-section">
+                <h3>Introduzione alle nostre API</h3>
+                <div class="info-card">
+                    <h4>Panoramica</h4>
+                    <p>Le API di UniFinder permettono agli sviluppatori di accedere ai nostri dati sulle università italiane e internazionali, corsi di laurea, recensioni e statistiche. Utilizziamo REST API con formato JSON per tutti gli endpoint.</p>
+                    
+                    <h4>Autenticazione</h4>
+                    <p>Per utilizzare le nostre API è necessario ottenere un API key. Le richieste autenticate devono includere l'header <code>X-API-Key</code> con il tuo token.</p>
+                    
+                    <h4>Rate Limiting</h4>
+                    <p>Le richieste sono limitate a 100 al minuto per API key. Gli header di risposta includeranno:</p>
+                    <ul>
+                        <li><code>X-RateLimit-Limit</code>: numero massimo di richieste</li>
+                        <li><code>X-RateLimit-Remaining</code>: richieste rimanenti nel periodo corrente</li>
+                        <li><code>X-RateLimit-Reset</code>: timestamp di reset del contatore</li>
+                    </ul>
+                </div>
             </div>
+            
+            <!-- Swagger UI Container -->
+            <div id="swagger-ui"></div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
     </footer>
+
+    <!-- Link to Swagger UI -->
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css" />
+    <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
