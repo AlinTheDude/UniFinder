@@ -91,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         headerDesc.textContent = 'Inserisci le credenziali di amministrazione';
                         submitBtn.textContent = 'Accedi come Amministratore';
                         
+                        // Cambia l'etichetta da "Email" a "Username"
+                        document.querySelector('label[for="loginEmail"]').textContent = 'Username';
+                        
                         // Mostra campi admin
                         adminFields.forEach(field => field.style.display = 'block');
                     } else {
@@ -100,6 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         headerTitle.textContent = 'Accedi al tuo account';
                         headerDesc.textContent = 'Inserisci le tue credenziali per accedere a UniFinder';
                         submitBtn.textContent = 'Accedi';
+                        
+                        // Ripristina l'etichetta "Email"
+                        document.querySelector('label[for="loginEmail"]').textContent = 'Email';
                         
                         // Nascondi campi admin
                         adminFields.forEach(field => field.style.display = 'none');
