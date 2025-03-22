@@ -4,33 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
             background-image: url('Imgs/cambridge.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
         }
         
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Dashboard Container */
         #dashboard-container {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             margin: 30px auto;
-            max-width: 1100px;
+            max-width: 1200px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
         
         .dashboard-header {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 25px 30px;
+            padding: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -55,7 +148,7 @@
         .user-details h3 {
             margin: 0 0 8px 0;
             font-size: 28px;
-            font-weight: 500;
+            font-weight: 600;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
         
@@ -100,7 +193,7 @@
         
         .btn-edit {
             background-color: white;
-            color: #2E7D32;
+            color: var(--primary-dark);
         }
         
         .btn-edit:hover {
@@ -119,12 +212,12 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
-            color: #666;
+            color: var(--gray);
             position: relative;
         }
         
         .tab.active {
-            color: #4CAF50;
+            color: var(--primary);
         }
         
         .tab.active::after {
@@ -134,7 +227,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background-color: #4CAF50;
+            background-color: var(--primary);
         }
         
         .tab:hover {
@@ -147,23 +240,22 @@
             gap: 25px;
             padding: 30px;
         }
-        
         .dashboard-section {
             background-color: white;
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 25px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f0f0;
+            border: 1px solid var(--light-gray);
         }
         
         .dashboard-section h3 {
             margin-top: 0;
-            color: #333;
+            color: var(--dark);
             font-size: 20px;
-            font-weight: 500;
+            font-weight: 600;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid var(--light-gray);
             position: relative;
         }
         
@@ -174,7 +266,7 @@
             left: 0;
             width: 60px;
             height: 2px;
-            background-color: #4CAF50;
+            background-color: var(--primary);
         }
         
         .university-card {
@@ -183,7 +275,7 @@
             padding: 20px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid #4CAF50;
+            border-left: 4px solid var(--primary);
             transition: all 0.3s;
         }
         
@@ -194,14 +286,14 @@
         
         .university-card h4 {
             margin-top: 0;
-            color: #2E7D32;
+            color: var(--primary-dark);
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
         }
         
         .university-card p {
             margin: 8px 0;
-            color: #666;
+            color: var(--gray);
             font-size: 14px;
         }
         
@@ -209,54 +301,59 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 15px;
+            gap: 10px;
         }
         
         .university-card .actions button {
             background: none;
             border: none;
-            color: #4CAF50;
+            color: var(--primary);
             cursor: pointer;
             font-size: 14px;
             padding: 5px 10px;
             border-radius: 4px;
             transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .university-card .actions button:hover {
-            background-color: rgba(76, 175, 80, 0.1);
+            background-color: rgba(37, 99, 235, 0.1);
         }
         
         .stats-item {
             display: flex;
             justify-content: space-between;
             padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--light-gray);
         }
         
         .stats-item:last-child {
             border-bottom: none;
         }
+        
         .stats-label {
-            color: #666;
+            color: var(--gray);
             font-size: 14px;
         }
         
         .stats-value {
             font-weight: 500;
-            color: #333;
+            color: var(--dark);
             font-size: 14px;
         }
         
         .empty-state {
             text-align: center;
             padding: 30px 0;
-            color: #999;
+            color: var(--gray);
         }
         
         .empty-state i {
             font-size: 40px;
             margin-bottom: 10px;
-            color: #ddd;
+            color: var(--light-gray);
         }
         
         .recommendations {
@@ -271,7 +368,7 @@
         }
         
         .recommendations a {
-            color: #4CAF50;
+            color: var(--primary);
             text-decoration: none;
         }
         
@@ -281,7 +378,7 @@
         
         .activity-item {
             padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--light-gray);
             display: flex;
             align-items: flex-start;
         }
@@ -289,13 +386,13 @@
         .activity-icon {
             width: 30px;
             height: 30px;
-            background-color: rgba(76, 175, 80, 0.1);
+            background-color: rgba(37, 99, 235, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
-            color: #4CAF50;
+            color: var(--primary);
         }
         
         .activity-content {
@@ -310,9 +407,25 @@
         
         .activity-time {
             font-size: 12px;
-            color: #999;
+            color: var(--gray);
         }
         
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
         @media (max-width: 992px) {
             .dashboard-content {
                 grid-template-columns: 1fr;
@@ -344,30 +457,58 @@
             .tab {
                 padding: 15px 15px;
             }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
         }
     </style>
-    <!-- Aggiungi Font Awesome per le icone -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#registrazione">Registrazione</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="ajax.html">AJAX</a></li>
-                <li><a href="WebSocket.html">WebSocket</a></li>
-                <li><a href="Swagger.html">API Docs</a></li>
-                <li><a href="chat.html">Chat Assistenza</a></li>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-                <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li><a href="index.html" class="nav-link">Registrazione</a></li>
+            <li><a href="login.html" class="nav-link">Login</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="WebSocket.html" class="nav-link">WebSocket</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
+        </ul>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
 
     <div id="dashboard-container">
         <div class="dashboard-header">
@@ -409,10 +550,11 @@
                                 <button><i class="fas fa-heart-broken"></i> Rimuovi</button>
                             </div>
                         </div>
+                        
                         <div class="university-card">
-                            <h4>Oxford University</h4>
-                            <p><i class="fas fa-map-marker-alt"></i> Regno Unito</p>
-                            <p><i class="fas fa-star"></i> Reputazione: 5/5</p>
+                            <h4>Università di Milano</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> Italia</p>
+                            <p><i class="fas fa-star"></i> Reputazione: 4.3/5</p>
                             <div class="actions">
                                 <button><i class="fas fa-info-circle"></i> Dettagli</button>
                                 <button><i class="fas fa-heart-broken"></i> Rimuovi</button>
@@ -423,55 +565,33 @@
                 
                 <div class="dashboard-section">
                     <h3>Attività recenti</h3>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Hai cercato università in Italia</div>
-                                <div class="activity-time">2 ore fa</div>
-                            </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-search"></i>
                         </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Hai aggiunto Oxford University ai preferiti</div>
-                                <div class="activity-time">Ieri</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Hai aggiornato il tuo profilo</div>
-                                <div class="activity-time">3 giorni fa</div>
-                            </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Hai cercato "Università informatica"</div>
+                            <div class="activity-time">2 giorni fa</div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="dashboard-section">
-                    <h3>Ricerche recenti</h3>
-                    <div id="ricerche-container">
-                        <div class="university-card">
-                            <h4>Università in Italia</h4>
-                            <p><i class="fas fa-filter"></i> Filtri: Tasse < 5000€, Reputazione > 3</p>
-                            <p><i class="fas fa-calendar-alt"></i> Cercato il: 15/03/2024</p>
-                            <div class="actions">
-                                <button><i class="fas fa-redo"></i> Ripeti ricerca</button>
-                            </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-heart"></i>
                         </div>
-                        <div class="university-card">
-                            <h4>Università in USA</h4>
-                            <p><i class="fas fa-filter"></i> Filtri: Borse di studio disponibili</p>
-                            <p><i class="fas fa-calendar-alt"></i> Cercato il: 10/03/2024</p>
-                            <div class="actions">
-                                <button><i class="fas fa-redo"></i> Ripeti ricerca</button>
-                            </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Hai aggiunto Università di Milano ai preferiti</div>
+                            <div class="activity-time">3 giorni fa</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Hai aggiornato il tuo profilo</div>
+                            <div class="activity-time">1 settimana fa</div>
                         </div>
                     </div>
                 </div>
@@ -479,55 +599,44 @@
             
             <div class="sidebar">
                 <div class="dashboard-section">
-                    <h3>Il tuo profilo</h3>
+                    <h3>Statistiche</h3>
                     <div class="stats-item">
-                        <span class="stats-label"><i class="fas fa-calendar-check"></i> Data di registrazione</span>
-                        <span class="stats-value">01/03/2024</span>
+                        <div class="stats-label">Università preferite</div>
+                        <div class="stats-value">2</div>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label"><i class="fas fa-heart"></i> Università preferite</span>
-                        <span class="stats-value">2</span>
+                        <div class="stats-label">Ricerche effettuate</div>
+                        <div class="stats-value">15</div>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label"><i class="fas fa-search"></i> Ricerche effettuate</span>
-                        <span class="stats-value">15</span>
+                        <div class="stats-label">Ultimo accesso</div>
+                        <div class="stats-value">Oggi</div>
                     </div>
                     <div class="stats-item">
-                        <span class="stats-label"><i class="fas fa-clock"></i> Ultimo accesso</span>
-                        <span class="stats-value">Oggi</span>
+                        <div class="stats-label">Account creato</div>
+                        <div class="stats-value">15/03/2024</div>
                     </div>
                 </div>
                 
                 <div class="dashboard-section">
                     <h3>Consigli per te</h3>
-                    <p>In base alle tue preferenze, potresti essere interessato a:</p>
-                    <div class="recommendations">
-                        <ul>
-                            <li><a href="#">University of Cambridge (Regno Unito)</a></li>
-                            <li><a href="#">ETH Zürich (Svizzera)</a></li>
-                            <li><a href="#">Politecnico di Milano (Italia)</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="dashboard-section">
-                    <h3>Azioni rapide</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <button class="dashboard-btn btn-edit" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-search"></i> Nuova ricerca
-                        </button>
-                        <button class="dashboard-btn btn-edit" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-envelope"></i> Contattaci
-                        </button>
-                    </div>
+                    <ul class="recommendations">
+                        <li><a href="#">Completa il tuo profilo accademico</a> per ricevere consigli più pertinenti.</li>
+                        <li>Scopri le <a href="#">università con i migliori programmi di informatica</a>.</li>
+                        <li>Esplora <a href="#">borse di studio disponibili</a> per il tuo percorso di studi.</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
     </footer>
+
 
     <script src="dashboard.js"></script>
     <script>
