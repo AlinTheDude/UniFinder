@@ -4,109 +4,329 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contatore Visitatori - UniFinder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
-            background-size: cover; /* Coprire l'intera area */
-            background-position: center; /* Centrare l'immagine */
-            background-repeat: no-repeat; /* Non ripetere l'immagine */
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('Imgs/cambridge.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        #contatore-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            margin: 50px auto;
-            max-width: 600px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        /* Navbar */
+        .navbar {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .contatore-box {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 2px solid #4CAF50;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
         }
         
-        .numero-visitatori {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #4CAF50;
-            margin: 20px 0;
-            display: block;
-        }
-        
-        .etichetta-visitatori {
+        .logo i {
+            margin-right: 8px;
             font-size: 1.5rem;
-            color: #555;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Counter Container */
+        .counter-container {
+            max-width: 700px;
+            margin: 60px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        .counter-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .counter-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 10px;
         }
         
-        .aggiornamento-tempo {
+        .counter-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .counter-content {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .counter-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .counter-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .counter-label {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .counter-value {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin: 20px 0;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        
+        .counter-update {
             font-size: 0.9rem;
-            color: #777;
+            color: var(--gray);
             margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .stato-connessione {
-            padding: 8px;
-            border-radius: 4px;
-            margin-top: 15px;
+        .counter-update i {
+            margin-right: 5px;
+            color: var(--secondary);
+        }
+        
+        .connection-status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 50px;
             font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 15px;
         }
         
-        .connesso {
-            background-color: #d4edda;
-            color: #155724;
+        .status-connected {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
         }
         
-        .disconnesso {
-            background-color: #f8d7da;
-            color: #721c24;
+        .status-disconnected {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .counter-info {
+            margin-top: 30px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 20px 30px;
+                transition: all 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+                z-index: 1000;
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            
+            .counter-container {
+                margin: 40px 20px;
+            }
+            
+            .counter-value {
+                font-size: 3.5rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <nav>
-            <h1>UniFinder</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#registrazione">Registrazione</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="ajax.html">AJAX</a></li>
-                <li><a href="WebSocket.html">WebSocket</a></li>
-                <li><a href="Swagger.html">API Docs</a></li>
-                <li><a href="chat.html">Chat Assistenza</a></li>
-                <li><a href="universities.html" class="active">Ricerca Università</a></li>
-                <li><a href="Privacy.html">Privacy</a></li>
-                <li><a href="Terms.html">Termini e Condizioni</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Contatore Visitatori -->
-    <section id="contatore-container">
-        <h2>Contatore Visitatori in Tempo Reale</h2>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-university"></i>UniFinder
+        </a>
         
-        <div class="contatore-box">
-            <div class="etichetta-visitatori">Utenti attualmente online:</div>
-            <span id="contatore-visitatori" class="numero-visitatori">0</span>
-            <div class="aggiornamento-tempo">Aggiornato in tempo reale</div>
-            <div id="stato-connessione" class="stato-connessione disconnesso">
-                Connessione al server...
-            </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="universities.html" class="nav-link">Università</a></li>
+            <li><a href="index.html#features" class="nav-link">Funzionalità</a></li>
+            <li><a href="chat.html" class="nav-link">Assistenza</a></li>
+            <li><a href="Swagger.html" class="nav-link">API Docs</a></li>
+            <li><a href="WebSocket.html" class="nav-link active">WebSocket</a></li>
+            <li><a href="ajax.html" class="nav-link">AJAX</a></li>
+            <li><a href="Privacy.html" class="nav-link">Privacy</a></li>
+            <li><a href="Terms.html" class="nav-link">Termini</a></li>
+        </ul>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Counter Container -->
+    <div class="counter-container">
+        <div class="counter-header">
+            <h2>Contatore Visitatori in Tempo Reale</h2>
+            <p>Monitora quante persone stanno visitando UniFinder in questo momento</p>
         </div>
         
-        <p>Questo contatore mostra il numero di visitatori attualmente connessi al sito UniFinder in tempo reale. Il conteggio viene aggiornato automaticamente quando gli utenti si connettono o si disconnettono.</p>
-    </section>
+        <div class="counter-content">
+            <div class="counter-box">
+                <div class="counter-label">Utenti attualmente online:</div>
+                <span id="contatore-visitatori" class="counter-value">0</span>
+                <div class="counter-update">
+                    <i class="fas fa-sync-alt fa-spin"></i> Aggiornamento in tempo reale
+                </div>
+                <div id="stato-connessione" class="connection-status status-disconnected">
+                    Connessione al server...
+                </div>
+            </div>
+            
+            <div class="counter-info">
+                <p>Questo contatore utilizza la tecnologia WebSocket per mostrare in tempo reale il numero di visitatori attualmente connessi alla piattaforma UniFinder. I dati vengono aggiornati istantaneamente quando gli utenti si connettono o si disconnettono.</p>
+                <p>La connessione WebSocket permette una comunicazione bidirezionale continua tra il browser e il server, consentendo aggiornamenti in tempo reale senza necessità di ricaricare la pagina.</p>
+            </div>
+        </div>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+        </div>
     </footer>
 
     <script>
