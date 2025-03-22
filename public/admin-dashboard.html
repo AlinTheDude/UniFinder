@@ -170,17 +170,13 @@
             color: var(--dark);
         }
         
-        .management-sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-        
-        .section-card {
+        /* User Management */
+        .user-management {
             background-color: white;
             border-radius: 12px;
             padding: 25px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
         }
         
         .section-header {
@@ -201,7 +197,37 @@
             color: var(--dark);
         }
         
-        .action-btn {
+        .user-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: none;
+            padding: 5px;
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        .search-icon {
+            color: var(--gray);
+            margin-right: 8px;
+        }
+        
+        .add-user-btn {
             background-color: var(--admin);
             color: white;
             border: none;
@@ -210,46 +236,46 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
-            display: inline-block;
-            margin-top: 15px;
-            text-decoration: none;
-        }
-        
-        .action-btn:hover {
-            background-color: var(--admin-dark);
-        }
-        
-        .user-list, .university-list {
-            margin-top: 15px;
-        }
-        
-        .user-item, .university-item {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            justify-content: space-between;
+            display: inline-flex;
             align-items: center;
         }
         
-        .user-item:last-child, .university-item:last-child {
-            border-bottom: none;
+        .add-user-btn i {
+            margin-right: 8px;
         }
         
-        .item-info {
-            display: flex;
-            flex-direction: column;
+        .add-user-btn:hover {
+            background-color: var(--admin-dark);
+            transform: translateY(-2px);
         }
         
-        .item-name {
-            font-weight: 500;
+        /* User Table */
+        .user-table-container {
+            overflow-x: auto;
         }
         
-        .item-detail {
-            font-size: 0.85rem;
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .user-table th, .user-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .user-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
             color: var(--gray);
         }
         
-        .item-actions {
+        .user-table tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        .user-actions {
             display: flex;
             gap: 10px;
         }
@@ -259,14 +285,135 @@
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            transition: all 0.2s ease;
         }
         
         .edit-btn {
             color: var(--primary);
         }
         
+        .edit-btn:hover {
+            color: var(--primary-dark);
+        }
+        
         .delete-btn {
             color: var(--danger);
+        }
+        
+        .delete-btn:hover {
+            color: #b91c1c;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus {
+            border-color: var(--admin);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+            outline: none;
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .cancel-btn:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        .save-btn {
+            background-color: var(--admin);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn:hover {
+            background-color: var(--admin-dark);
         }
         
         /* Footer */
@@ -284,22 +431,88 @@
             padding: 0 20px;
         }
         
+        /* Loader */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loader i {
+            font-size: 2rem;
+            color: var(--admin);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .alert-error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        
         /* Responsive design */
         @media (max-width: 768px) {
-            .stats-grid, .management-sections {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
             
             .navbar {
-                flex-direction: column;
-                align-items: flex-start;
                 padding: 15px 20px;
             }
             
             .nav-menu {
-                margin-top: 15px;
-                flex-wrap: wrap;
-                gap: 15px;
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 250px;
+                background-color: white;
+                flex-direction: column;
+                padding: 80px 20px 30px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .user-controls {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
@@ -312,232 +525,277 @@
             <span class="admin-badge">Admin</span>
         </a>
         
-        <ul class="nav-menu">
+        <ul class="nav-menu" id="navMenu">
             <li><a href="#" class="nav-link active">Dashboard</a></li>
-            <li><a href="#" class="nav-link">Utenti</a></li>
-            <li><a href="#" class="nav-link">Università</a></li>
+            <li><a href="#users" class="nav-link">Utenti</a></li>
             <li><a href="#" class="nav-link">Impostazioni</a></li>
-            <li><button id="logoutBtn" class="logout-btn">Logout</button></li>
-        </ul>
-    </nav>
+        <li><button id="logoutBtn" class="logout-btn">Logout</button></li>
+    </ul>
+    
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+</nav>
 
-    <!-- Main Content -->
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1>Dashboard Amministratore</h1>
-            <p>Benvenuto nel pannello di controllo di UniFinder</p>
+<!-- Main Content -->
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard Amministratore</h1>
+        <p>Benvenuto nel pannello di controllo di UniFinder</p>
+    </div>
+    
+    <!-- Alerts -->
+    <div id="alertSuccess" class="alert alert-success"></div>
+    <div id="alertError" class="alert alert-error"></div>
+    
+    <!-- Stats Section -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-title">Utenti Totali</div>
+            <div class="stat-value" id="totalUsers">0</div>
         </div>
         
-        <!-- Stats Section -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-title">Utenti Totali</div>
-                <div class="stat-value">152</div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-university"></i>
             </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div class="stat-title">Università</div>
-                <div class="stat-value">87</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <div class="stat-title">Ricerche Oggi</div>
-                <div class="stat-value">43</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <div class="stat-title">Messaggi Assistenza</div>
-                <div class="stat-value">12</div>
-            </div>
+            <div class="stat-title">Università</div>
+            <div class="stat-value">API</div>
         </div>
         
-        <!-- Management Sections -->
-        <div class="management-sections">
-            <!-- User Management -->
-            <div class="section-card">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <i class="fas fa-user-cog"></i>
-                    </div>
-                    <div class="section-title">Gestione Utenti</div>
-                </div>
-                
-                <p>Gestisci gli account utente, modifica i permessi e monitora l'attività.</p>
-                
-                <div class="user-list">
-                    <div class="user-item">
-                        <div class="item-info">
-                            <div class="item-name">Mario Rossi</div>
-                            <div class="item-detail">mario.rossi@example.com</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="user-item">
-                        <div class="item-info">
-                            <div class="item-name">Laura Bianchi</div>
-                            <div class="item-detail">laura.b@example.com</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <a href="#" class="action-btn">Visualizza tutti gli utenti</a>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-search"></i>
             </div>
-            
-            <!-- University Management -->
-            <div class="section-card">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <div class="section-title">Gestione Università</div>
-                </div>
-                
-                <p>Aggiungi, modifica o rimuovi università dal database di UniFinder.</p>
-                
-                <div class="university-list">
-                    <div class="university-item">
-                        <div class="item-info">
-                            <div class="item-name">Università di Roma</div>
-                            <div class="item-detail">Italia • Reputazione: 4.8</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="university-item">
-                        <div class="item-info">
-                            <div class="item-name">Cambridge University</div>
-                            <div class="item-detail">Regno Unito • Reputazione: 4.9</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <a href="#" class="action-btn">Gestisci università</a>
+            <div class="stat-title">Ricerche Totali</div>
+            <div class="stat-value">--</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-comments"></i>
             </div>
-            
-            <!-- Content Management -->
-            <div class="section-card">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="section-title">Contenuti</div>
-                </div>
-                <p>Gestisci i contenuti del sito, aggiorna le pagine informative e le FAQ.</p>
-                
-                <div class="content-actions">
-                    <a href="#" class="action-btn">Modifica contenuti</a>
-                </div>
-            </div>
-            
-            <!-- Analytics -->
-            <div class="section-card">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="section-title">Statistiche</div>
-                </div>
-                
-                <p>Visualizza le statistiche di utilizzo, le metriche di conversione e i report analitici.</p>
-                
-                <div class="content-actions">
-                    <a href="#" class="action-btn">Visualizza statistiche</a>
-                </div>
-            </div>
+            <div class="stat-title">Messaggi Assistenza</div>
+            <div class="stat-value">--</div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
-        </div>
-    </footer>
-
-    <script>
-        // Verifica se l'utente è un amministratore
-        document.addEventListener('DOMContentLoaded', function() {
-    // Verifica se l'utente è autenticato come admin
-    if (!localStorage.getItem('adminLoggedIn')) {
-        alert('Accesso non autorizzato. Effettua il login come amministratore.');
-        window.location.href = 'login.html';
-        return;
-    }
     
-    // Carica gli utenti dal database
-    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti', {
-        credentials: 'include',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+    <!-- User Management Section -->
+    <div class="user-management" id="users">
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="fas fa-user-cog"></i>
+            </div>
+            <div class="section-title">Gestione Utenti</div>
+        </div>
+        
+        <div class="user-controls">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchUser" placeholder="Cerca utente...">
+            </div>
+            
+            <button class="add-user-btn" id="addUserBtn">
+                <i class="fas fa-plus"></i> Aggiungi Utente
+            </button>
+        </div>
+        
+        <div class="user-table-container">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Preferenze</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- I dati degli utenti verranno caricati dinamicamente qui -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="loader" class="loader">
+            <i class="fas fa-spinner"></i>
+        </div>
+    </div>
+</div>
+
+<!-- User Edit Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeModal">&times;</span>
+        
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Modifica Utente</h2>
+        </div>
+        
+        <form id="userForm">
+            <input type="hidden" id="userId">
+            
+            <div class="form-group">
+                <label for="userName" class="form-label">Nome</label>
+                <input type="text" id="userName" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail" class="form-label">Email</label>
+                <input type="email" id="userEmail" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="userPreferences" class="form-label">Preferenze</label>
+                <input type="text" id="userPreferences" class="form-input">
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" class="cancel-btn" id="cancelBtn">Annulla</button>
+                <button type="submit" class="save-btn">Salva</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verifica se l'utente è autenticato come admin
+        if (!localStorage.getItem('adminLoggedIn')) {
+            alert('Accesso non autorizzato. Effettua il login come amministratore.');
+            window.location.href = 'login.html';
+            return;
         }
+        
+        // Elementi DOM
+        const userTableBody = document.getElementById('userTableBody');
+        const loader = document.getElementById('loader');
+        const searchUser = document.getElementById('searchUser');
+        const addUserBtn = document.getElementById('addUserBtn');
+        const userModal = document.getElementById('userModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const userForm = document.getElementById('userForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const userId = document.getElementById('userId');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userPreferences = document.getElementById('userPreferences');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const alertSuccess = document.getElementById('alertSuccess');
+        const alertError = document.getElementById('alertError');
+        const totalUsersElement = document.getElementById('totalUsers');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        // Toggle menu mobile
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Funzione per mostrare un messaggio di successo
+        function showSuccess(message) {
+            alertSuccess.textContent = message;
+            alertSuccess.style.display = 'block';
+            setTimeout(() => {
+                alertSuccess.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Funzione per mostrare un messaggio di errore
+        function showError(message) {
+            alertError.textContent = message;
+            alertError.style.display = 'block';
+            setTimeout(() => {
+                alertError.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Carica gli utenti dal server
+        function loadUsers() {
+            loader.style.display = 'block';
+    userTableBody.innerHTML = '';
+    
+    // Usa il server locale o il server GitHub Codespaces
+    const apiUrl = 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti';
+    
+    fetch(apiUrl, {
+        credentials: 'include'
     })
     .then(response => {
-        if (!response.ok) throw new Error('Errore nel caricamento degli utenti');
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento degli utenti');
+        }
         return response.json();
     })
     .then(data => {
-        populateUserTable(data.utenti);
+        loader.style.display = 'none';
+        
+        if (data.utenti && data.utenti.length > 0) {
+            // Aggiorna il contatore totale utenti
+            totalUsersElement.textContent = data.utenti.length;
+            
+            // Popola la tabella
+            data.utenti.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.nome}</td>
+                    <td>${user.email}</td>
+                    <td>${user.preferenze || '-'}</td>
+                    <td class="user-actions">
+                        <button class="edit-btn" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" data-id="${user.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                userTableBody.appendChild(row);
+            });
+            
+            // Aggiungi event listener ai pulsanti di azione
+            addActionListeners();
+        } else {
+            userTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Nessun utente trovato</td></tr>';
+            totalUsersElement.textContent = '0';
+        }
     })
     .catch(error => {
         console.error('Errore:', error);
-        document.getElementById('userTable').innerHTML = 
-            '<tr><td colspan="5" class="text-center">Errore nel caricamento degli utenti</td></tr>';
+        loader.style.display = 'none';
+        userTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">
+            Errore nel caricamento degli utenti: ${error.message}</td></tr>`;
+        showError('Errore nel caricamento degli utenti');
     });
-});
+}
 
-// Funzione per popolare la tabella utenti
-function populateUserTable(utenti) {
-    const tableBody = document.getElementById('userTableBody');
-    tableBody.innerHTML = '';
-    
-    utenti.forEach(utente => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${utente.id}</td>
-            <td>${utente.nome}</td>
-            <td>${utente.email}</td>
-            <td>${utente.preferenze || '-'}</td>
-            <td>
-                <button class="edit-btn" data-id="${utente.id}"><i class="fas fa-edit"></i></button>
-                <button class="delete-btn" data-id="${utente.id}"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-    
-    // Aggiungi event listener per i pulsanti di modifica ed eliminazione
+// Aggiungi event listener ai pulsanti di modifica ed eliminazione
+function addActionListeners() {
+    // Pulsanti di modifica
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const userId = this.getAttribute('data-id');
-            editUser(userId);
+            openEditModal(userId);
         });
     });
     
+    // Pulsanti di eliminazione
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const userId = this.getAttribute('data-id');
@@ -547,6 +805,215 @@ function populateUserTable(utenti) {
         });
     });
 }
+
+// Apri il modal per modificare un utente
+function openEditModal(id) {
+    modalTitle.textContent = 'Modifica Utente';
+    userModal.style.display = 'block';
+    
+    // Carica i dati dell'utente
+    fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti/${id}`, {
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento dei dati utente');
+        }
+        return response.json();
+    })
+    .then(data => {
+        userId.value = data.utente.id;
+        userName.value = data.utente.nome;
+        userEmail.value = data.utente.email;
+        userPreferences.value = data.utente.preferenze || '';
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        showError('Errore nel caricamento dei dati utente');
+        closeUserModal();
+    });
+}
+
+// Apri il modal per aggiungere un nuovo utente
+function openAddModal() {
+    modalTitle.textContent = 'Aggiungi Utente';
+    userId.value = '';
+    userName.value = '';
+    userEmail.value = '';
+    userPreferences.value = '';
+    userModal.style.display = 'block';
+}
+
+// Chiudi il modal
+function closeUserModal() {
+    userModal.style.display = 'none';
+}
+
+// Elimina un utente
+function deleteUser(id) {
+    fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Errore nell\'eliminazione dell\'utente');
+        }
+        return response.json();
+    })
+    .then(data => {
+        showSuccess('Utente eliminato con successo');
+        loadUsers(); // Ricarica la lista degli utenti
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        showError('Errore nell\'eliminazione dell\'utente');
+    });
+}
+
+// Event Listeners
+
+// Ricerca utenti
+searchUser.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = userTableBody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        const name = row.cells[1].textContent.toLowerCase();
+        const email = row.cells[2].textContent.toLowerCase();
+        
+        if (name.includes(searchTerm) || email.includes(searchTerm)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// Aggiungi utente
+addUserBtn.addEventListener('click', openAddModal);
+
+// Chiudi modal
+closeModal.addEventListener('click', closeUserModal);
+cancelBtn.addEventListener('click', closeUserModal);
+
+// Quando si fa clic all'esterno del modal, chiudilo
+window.addEventListener('click', function(event) {
+    if (event.target === userModal) {
+        closeUserModal();
+    }
+});
+
+// Gestione form utente
+userForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const id = userId.value;
+    const data = {
+        nome: userName.value,
+        email: userEmail.value,
+        preferenze: userPreferences.value
+    };
+    
+    if (id) {
+        // Aggiorna utente esistente
+        fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/utenti/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Errore nell\'aggiornamento dell\'utente');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        showSuccess('Utente aggiornato con successo');
+                        closeUserModal();
+                        loadUsers();
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                        showError(error.message);
+                    });
+                } else {
+                    // Aggiungi nuovo utente - richiede anche una password
+                    data.password = 'password123'; // Password predefinita per i nuovi utenti
+                    
+                    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/registrazione', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(data => {
+                                throw new Error(data.error || 'Errore nella creazione dell\'utente');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        showSuccess('Utente creato con successo');
+                        closeUserModal();
+                        loadUsers();
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                        showError(error.message);
+                    });
+                }
+            });
+            
+            // Gestione logout
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('adminLoggedIn');
+                
+                // Chiamata all'API di logout
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                .then(() => {
+                    window.location.href = 'login.html';
+                })
+                .catch(error => {
+                    console.error('Errore durante il logout:', error);
+                    // Reindirizza comunque alla pagina di login
+                    window.location.href = 'login.html';
+                });
+            });
+            
+            // Carica le statistiche
+            function loadStats() {
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/admin/statistiche', {
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nel caricamento delle statistiche');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Aggiorna le statistiche nella dashboard
+                    totalUsersElement.textContent = data.totalUsers;
+                    // Aggiungi altre statistiche se disponibili
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento delle statistiche:', error);
+                });
+            }
+            
+            // Inizializza la pagina
+            loadUsers();
+            loadStats();
+        });
     </script>
 </body>
 </html>

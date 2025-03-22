@@ -689,6 +689,139 @@ app.get('/api/universities', async (req, res) => {
     }
   });
 
+  function requireAdmin(req, res, next) {
+    // In una versione di produzione, dovresti verificare se l'utente nella sessione
+    // ha effettivamente privilegi di amministratore nel database
+    
+    // Per questo esempio, verifichiamo solo se l'email è 'admin'
+    if (req.session.user && req.session.user.email === 'admin') {
+        next();
+    } else {
+        res.status(403).json({ error: 'Accesso non autorizzato. Richiesti privilegi di amministratore.' });
+    }
+}
+
+// Endpoint per ottenere tutti gli utenti (solo admin)
+app.get('/admin/utenti', requireAdmin, (req, res) => {
+    db.all('SELECT id, nome, email, preferenze FROM utenti', [], (err, rows) => {
+        if (err) {
+            console.error('Errore nel recupero degli utenti:', err);
+            return res.status(500).json({ error: 'Errore nel recupero degli utenti' });
+        }
+        res.json({ utenti: rows });
+    });
+});
+
+// Endpoint per ottenere un singolo utente (solo admin)
+app.get('/admin/utenti/:id', requireAdmin, (req, res) => {
+    const userId = req.params.id;
+    
+    db.get('SELECT id, nome, email, preferenze FROM utenti WHERE id = ?', [userId], (err, row) => {
+        if (err) {
+            console.error('Errore nel recupero dell\'utente:', err);
+            return res.status(500).json({ error: 'Errore nel recupero dell\'utente' });
+        }
+        
+        if (!row) {
+            return res.status(404).json({ error: 'Utente non trovato' });
+        }
+        
+        res.json({ utente: row });
+    });
+});
+
+// Endpoint per eliminare un utente (solo admin)
+app.delete('/admin/utenti/:id', requireAdmin, (req, res) => {
+    const userId = req.params.id;
+    
+    db.run('DELETE FROM utenti WHERE id = ?', [userId], function(err) {
+        if (err) {
+            console.error('Errore nell\'eliminazione dell\'utente:', err);
+            return res.status(500).json({ error: 'Errore nell\'eliminazione dell\'utente' });
+        }
+        
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Utente non trovato' });
+        }
+        
+        res.json({ message: 'Utente eliminato con successo' });
+    });
+});
+
+// Endpoint per aggiornare un utente (solo admin)
+app.put('/admin/utenti/:id', requireAdmin, (req, res) => {
+    const userId = req.params.id;
+    const { nome, email, preferenze } = req.body;
+    
+    // Validazione
+    if (!nome || !email) {
+        return res.status(400).json({ error: 'Nome e email sono obbligatori' });
+    }
+    
+    db.run(
+        'UPDATE utenti SET nome = ?, email = ?, preferenze = ? WHERE id = ?',
+        [nome, email, preferenze || '', userId],
+        function(err) {
+            if (err) {
+                console.error('Errore nell\'aggiornamento dell\'utente:', err);
+                if (err.message.includes('UNIQUE constraint failed')) {
+                    return res.status(400).json({ error: 'Email già in uso' });
+                }
+                return res.status(500).json({ error: 'Errore nell\'aggiornamento dell\'utente' });
+            }
+            
+            if (this.changes === 0) {
+                return res.status(404).json({ error: 'Utente non trovato' });
+            }
+            
+            res.json({ message: 'Utente aggiornato con successo' });
+        }
+    );
+});
+
+// Endpoint per il login amministratore
+app.post('/admin/login', (req, res) => {
+    const { username, password, securityCode } = req.body;
+    
+    // Verifica le credenziali dell'amministratore
+    if (username === 'admin' && password === 'Admin123!' && securityCode === 'UniFinder2024') {
+        // Crea una sessione per l'admin
+        req.session.user = {
+            id: 0, // ID speciale per admin
+            nome: 'Amministratore',
+            email: 'admin',
+            isAdmin: true
+        };
+        
+        res.json({ 
+            message: 'Login amministratore effettuato con successo',
+            user: {
+                nome: 'Amministratore',
+                email: 'admin'
+            }
+        });
+    } else {
+        res.status(401).json({ error: 'Credenziali amministratore non valide' });
+    }
+});
+
+// Endpoint per ottenere statistiche (solo admin)
+app.get('/admin/statistiche', requireAdmin, (req, res) => {
+    // Ottieni il conteggio degli utenti
+    db.get('SELECT COUNT(*) as totalUsers FROM utenti', [], (err, userCount) => {
+        if (err) {
+            console.error('Errore nel recupero delle statistiche:', err);
+            return res.status(500).json({ error: 'Errore nel recupero delle statistiche' });
+        }
+        
+        // Puoi aggiungere altre statistiche qui
+        res.json({
+            totalUsers: userCount.totalUsers,
+            // Altre statistiche...
+        });
+    });
+});
+
 // Gestione della chiusura del database alla chiusura del server
 process.on('SIGINT', () => {
     db.close((err) => {
