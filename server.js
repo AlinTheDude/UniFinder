@@ -11,6 +11,7 @@ const clientAttivi = new Map();
 require('dotenv').config();
 const WebSocket = require('ws');
 const app = express();
+const axios = require('axios');
 const server = http.createServer(app); // Usa il server HTTP per supportare WebSocket
 const wss = new WebSocket.Server({ server }); // Crea il server WebSocket
 const port = 3001;
@@ -669,6 +670,24 @@ app.get('/utenti/filtro', (req, res) => {
         }
     });
 });
+
+app.get('/api/universities', async (req, res) => {
+    try {
+      const { name, country } = req.query;
+      let url = process.env.UNIVERSITY_API_URL;
+      
+      // Costruisci i parametri di query in base ai filtri forniti
+      const params = {};
+      if (name) params.name = name;
+      if (country) params.country = country;
+      
+      const response = await axios.get(url, { params });
+      res.json(response.data);
+    } catch (error) {
+      console.error('Errore nel recupero delle università:', error);
+      res.status(500).json({ error: 'Errore nel recupero delle università' });
+    }
+  });
 
 // Gestione della chiusura del database alla chiusura del server
 process.on('SIGINT', () => {

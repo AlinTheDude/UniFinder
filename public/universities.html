@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFinder - Ricerca Università</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('Imgs/cambridge.jpg'); /* Immagine di sfondo */
+            background-size: cover; /* Coprire l'intera area */
+            background-position: center; /* Centrare l'immagine */
+            background-repeat: no-repeat; /* Non ripetere l'immagine */
+        }
+        
+        /* Stili per l'elemento utente nella navbar */
+        .user-nav-item {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .user-welcome {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.25);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-welcome:hover {
+            background-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-welcome span {
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+            min-width: 180px;
+            overflow: hidden;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-nav-item:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .user-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .user-dropdown a:hover {
+            background-color: #f8f8f8;
+        }
+
+        .user-dropdown a i {
+            margin-right: 8px;
+            color: #4CAF50;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Modifiche alla navbar per adattarsi al nuovo elemento utente */
+        nav {
+            position: relative; /* Assicura che gli elementi posizionati assoluti siano relativi alla navbar */
+        }
+
+        /* Stile per il menu utente quando è mobile */
+        @media (max-width: 768px) {
+            .user-nav-item {
+                position: static;
+                margin-left: auto;
+            }
+            
+            .user-dropdown {
+                position: absolute;
+                top: 100%;
+                right: 10px;
+                width: 200px;
+            }
+        }
+        
+        /* Stili specifici per la pagina di ricerca università */
+        #ricerca-universita {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 800px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #ricerca-universita h2 {
+            color: #003366;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #002244;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .university-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .university-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .university-card h3 {
+            color: #003366;
+            margin-top: 0;
+        }
+        
+        .university-info {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1>UniFinder</h1>
+            <ul id="main-nav">
+                <li><a href="index.html">Home</a></li>
+                <li id="reg-link"><a href="index.html#registrazione">Registrazione</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li><a href="ajax.html">AJAX</a></li>
+                <li><a href="WebSocket.html">WebSocket</a></li>
+                <li><a href="Swagger.html">API Docs</a></li>
+            <li><a href="chat.html">Chat Assistenza</a></li>
+            <li><a href="universities.html" class="active">Ricerca Università</a></li>
+            <li><a href="Privacy.html">Privacy</a></li>
+            <li><a href="Terms.html">Termini e Condizioni</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Ricerca Università -->
+<section id="ricerca-universita">
+    <h2>Ricerca Università Globale</h2>
+    
+    <div class="error-message" id="errorMessage"></div>
+    
+    <div class="search-form">
+        <div class="form-group">
+            <label for="universityName">Nome Università</label>
+            <input type="text" id="universityName" placeholder="Es. Harvard, Oxford, La Sapienza...">
+        </div>
+        <div class="form-group">
+            <label for="country">Paese</label>
+            <input type="text" id="country" placeholder="Es. Italy, United States, United Kingdom...">
+        </div>
+        <button id="searchBtn" class="search-btn">Cerca <i class="fas fa-search"></i></button>
+    </div>
+
+    <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i> Ricerca in corso...
+    </div>
+
+    <div class="results" id="results">
+        <h3>Risultati della ricerca</h3>
+        <div id="universitiesList"></div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 UniFinder | All rights reserved | 5ic</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Aggiungi Font Awesome se non è già presente
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            const fontAwesome = document.createElement('link');
+            fontAwesome.rel = 'stylesheet';
+            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+            document.head.appendChild(fontAwesome);
+        }
+        
+        // Verifica se l'utente è già loggato
+        checkUserAuthentication();
+        
+        // Elementi DOM per la ricerca
+        const searchBtn = document.getElementById('searchBtn');
+        const universityNameInput = document.getElementById('universityName');
+        const countryInput = document.getElementById('country');
+        const resultsContainer = document.getElementById('universitiesList');
+        const loadingIndicator = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Gestione della ricerca
+        searchBtn.addEventListener('click', searchUniversities);
+        
+        // Ricerca anche premendo Invio nei campi di input
+        universityNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchUniversities();
+        });
+        
+        countryInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchUniversities();
+        });
+        
+        function searchUniversities() {
+            const name = universityNameInput.value.trim();
+            const country = countryInput.value.trim();
+            
+            // Verifica se almeno un campo è compilato
+            if (!name && !country) {
+                showError('Inserisci almeno un criterio di ricerca');
+                return;
+            }
+            
+            // Mostra indicatore di caricamento
+            loadingIndicator.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            errorMessage.style.display = 'none';
+            
+            // Costruisci l'URL con i parametri di query
+            let url = '/api/universities?';
+            if (name) url += `name=${encodeURIComponent(name)}&`;
+            if (country) url += `country=${encodeURIComponent(country)}`;
+            
+            // Effettua la richiesta API
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella risposta del server');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingIndicator.style.display = 'none';
+                    
+                    if (data.length === 0) {
+                        resultsContainer.innerHTML = '<p>Nessuna università trovata con i criteri specificati.</p>';
+                        return;
+                    }
+                    
+                    // Visualizza i risultati
+                    displayResults(data);
+                })
+                .catch(error => {
+                    loadingIndicator.style.display = 'none';
+                    showError('Si è verificato un errore durante la ricerca. Riprova più tardi.');
+                    console.error('Errore:', error);
+                });
+        }
+        
+        function displayResults(universities) {
+            resultsContainer.innerHTML = '';
+            
+            universities.forEach(uni => {
+                const card = document.createElement('div');
+                card.className = 'university-card';
+                
+                // Prepara il contenuto HTML della card
+                card.innerHTML = `
+                    <h3>${uni.name}</h3>
+                    <div class="university-info"><strong>Paese:</strong> ${uni.country}</div>
+                    ${uni.state_province ? `<div class="university-info"><strong>Stato/Provincia:</strong> ${uni.state_province}</div>` : ''}
+                    <div class="university-info"><strong>Dominio:</strong> ${uni.domains.join(', ')}</div>
+                    <div class="university-info"><strong>Sito web:</strong> <a href="http://${uni.web_pages[0]}" target="_blank">${uni.web_pages[0]}</a></div>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
+        // Funzione per verificare l'autenticazione dell'utente
+        function checkUserAuthentication() {
+            // Prima controlla sessionStorage
+            const userEmail = sessionStorage.getItem('userEmail');
+            
+            if (userEmail) {
+                // Utente già autenticato in sessionStorage
+                fetchUserData(userEmail);
+            } else {
+                // Controlla se esiste una sessione sul server
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        // Utente autenticato tramite sessione
+                        sessionStorage.setItem('userEmail', data.user.email);
+                        updateUIForLoggedInUser(data.user);
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore nella verifica dell\'autenticazione:', error);
+                });
+            }
+        }
+        
+        // Funzione per recuperare i dati dell'utente
+        function fetchUserData(email) {
+            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
+                credentials: 'include'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Utente non trovato');
+                }
+                return response.json();
+            })
+            .then(userData => {
+                updateUIForLoggedInUser(userData);
+                })
+                .catch(error => {
+                    console.error('Errore nel recupero dei dati utente:', error);
+                    // Rimuovi l'email dalla sessione se non è valida
+                    sessionStorage.removeItem('userEmail');
+                });
+            }
+            
+            // Funzione per aggiornare l'interfaccia per utenti loggati
+            function updateUIForLoggedInUser(user) {
+                const navbar = document.querySelector('nav');
+                
+                // Nascondi i link di login e registrazione
+                document.getElementById('login-link').style.display = 'none';
+                document.getElementById('reg-link').style.display = 'none';
+                
+                // Verifica se l'elemento utente esiste già
+                let userNavItem = document.getElementById('user-nav-item');
+                
+                if (!userNavItem) {
+                    // Crea l'elemento utente
+                    userNavItem = document.createElement('li');
+                    userNavItem.id = 'user-nav-item';
+                    userNavItem.className = 'user-nav-item';
+                    
+                    // Aggiungi l'elemento direttamente alla navbar (non all'ul)
+                    navbar.appendChild(userNavItem);
+                    
+                    // Aggiungi il contenuto HTML con icone Font Awesome
+                    userNavItem.innerHTML = `
+                        <div class="user-welcome">
+                            <img src="Imgs/user-avatar.png" alt="Avatar" class="user-avatar">
+                            <span>Ciao, ${user.nome || 'Utente'}</span>
+                        </div>
+                        <div class="user-dropdown">
+                            <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a href="dashboard.html#profile"><i class="fas fa-user-circle"></i> Profilo</a>
+                            <a href="dashboard.html#favorites"><i class="fas fa-heart"></i> Preferiti</a>
+                            <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    `;
+                    
+                    // Aggiungi l'evento di logout
+                    document.getElementById('logout-link').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logoutUser();
+                    });
+                }
+            }
+            
+            // Funzione per gestire il logout
+            function logoutUser() {
+                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Rimuovi l'email dalla sessione
+                    sessionStorage.removeItem('userEmail');
+                    
+                    // Aggiorna l'interfaccia
+                    const userNavItem = document.getElementById('user-nav-item');
+                    if (userNavItem) {
+                        userNavItem.remove();
+                    }
+                    
+                    // Mostra nuovamente i link di login e registrazione
+                    document.getElementById('login-link').style.display = '';
+                    document.getElementById('reg-link').style.display = '';
+                    
+                    // Mostra un messaggio di logout
+                    alert('Logout effettuato con successo');
+                })
+                .catch(error => {
+                    console.error('Errore durante il logout:', error);
+                    alert('Si è verificato un errore durante il logout. Riprova.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
