@@ -25,6 +25,12 @@ node server.js
    PRIMA DI TUTTO, ANDARE SU IMPOSTAZIONI DI RETE DELLA VIRTUAL MACHINE, E IMPOSTARE COME NOME UniFinder, come protocollo TCP, come Host Ip 127.0.0.1, e come due porte 3001.
 - Apri il browser e vai all'indirizzo: `http://localhost:3001`
 
+
+8. ADMIN LOGIN UNIFINDER
+   
+Username: admin
+Password: Admin123!
+Codice di sicurezza: UniFinder2024
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 
