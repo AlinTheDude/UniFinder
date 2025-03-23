@@ -1023,8 +1023,6 @@
     <script>
         // Script per gestire le sessioni
         document.addEventListener('DOMContentLoaded', function() {
-            // Verifica se l'utente è già loggato
-            checkUserAuthentication();
 
             function getBaseURL() {
         const hostname = window.location.hostname;
@@ -1036,6 +1034,12 @@
     }
     
     const BASE_URL = getBaseURL();
+
+
+            // Verifica se l'utente è già loggato
+            checkUserAuthentication();
+
+
             
             // Funzione per verificare l'autenticazione dell'utente
             function checkUserAuthentication() {
@@ -1047,7 +1051,7 @@
                     fetchUserData(userEmail);
                 } else {
                     // Controlla se esiste una sessione sul server
-                    fetch(`${BASE_URL}/check-auth`, {
+            fetch(`${BASE_URL}/check-auth`, {
                         credentials: 'include'
                     })
                     .then(response => response.json())
