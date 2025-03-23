@@ -8,6 +8,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function redirectToLogin() {
         window.location.href = 'login.html';
     }
+
+    function getBaseURL() {
+        // Controlla se siamo su GitHub Codespaces o localhost
+        const hostname = window.location.hostname;
+        if (hostname.includes('github.dev') || hostname.includes('github.io')) {
+            return 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev';
+        } else {
+            return 'http://localhost:3001';
+        }
+    }
+
+    const BASE_URL = getBaseURL();
+
     
     // Funzione per verificare l'autenticazione
     function checkAuthentication() {
@@ -16,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (storedEmail) {
             // Se abbiamo l'email in sessionStorage, verifichiamo che sia valida
-            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${storedEmail}`, {
+            fetch(`${BASE_URL}/utente?email=${storedEmail}`, {
                 credentials: 'include'
             })
             .then(response => {
@@ -42,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Funzione per verificare la sessione sul server
     function checkServerSession() {
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+        fetch(`${BASE_URL}/check-auth`, {
             credentials: 'include'
         })
         .then(response => response.json())
@@ -138,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+            fetch(`${BASE_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include'
             })
@@ -172,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const email = sessionStorage.getItem('userEmail');
             
             if (email) {
-                fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/preferiti?email=${email}`, {
+                fetch(`${BASE_URL}/preferiti?email=${email}`, {
                     credentials: 'include'
                 })
                 .then(response => {
