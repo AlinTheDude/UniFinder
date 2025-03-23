@@ -21,6 +21,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const config = require('./config');
 const allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'https://glowing-guacamole-r47qvpjxj99fpvrr-3000.app.github.dev',
     // Aggiungi altri domini se necessario
 ];
@@ -158,11 +159,21 @@ app.post('/logout', (req, res) => {
     });
 });
 
+const getCallbackURL = () => {
+    // Controlla se è in esecuzione su GitHub Codespaces o in locale
+    if (process.env.CODESPACES) {
+      return 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/auth/google/callback';
+    } else {
+      return 'http://localhost:3001/auth/google/callback';
+    }
+  };
+
+
 // Configurazione della strategia Google OAuth
 passport.use(new GoogleStrategy({
     clientID: '57709322978-liq6jtcbdhoc9o0voe4h6oujugqectrq.apps.googleusercontent.com', // Sostituisci con il tuo Client ID
     clientSecret: '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', // Sostituisci con il tuo Client Secret
-    callbackURL: 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/auth/google/callback',
+    callbackURL: getCallbackURL(),
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
 }, (accessToken, refreshToken, profile, done) => {
     console.log('Profilo Google ricevuto:', profile);
