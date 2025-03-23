@@ -8,6 +8,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+
+    function getBaseURL() {
+        const hostname = window.location.hostname;
+        if (hostname.includes('github.dev') || hostname.includes('github.io')) {
+            return 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev';
+        } else {
+            return 'http://localhost:3001';
+        }
+    }
+    
+    const BASE_URL = getBaseURL();
+
+
     
 
     // Gestione della registrazione
@@ -30,8 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     preferenze: preferenze
                 });
     
-  fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/registrazione', {
-    method: 'POST',
+                fetch(`${BASE_URL}/registrazione`, {
+                    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({ 
@@ -149,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 console.log("Tentativo di login con:", { email, password });
                 
-                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/login', {
+            fetch(`${BASE_URL}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -202,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // Fai una richiesta POST al server
-                fetch('http://localhost:3001/ricerca-universita', {
+                ('http://localhosfetcht:3001/ricerca-universita', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -314,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (userEmail) {
             // Utente loggato, recupera i dettagli
-            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${userEmail}`, {
+            fetch(`${BASE_URL}/utente?email=${userEmail}`, {
                 credentials: 'include'
             })
             .then(response => {
@@ -340,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Funzione per verificare la sessione sul server
     function checkServerSession() {
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+        fetch('${BASE_URL}/check-auth', {
             credentials: 'include'
         })
         .then(response => response.json())
@@ -495,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Funzione per effettuare il logout
     function logout() {
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+        fetch('${BASE_URL}/logout', {
             method: 'POST',
             credentials: 'include'
         })
