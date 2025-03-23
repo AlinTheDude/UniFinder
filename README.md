@@ -1,3 +1,33 @@
+**COME AVVIARE IL PROGETTO**
+
+# UniFinder - Guida all'installazione
+
+## Configurazione sulla VM Alpine
+
+1. Accedi alla VM tramite SSH:
+   - In PuTTY: inserisci `localhost` come host e `2222` come porta
+   - Utente: `mastroiannim`
+   - Password: `paleocapa`
+2. Clona il repository:
+git clone https://github.com/AlinTheDude/UniFinder.git
+3. Entra nella directory del progetto:
+cd UniFinder
+4. Installa le dipendenze:
+npm install
+5. Installa SQLite con le opzioni corrette:
+npm install sqlite3 --build-from-source
+npm rebuild sqlite3
+
+6. Avvia l'applicazione:
+node server.js
+
+7. Accedi all'applicazione da un browser sul tuo computer:
+   PRIMA DI TUTTO, ANDARE SU IMPOSTAZIONI DI RETE DELLA VIRTUAL MACHINE, E IMPOSTARE COME NOME UniFinder, come protocollo TCP, come Host Ip 127.0.0.1, e come due porte 3001.
+- Apri il browser e vai all'indirizzo: `http://localhost:3001`
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
 UniFinder è un'applicazione progettata per semplificare la ricerca dell'università perfetta, basandosi su criteri personalizzati dell'utente. Gli studenti possono inserire le loro preferenze e ottenere una lista di università che meglio corrispondono alle loro esigenze. I criteri di ricerca includono indirizzo dell'università, paese specifico, costi di iscrizione e spese associate, opportunità di borse di studio, offerta formativa e reputazione accademica.
 
 **Target**
