@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    const BASE_URL = window.location.hostname.includes('localhost') 
+    ? 'http://localhost:3001' 
+    : 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev';
+
     // Gestione della registrazione
     waitForElement('#registrationForm', () => {
         const registrationForm = document.getElementById('registrationForm');
@@ -28,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     preferenze: preferenze
                 });
     
-  fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/registrazione', {
-    method: 'POST',
+fetch(`${BASE_URL}/registrazione`, {
+                    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({ 
@@ -147,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 console.log("Tentativo di login con:", { email, password });
                 
-                fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/login', {
+                fetch('${BASE_URL}/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -312,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (userEmail) {
             // Utente loggato, recupera i dettagli
-            fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${userEmail}`, {
+            fetch(`${BASE_URL}/utente?email=${userEmail}`, {
                 credentials: 'include'
             })
             .then(response => {
@@ -338,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Funzione per verificare la sessione sul server
     function checkServerSession() {
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+        fetch('${BASE_URL}/check-auth', {
             credentials: 'include'
         })
         .then(response => response.json())
@@ -493,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Funzione per effettuare il logout
     function logout() {
-        fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
+        fetch('${BASE_URL}/logout', {
             method: 'POST',
             credentials: 'include'
         })
