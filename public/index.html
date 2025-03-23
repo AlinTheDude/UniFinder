@@ -1025,6 +1025,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Verifica se l'utente è già loggato
             checkUserAuthentication();
+
+            function getBaseURL() {
+        const hostname = window.location.hostname;
+        if (hostname.includes('github.dev') || hostname.includes('github.io')) {
+            return 'https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev';
+        } else {
+            return 'http://localhost:3001';
+        }
+    }
+    
+    const BASE_URL = getBaseURL();
             
             // Funzione per verificare l'autenticazione dell'utente
             function checkUserAuthentication() {
@@ -1036,7 +1047,7 @@
                     fetchUserData(userEmail);
                 } else {
                     // Controlla se esiste una sessione sul server
-                    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/check-auth', {
+                    fetch(`${BASE_URL}/check-auth`, {
                         credentials: 'include'
                     })
                     .then(response => response.json())
@@ -1055,7 +1066,7 @@
             
             // Funzione per recuperare i dati dell'utente
             function fetchUserData(email) {
-                fetch(`https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/utente?email=${email}`, {
+                fetch(`${BASE_URL}/utente?email=${email}`, {
                     credentials: 'include'
                 })
                 .then(response => {
@@ -1131,8 +1142,8 @@
             
             // Funzione per gestire il logout
             function logoutUser() {
-    fetch('https://glowing-guacamole-r47qvpjxj99fpvrr-3001.app.github.dev/logout', {
-        method: 'POST',
+                fetch(`${BASE_URL}/logout`, {
+                    method: 'POST',
         credentials: 'include'
     })
     .then(response => response.json())
