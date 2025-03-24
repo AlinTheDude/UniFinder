@@ -1,55 +1,76 @@
 **GUIDA INSTALLAZIONE UNIFINDER AUTOMATIZZATO**
 
-Prerequisiti
-Prima di eseguire lo script di installazione automatica, assicurati di avere:
-
+✅ **Prerequisiti**
 Windows 10 o 11 (64-bit)
-Permessi di amministratore sul tuo computer (necessari per l'installazione dei software)
+
+**Permessi di amministratore sul computer**
+
 Connessione Internet attiva e stabile
+
 Almeno 4GB di RAM liberi
+
 Almeno 10GB di spazio su disco disponibile
-File AlpineServer.ova scaricato nella cartella Download dell'utente
+
+File AlpineServer.ova scaricato nella cartella Downloads dell’utente
+
 Percorso predefinito: C:\Users\[TuoNome]\Downloads\AlpineServer.ova
-Nel caso si ha gia installati i seguenti programmi (Oracle VirtualBox, PuTTY e Plink) velocizza il lavoro.
-Oracle VirtualBox (versione 7.0.14) - https://www.virtualbox.org/wiki/Downloads
-PuTTY (versione 0.78) - https://www.putty.org/
-Plink (componente di PuTTY per SSH da riga di comando) - https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
 
-**Software che verrà installato automaticamente**
-Lo script installerà automaticamente i seguenti software se non sono già presenti sul sistema:
+🚀 **Programmi da installare manualmente (facoltativo ma consigliato per velocizzare)**
+Oracle VirtualBox (versione 7.0.14) : https://www.virtualbox.org/wiki/Downloads
 
-Oracle VirtualBox (versione 7.0.14) - https://www.virtualbox.org/wiki/Downloads
-PuTTY (versione 0.78) - https://www.putty.org/
-Plink (componente di PuTTY per SSH da riga di comando) - https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
-Come eseguire lo script
+PuTTY (versione 0.78) : https://www.putty.org/
+
+Plink (componente di PuTTY per SSH da riga di comando) : https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
+
+🔧 **Software installato automaticamente dallo script (se mancante)**
+Oracle VirtualBox (versione 7.0.14) 
+
+PuTTY (versione 0.78) 
+
+Plink 
+
+▶️ Come eseguire lo script
 Fai clic destro sul file AvviaUniFinder.bat
+
 Seleziona "Esegui come amministratore"
-Attendi che il processo di installazione e configurazione sia completato
-Al termine, il browser si aprirà automaticamente mostrando l'applicazione UniFinder
 
-**Cosa fa lo script**
-Lo script esegue automaticamente le seguenti operazioni:
-Verifica e installa VirtualBox, PuTTY e Plink se necessario
-Importa la macchina virtuale AlpineServer
-Configura il port forwarding per l'accesso SSH e all'applicazione web
-Avvia la macchina virtuale in modalità headless (senza interfaccia grafica)
+Attendi che l’installazione e la configurazione siano completate
+
+Il browser si aprirà automaticamente mostrando l’app UniFinder
+
+⚙️ **Cosa fa lo script**
+Verifica e installa VirtualBox, PuTTY e Plink (se non presenti)
+
+Importa la macchina virtuale AlpineServer.ova
+
+Configura il port forwarding per SSH e l’applicazione web
+
+Avvia la macchina virtuale in modalità headless (senza GUI)
+
 Installa le dipendenze necessarie sulla VM
+
 Clona e configura il repository UniFinder
-Avvia l'applicazione web
-Apre il browser all'indirizzo locale dell'applicazione
 
-**Risoluzione dei problemi**
+Avvia l’applicazione web
 
-Se incontri problemi durante l'esecuzione dello script:
-VirtualBox non si installa: Scarica e installa manualmente VirtualBox da virtualbox.org
-PuTTY non si installa: Scarica e installa manualmente PuTTY da putty.org
-Plink non si installa: Scarica manualmente Plink da https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe e salvalo nella stessa cartella di PuTTY
-File OVA non trovato: Assicurati che il file AlpineServer.ova sia nella cartella Downloads
-Errore di connessione SSH: Verifica che la VM sia avviata e che le porte non siano bloccate dal firewall
-Chiusura dell'applicazione
-Per terminare l'applicazione, basta chiudere la finestra del prompt dei comandi. Lo script spegnerà automaticamente la macchina virtuale.
+Apre il browser all’indirizzo locale dell’app
 
-**Note tecniche**
+🛠️ **Risoluzione dei problemi**
+VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
+
+PuTTY non si installa: scaricare e installare manualmente da putty.org
+
+Plink non si installa: scaricare da link diretto e salvarlo nella stessa cartella di PuTTY
+
+File OVA non trovato: assicurarsi che AlpineServer.ova sia nella cartella Downloads
+
+Errore di connessione SSH: controllare che la VM sia avviata e che il firewall non blocchi le porte
+
+❌ **Chiusura dell'applicazione**
+Chiudere la finestra del prompt dei comandi
+Lo script spegnerà automaticamente la macchina virtuale
+
+📌 **Note tecniche**
 Porta SSH: 2222
 Porta applicazione web: 3001
 Username VM: mastroiannim
