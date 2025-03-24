@@ -1,79 +1,92 @@
 **GUIDA INSTALLAZIONE UNIFINDER AUTOMATIZZATO**
+---------------------------------------------------------------------------------------------------------------------------------------
 
 ✅ **Prerequisiti**
-Windows 10 o 11 (64-bit)
 
-**Permessi di amministratore sul computer**
+1. Windows 10 o 11 (64-bit)
 
-Connessione Internet attiva e stabile
+2. Permessi di amministratore sul computer
 
-Almeno 4GB di RAM liberi
+3. Connessione Internet attiva e stabile
 
-Almeno 10GB di spazio su disco disponibile
+4. Almeno 4GB di RAM liberi
 
-File AlpineServer.ova scaricato nella cartella Downloads dell’utente
+5. Almeno 10GB di spazio su disco disponibile
 
-Percorso predefinito: C:\Users\[TuoNome]\Downloads\AlpineServer.ova
+
+6.File AlpineServer.ova scaricato nella cartella Downloads dell’utente
+
+7. Percorso predefinito: C:\Users\[TuoNome]\Downloads\AlpineServer.ova
 
 🚀 **Programmi da installare manualmente (facoltativo ma consigliato per velocizzare)**
-Oracle VirtualBox (versione 7.0.14) : https://www.virtualbox.org/wiki/Downloads
 
-PuTTY (versione 0.78) : https://www.putty.org/
+1. Oracle VirtualBox (versione 7.0.14) : https://www.virtualbox.org/wiki/Downloads
 
-Plink (componente di PuTTY per SSH da riga di comando) : https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
+2. PuTTY (versione 0.78) : https://www.putty.org/
+
+3. Plink (componente di PuTTY per SSH da riga di comando) : https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
 
 🔧 **Software installato automaticamente dallo script (se mancante)**
-Oracle VirtualBox (versione 7.0.14) 
+1. Oracle VirtualBox (versione 7.0.14) 
 
-PuTTY (versione 0.78) 
+2. PuTTY (versione 0.78) 
 
-Plink 
+3. Plink 
 
 ▶️ Come eseguire lo script
-Fai clic destro sul file AvviaUniFinder.bat
 
-Seleziona "Esegui come amministratore"
+1.Fai clic destro sul file AvviaUniFinder.bat
 
-Attendi che l’installazione e la configurazione siano completate
+2. Seleziona "Esegui come amministratore"
 
-Il browser si aprirà automaticamente mostrando l’app UniFinder
+3. Attendi che l’installazione e la configurazione siano completate
+
+4. Il browser si aprirà automaticamente mostrando l’app UniFinder
 
 ⚙️ **Cosa fa lo script**
-Verifica e installa VirtualBox, PuTTY e Plink (se non presenti)
 
-Importa la macchina virtuale AlpineServer.ova
+1. Verifica e installa VirtualBox, PuTTY e Plink (se non presenti)
 
-Configura il port forwarding per SSH e l’applicazione web
+2. Importa la macchina virtuale AlpineServer.ova
 
-Avvia la macchina virtuale in modalità headless (senza GUI)
+3. Configura il port forwarding per SSH e l’applicazione web
 
-Installa le dipendenze necessarie sulla VM
+4. Avvia la macchina virtuale in modalità headless (senza GUI)
 
-Clona e configura il repository UniFinder
+5. Installa le dipendenze necessarie sulla VM
 
-Avvia l’applicazione web
+6. Clona e configura il repository UniFinder
 
-Apre il browser all’indirizzo locale dell’app
+7. Avvia l’applicazione web
+
+8. Apre il browser all’indirizzo locale dell’app
 
 🛠️ **Risoluzione dei problemi**
-VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
 
-PuTTY non si installa: scaricare e installare manualmente da putty.org
+1.VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
 
-Plink non si installa: scaricare da link diretto e salvarlo nella stessa cartella di PuTTY
+2. PuTTY non si installa: scaricare e installare manualmente da putty.org
 
-File OVA non trovato: assicurarsi che AlpineServer.ova sia nella cartella Downloads
+3. Plink non si installa: scaricare da link diretto e salvarlo nella stessa cartella di PuTTY
 
-Errore di connessione SSH: controllare che la VM sia avviata e che il firewall non blocchi le porte
+4. File OVA non trovato: assicurarsi che AlpineServer.ova sia nella cartella Downloads
+
+5. Errore di connessione SSH: controllare che la VM sia avviata e che il firewall non blocchi le porte
 
 ❌ **Chiusura dell'applicazione**
-Chiudere la finestra del prompt dei comandi
-Lo script spegnerà automaticamente la macchina virtuale
+
+1. Chiudere la finestra del prompt dei comandi
+
+2. Lo script spegnerà automaticamente la macchina virtuale
 
 📌 **Note tecniche**
+
 Porta SSH: 2222
+
 Porta applicazione web: 3001
+
 Username VM: mastroiannim
+
 Password VM: paleocapa
 
 ---------------------------------------------------------------------------------------------------------------------------------------
