@@ -25,6 +25,8 @@
 
 3. Plink (componente di PuTTY per SSH da riga di comando) : https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
 
+4. IMPORTANTE: AVERE ANCHE IL FILE AlpineServer.ova
+
 🔧 **Software installato automaticamente dallo script (se mancante)**
 1. Oracle VirtualBox (versione 7.0.14) 
 
