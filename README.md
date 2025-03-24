@@ -13,8 +13,7 @@
 
 5. Almeno 10GB di spazio su disco disponibile
 
-
-6.File AlpineServer.ova scaricato nella cartella Downloads dell’utente
+6. File AlpineServer.ova scaricato nella cartella Downloads dell’utente
 
 7. Percorso predefinito: C:\Users\[TuoNome]\Downloads\AlpineServer.ova
 
@@ -35,7 +34,7 @@
 
 ▶️ Come eseguire lo script
 
-1.Fai clic destro sul file AvviaUniFinder.bat
+1. Fai clic destro sul file AvviaUniFinder.bat
 
 2. Seleziona "Esegui come amministratore"
 
@@ -63,7 +62,7 @@
 
 🛠️ **Risoluzione dei problemi**
 
-1.VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
+1. VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
 
 2. PuTTY non si installa: scaricare e installare manualmente da putty.org
 
