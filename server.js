@@ -690,7 +690,7 @@ app.get('/api/universities', async (req, res) => {
         return res.status(400).json({ error: 'È necessario specificare un paese per la ricerca' });
       }
       
-      const url = process.env.UNIVERSITY_API_URL || 'http://universities.hipolabs.com/search';
+      const url =  'http://universities.hipolabs.com/search';
       
       const response = await axios.get(url, { params: { country } });
       res.json(response.data);
