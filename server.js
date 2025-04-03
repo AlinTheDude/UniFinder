@@ -171,8 +171,8 @@ const getCallbackURL = () => {
 
 // Configurazione della strategia Google OAuth
 passport.use(new GoogleStrategy({
-    clientID: '57709322978-liq6jtcbdhoc9o0voe4h6oujugqectrq.apps.googleusercontent.com', // Sostituisci con il tuo Client ID
-    clientSecret: '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', // Sostituisci con il tuo Client Secret
+    clientID: process.env.GOOGLE_CLIENT_ID, 
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
     callbackURL: getCallbackURL(),
     userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
 }, (accessToken, refreshToken, profile, done) => {
