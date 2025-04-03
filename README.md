@@ -22,10 +22,13 @@ Requisiti
 8. Avvia il container:
    
    docker run -d -p 3001:3001 --name unifinder_container -e GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID -e GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET alinthedude/unifinder:latest
+   
 
 8. Accedi all'applicazione su:
+   
+   http://localhost:3001
 
-http://localhost:3001
+
 
 
 
