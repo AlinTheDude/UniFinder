@@ -1,130 +1,34 @@
-**GUIDA INSTALLAZIONE UNIFINDER AUTOMATIZZATO**
----------------------------------------------------------------------------------------------------------------------------------------
-
-✅ **Prerequisiti**
-
-1. Windows 10 o 11 (64-bit)
-
-2. Permessi di amministratore sul computer
-
-3. Connessione Internet attiva e stabile
-
-4. Almeno 4GB di RAM liberi
-
-5. Almeno 10GB di spazio su disco disponibile
-
-6. File AlpineServer.ova scaricato nella cartella Downloads dell’utente
-
-7. Percorso predefinito: C:\Users\[TuoNome]\Downloads\AlpineServer.ova
-
-🚀 **Programmi da installare manualmente (facoltativo ma consigliato per velocizzare)**
-
-1. Oracle VirtualBox (versione 7.0.14) : https://www.virtualbox.org/wiki/Downloads
-
-2. PuTTY (versione 0.78) : https://www.putty.org/
-
-3. Plink (componente di PuTTY per SSH da riga di comando) : https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe
-
-4. IMPORTANTE: AVERE ANCHE IL FILE AlpineServer.ova
-
-🔧 **Software installato automaticamente dallo script (se mancante)**
-1. Oracle VirtualBox (versione 7.0.14) 
-
-2. PuTTY (versione 0.78) 
-
-3. Plink 
-
-▶️ Come eseguire lo script
-
-1. Fai clic destro sul file AvviaUniFinder.bat
-
-2. Seleziona "Esegui come amministratore"
-
-3. Attendi che l’installazione e la configurazione siano completate
-
-4. Il browser si aprirà automaticamente mostrando l’app UniFinder
-
-⚙️ **Cosa fa lo script**
-
-1. Verifica e installa VirtualBox, PuTTY e Plink (se non presenti)
-
-2. Importa la macchina virtuale AlpineServer.ova
-
-3. Configura il port forwarding per SSH e l’applicazione web
-
-4. Avvia la macchina virtuale in modalità headless (senza GUI)
-
-5. Installa le dipendenze necessarie sulla VM
-
-6. Clona e configura il repository UniFinder
-
-7. Avvia l’applicazione web
-
-8. Apre il browser all’indirizzo locale dell’app
-
-🛠️ **Risoluzione dei problemi**
-
-1. VirtualBox non si installa: scaricare e installare manualmente da virtualbox.org
-
-2. PuTTY non si installa: scaricare e installare manualmente da putty.org
-
-3. Plink non si installa: scaricare da link diretto e salvarlo nella stessa cartella di PuTTY
-
-4. File OVA non trovato: assicurarsi che AlpineServer.ova sia nella cartella Downloads
-
-5. Errore di connessione SSH: controllare che la VM sia avviata e che il firewall non blocchi le porte
-
-❌ **Chiusura dell'applicazione**
-
-1. Chiudere la finestra del prompt dei comandi
-
-2. Lo script spegnerà automaticamente la macchina virtuale
-
-📌 **Note tecniche**
-
-Porta SSH: 2222
-
-Porta applicazione web: 3001
-
-Username VM: mastroiannim
-
-Password VM: paleocapa
-
+**Configurazione di DOCKER per UniFinder**
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 
-**COME AVVIARE IL PROGETTO (VERSIONE MANUALE)**
+Requisiti
 
-# UniFinder - Guida all'installazione
+1. Installa Docker (Docker Desktop): https://www.docker.com/products/docker-desktop/
 
-## Configurazione sulla VM Alpine
+2. Scarica l'immagine ufficiale da Docker Hub
 
-1. Accedi alla VM tramite SSH:
-   - In PuTTY: inserisci `localhost` come host e `2222` come porta
-   - Utente: `mastroiannim`
-   - Password: `paleocapa`
-2. Clona il repository:
-git clone https://github.com/AlinTheDude/UniFinder.git
-3. Entra nella directory del progetto:
-cd UniFinder
-4. Installa le dipendenze:
-npm install
-5. Installa SQLite con le opzioni corrette:
-npm install sqlite3 --build-from-source
-npm rebuild sqlite3
+3. L'immagine ufficiale di UniFinder è disponibile su Docker Hub:
 
-6. Avvia l'applicazione:
-node server.js
+4. Docker Hub Repository: https://hub.docker.com/repositories/alinthedude
 
-7. Accedi all'applicazione da un browser sul tuo computer:
-   PRIMA DI TUTTO, ANDARE SU IMPOSTAZIONI DI RETE DELLA VIRTUAL MACHINE, E IMPOSTARE COME NOME UniFinder, come protocollo TCP, come Host Ip 127.0.0.1, e come due porte 3001.
-- Apri il browser e vai all'indirizzo: `http://localhost:3001`
+5. Avvio del container
+
+6. Scarica l'immagine Docker
+
+docker pull alinthedude/unifinder:latest
+
+7. Avvia il container
+
+docker run -d -p 3001:3001 --name unifinder_container -e GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID -e GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET alinthedude/unifinder:latest
+
+8. Accedi all'applicazione su:
+
+http://localhost:3001
 
 
-8. ADMIN LOGIN UNIFINDER
-Username: admin
-Password: Admin123!
-Codice di sicurezza: UniFinder2024
+
+
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
