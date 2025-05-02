@@ -372,6 +372,23 @@
             28% { transform: translateY(-5px); }
             44% { transform: translateY(0px); }
         }
+        .suggested-questions {
+    margin-bottom: 10px;
+    text-align: center;
+}
+.suggested-questions button {
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+.suggested-questions button:hover {
+    background-color: #dceeff;
+}
     </style>
 </head>
 <body>
@@ -401,6 +418,12 @@
 
     <main class="chat-container">
         <h2>Chat Assistenza</h2>
+
+        <div class="suggested-questions">
+            <button onclick="addUserMessage('Come posso registrarmi?')">📝 Come registrarsi</button>
+            <button onclick="addUserMessage('Quali sono le migliori università per informatica?')">💻 Informatica</button>
+            <button onclick="addUserMessage('Ho dimenticato la password')">🔐 Password</button>
+        </div>
 
         <!-- Sezione della chat -->
         <div class="chat-box" id="chatBox">
@@ -511,23 +534,61 @@
             }
             
             // Risposte semplici basate su parole chiave
-            function getResponse(text) {
-                text = text.toLowerCase();
-                
-                if (text.includes('ciao') || text.includes('salve') || text.includes('buongiorno')) {
-                    return 'Ciao! Come posso aiutarti con UniFinder oggi?';
-                } else if (text.includes('università') && text.includes('migliore')) {
-                    return 'Le migliori università dipendono dal corso di studi che ti interessa. Posso aiutarti a trovare le migliori per il tuo campo di interesse!';
-                } else if (text.includes('iscrizione') || text.includes('registrare')) {
-                    return 'Per iscriverti a UniFinder, vai alla pagina di registrazione e segui le istruzioni. È un processo semplice e veloce!';
-                } else if (text.includes('grazie')) {
-                    return 'Prego! Sono qui per aiutarti. C\'è qualcos\'altro di cui hai bisogno?';
-                } else if (text.includes('password') && (text.includes('dimenticato') || text.includes('reset'))) {
-                    return 'Per reimpostare la password, vai alla pagina di login e clicca su "Password dimenticata". Riceverai un\'email con le istruzioni.';
-                } else {
-                    return 'Grazie per il tuo messaggio. Posso aiutarti a trovare università, informazioni sui corsi di studio o assistenza con il tuo account UniFinder. Come posso esserti utile oggi?';
-                }
-            }
+            let lastIntent = null;
+            lastIntent = sessionStorage.getItem('lastIntent') || null;
+// aggiorna quando cambia
+sessionStorage.setItem('lastIntent', lastIntent);
+
+function getResponse(text) {
+    const msg = text.toLowerCase();
+
+    // Intenzioni di base
+    if (/(ciao|salve|hey|buongiorno|sera)/.test(msg)) {
+        lastIntent = 'saluto';
+        return 'Ciao! 👋 Sono UniBot. Vuoi un consiglio su università, hai problemi col sito o vuoi sapere come funziona qualcosa?';
+    }
+
+    if (/(università|corsi|miglior|consigli|indirizzo)/.test(msg)) {
+        lastIntent = 'università';
+        return 'Perfetto! Dimmi: che tipo di corso ti interessa? Posso consigliarti alcune università in base al campo (es. informatica, medicina, economia...).';
+    }
+
+    if (lastIntent === 'università' && /(informatica|medicina|economia|ingegneria)/.test(msg)) {
+        return `Ottima scelta! 🎓 Per ${msg}, alcune tra le migliori università sono visibili nella nostra pagina <a href="universities.html">Università</a>. Vuoi vedere anche le recensioni o i filtri avanzati?`;
+    }
+
+    if (/(registrazione|registrarsi|account nuovo|crea account)/.test(msg)) {
+        lastIntent = 'registrazione';
+        return 'Facile! Vai su <a href="index.html">Registrazione</a> e compila il form. Se hai bisogno di aiuto su uno specifico campo, fammi sapere!';
+    }
+
+    if (/(accedi|login|entra|loggarmi)/.test(msg)) {
+        lastIntent = 'login';
+        return 'Vai su <a href="login.html">Login</a>. Se non ricordi la password, puoi fare il reset lì. Tutto ok finora?';
+    }
+
+    if (/(password.*dimenticata|reset.*password)/.test(msg)) {
+        return 'Vai sulla <a href="login.html">pagina di login</a> e clicca su "Password dimenticata". Ti arriverà un’email per reimpostarla. Hai già ricevuto l’email?';
+    }
+
+    if (/(problema|errore|bug|non funziona)/.test(msg)) {
+        return 'Mi dispiace! 😔 Scrivimi cosa non funziona, oppure contatta il supporto via email: <b>support@unifinder.com</b>. Ti aiuteremo il prima possibile.';
+    }
+
+    if (/(grazie|gentile|sei utile)/.test(msg)) {
+        return 'Sempre qui per te! 😄 Se hai bisogno di altro, scrivimi pure!';
+    }
+
+    if (/(come funziona|aiuto|guida|tutorial)/.test(msg)) {
+        return 'UniFinder ti permette di cercare università, leggere recensioni, salvare le preferite e chattare con altri utenti. Dai un’occhiata a tutte le funzioni nella home!';
+    }
+
+    if (/(chat|messaggi|parlare con qualcuno)/.test(msg)) {
+        return 'Questa chat è gestita da me, UniBot! Ma se vuoi parlare con una persona reale, puoi scrivere a <b>support@unifinder.com</b>.';
+    }
+
+    return 'Capito! 🤔 Ma per aiutarti meglio, puoi spiegarmi se stai cercando un’università, vuoi registrarti o c’è un problema col sito?';
+}
             
             // Event listener per l'invio del messaggio
             function sendMessage() {
