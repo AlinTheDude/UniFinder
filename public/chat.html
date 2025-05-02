@@ -543,7 +543,7 @@ function getResponse(text) {
     const msg = text.toLowerCase();
 
     // Intenzioni di base
-    if (/(ciao|salve|hey|buongiorno|sera)/.test(msg)) {
+    if (/(ciao|salve|hey|buongiorno|sera|yo)/.test(msg)) {
         lastIntent = 'saluto';
         return 'Ciao! 👋 Sono UniBot. Vuoi un consiglio su università, hai problemi col sito o vuoi sapere come funziona qualcosa?';
     }
@@ -580,7 +580,7 @@ function getResponse(text) {
     }
 
     if (/(come funziona|aiuto|guida|tutorial)/.test(msg)) {
-        return 'UniFinder ti permette di cercare università, leggere recensioni, salvare le preferite e chattare con altri utenti. Dai un’occhiata a tutte le funzioni nella home!';
+        return 'UniFinder ti permette di cercare università, leggere recensioni, salvare le preferite e chattare. Dai un’occhiata a tutte le funzioni nella home!';
     }
 
     if (/(chat|messaggi|parlare con qualcuno)/.test(msg)) {
