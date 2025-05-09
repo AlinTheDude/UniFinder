@@ -700,15 +700,11 @@ app.get('/api/universities', async (req, res) => {
     }
   });
 
-  function requireAdmin(req, res, next) {
-    // In una versione di produzione, dovresti verificare se l'utente nella sessione
-    // ha effettivamente privilegi di amministratore nel database
-    
-    // Per questo esempio, verifichiamo solo se l'email è 'admin'
-    if (req.session.user && req.session.user.email === 'admin') {
+function requireAdmin(req, res, next) {
+    if (req.session && req.session.user && req.session.user.isAdmin) {
         next();
     } else {
-        res.status(403).json({ error: 'Accesso non autorizzato. Richiesti privilegi di amministratore.' });
+        res.status(403).json({ error: 'Accesso non autorizzato' });
     }
 }
 
@@ -816,22 +812,7 @@ app.post('/admin/login', (req, res) => {
     }
 });
 
-app.post('/admin/login', (req, res) => {
-    const { username, password, securityCode } = req.body;
-    
-    if (username === 'admin' && password === 'Admin123!' && securityCode === 'UniFinder2024') {
-        req.session.user = {
-            id: 0, // ID speciale per admin
-            nome: 'Amministratore',
-            email: 'admin',
-            isAdmin: true
-        };
-        
-        res.json({ success: true, message: 'Login amministratore riuscito' });
-    } else {
-        res.status(401).json({ success: false, message: 'Credenziali amministratore non valide' });
-    }
-});
+
 
 app.get('/admin/test', (req, res) => {
     res.json({ message: 'Test endpoint funzionante', session: req.session });
